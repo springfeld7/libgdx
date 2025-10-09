@@ -15,12 +15,12 @@
  ******************************************************************************/
 
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0"
-    }
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0"
+	}
 }
 
 apply plugin: "java"
@@ -95,7 +95,7 @@ task validateIOSHeader {
 }
 
 jacoco {
-    toolVersion = "0.8.10"
+	toolVersion = "0.8.10"
 }
 
 dependencies {
@@ -112,10 +112,10 @@ test {
 
 // Generate HTML & XML reports
 tasks.jacocoTestReport {
-    reports {
-        html.required.set(true)
-        xml.required.set(true)
-    }
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+	}
 }
 
 processResources.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -148,15 +148,15 @@ jnigen {
 	}
 
 	pitest {
-    	targetClasses = ['com.badlogic.gdx.*']
-    	targetTests = ['com.badlogic.gdx.*Test']
-    	pitestVersion = '1.15.0'
-    	outputFormats = ['XML', 'HTML']
-    	threads = 4
-    	timestampedReports = false
-    	verbose = true
-    	useClasspathFile = true
-    	failWhenNoMutations = false
-    	skipFailingTests = true
-	}	
+		targetClasses = ['com.badlogic.gdx.*']
+		targetTests = ['com.badlogic.gdx.*Test']
+		pitestVersion = '1.15.0'
+		outputFormats = ['XML', 'HTML']
+		threads = 4
+		timestampedReports = false
+		verbose = true
+		useClasspathFile = true
+		failWhenNoMutations = false
+		skipFailingTests = true
+	}
 }
