@@ -1,4 +1,4 @@
-name: Student CI (Build & Test)
+name: DT214G-project CI (Build & Test)
 
 on:
   push:
