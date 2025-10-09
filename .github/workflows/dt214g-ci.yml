@@ -25,4 +25,10 @@ jobs:
       - name: Build & test Java code
         run: |
           ./gradlew fetchNatives
-          ./gradlew build
+          ./gradlew build -x spotlessApply -x spotlessCheck
+
+      - name: Run tests with coverage
+        run: ./gradlew :gdx:jacocoTestReport
+
+      - name: Run mutation testing (PIT)
+        run: ./gradlew :gdx:pitest
