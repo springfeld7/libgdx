@@ -9,9 +9,6 @@ import java.util.NoSuchElementException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.badlogic.gdx.utils.Collections;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-
 public class QueueTest {
     @Test
     public void addFirstAndLastTest () {
