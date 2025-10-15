@@ -188,11 +188,11 @@ pmd {
 	ignoreFailures = true
 	rulesMinimumPriority = 3 // Standard quality issues, typically minor bugs or sub-optimal code
 	ruleSets = [
-			'category/java/errorprone.xml',
-			'category/java/bestpractices.xml',
-			'category/java/performance.xml',
-			'category/java/multithreading.xml',
-			'category/java/security.xml'
+		'category/java/errorprone.xml',
+		'category/java/bestpractices.xml',
+		'category/java/performance.xml',
+		'category/java/multithreading.xml',
+		'category/java/security.xml'
 	]
 }
 
