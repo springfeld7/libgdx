@@ -187,5 +187,4 @@ jnigen {
 			html.enabled = true
 		}
 	}
-
 }
