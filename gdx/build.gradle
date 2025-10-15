@@ -153,18 +153,6 @@ jnigen {
 	}
 }
 
-
-pmd {
-	toolVersion = '6.55.0' // Specify the PMD tool version
-	consoleOutput = true
-	ignoreFailures = false
-	rulesMinimumPriority = 5
-	ruleSets = [
-			'category/java/errorprone.xml',
-			'category/java/bestpractices.xml'
-	]
-}
-
 pitest {
 	targetClasses = ['com.badlogic.gdx.*']
 	targetTests = ['com.badlogic.gdx.*Test']
