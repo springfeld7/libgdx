@@ -23,9 +23,14 @@ buildscript {
 	}
 }
 
+plugins {
+	id 'com.github.spotbugs' version '6.4.2'
+}
+
 apply plugin: "java"
 apply plugin: "jacoco"
 apply plugin: "info.solidsoft.pitest"
+//apply plugin: "com.github.spotbugs"
 
 if (JavaVersion.current().isJava9Compatible()) {
 	compileJava {
@@ -38,7 +43,6 @@ targetCompatibility = versions.java
 sourceSets.main.java.srcDirs = ["src"]
 sourceSets.main.resources.srcDirs = ["res"]
 sourceSets.test.java.srcDirs = ["test"]
-sourceSets.test.resources.srcDirs = ["test/resources"]
 
 compileJava {
 	options.fork = true
@@ -160,4 +164,28 @@ jnigen {
 		failWhenNoMutations = false
 		skipFailingTests = true
 	}
+
+	spotbugs {
+		toolVersion = "4.9.7"
+		ignoreFailures = true
+		effort = "max"
+		reportLevel = "high"
+	}
+
+	spotbugs {
+		toolVersion = '4.9.7'
+		ignoreFailures = true
+		showProgress = true
+		reportsDir = file("$project.buildDir/reports/spotbugs")
+		effort = 'max'
+		reportLevel = 'high'
+	}
+
+	tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+		reports {
+			xml.enabled = false
+			html.enabled = true
+		}
+	}
+
 }
