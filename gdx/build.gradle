@@ -25,12 +25,12 @@ buildscript {
 
 plugins {
 	id 'com.github.spotbugs' version '6.4.2'
+	id 'pmd'
 }
 
 apply plugin: "java"
 apply plugin: "jacoco"
 apply plugin: "info.solidsoft.pitest"
-//apply plugin: "com.github.spotbugs"
 
 if (JavaVersion.current().isJava9Compatible()) {
 	compileJava {
@@ -151,41 +151,66 @@ jnigen {
 	robovm {
 		extraXCFramework("libs/ObjectAL.xcframework")
 	}
+}
 
-	pitest {
-		targetClasses = ['com.badlogic.gdx.*']
-		targetTests = ['com.badlogic.gdx.*Test']
-		pitestVersion = '1.15.0'
-		outputFormats = ['XML', 'HTML']
-		threads = 4
-		timestampedReports = false
-		verbose = true
-		useClasspathFile = true
-		failWhenNoMutations = false
-		skipFailingTests = true
+
+pmd {
+	toolVersion = '6.55.0' // Specify the PMD tool version
+	consoleOutput = true
+	ignoreFailures = false
+	rulesMinimumPriority = 5
+	ruleSets = [
+			'category/java/errorprone.xml',
+			'category/java/bestpractices.xml'
+	]
+}
+
+pitest {
+	targetClasses = ['com.badlogic.gdx.*']
+	targetTests = ['com.badlogic.gdx.*Test']
+	pitestVersion = '1.15.0'
+	outputFormats = ['XML', 'HTML']
+	threads = 4
+	timestampedReports = false
+	verbose = true
+	useClasspathFile = true
+	failWhenNoMutations = false
+	skipFailingTests = true
+}
+
+spotbugs {
+	toolVersion = '4.9.7'
+	ignoreFailures = true
+	showProgress = true
+	reportsDir = file("$project.buildDir/reports/spotbugs")
+	effort = 'max'
+	reportLevel = 'high'
+}
+
+tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+	reports {
+		xml.enabled = false
+		html.enabled = true
 	}
+}
 
-	spotbugs {
-		toolVersion = "4.9.7"
-		ignoreFailures = true
-		effort = "max"
-		reportLevel = "high"
+pmd {
+	toolVersion = '6.55.0'
+	consoleOutput = true
+	ignoreFailures = true
+	rulesMinimumPriority = 3 // Standard quality issues, typically minor bugs or sub-optimal code
+	ruleSets = [
+			'category/java/errorprone.xml',
+			'category/java/bestpractices.xml',
+			'category/java/performance.xml',
+			'category/java/multithreading.xml',
+			'category/java/security.xml'
+	]
+}
+
+tasks.withType(Pmd).configureEach {
+	reports {
+		xml.required = false
+		html.required = true
 	}
-
-	spotbugs {
-		toolVersion = '4.9.7'
-		ignoreFailures = true
-		showProgress = true
-		reportsDir = file("$project.buildDir/reports/spotbugs")
-		effort = 'max'
-		reportLevel = 'high'
-	}
-
-	tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
-		reports {
-			xml.enabled = false
-			html.enabled = true
-		}
-	}
-
 }
