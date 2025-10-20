@@ -279,6 +279,17 @@ public class CharArrayTest {
 		assertEquals('e', array.get(4));
 	}
 
+	/** Test get(int) throws IndexOutOfBoundsException for invalid index */
+	@Test
+	public void getThrowsForInvalidIndex() {
+		try {
+			array.get(100);
+			fail("Should throw exception");
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
+	}
+
 	/** Test set method */
 	@Test
 	public void set() {
@@ -286,6 +297,18 @@ public class CharArrayTest {
 
 		array.set(2, 'Z');
 		assertEquals('Z', array.get(2));
+	}
+
+	/** Test set(int, char) throws IndexOutOfBoundsException for invalid index */
+	@Test
+	public void setThrowsForInvalidIndex() {
+		array.clear();
+		try {
+			array.set(100, 'x');
+			fail("Should throw exception");
+		} catch (IndexOutOfBoundsException e) {
+			// Expected
+		}
 	}
 
 	/** Test increment of a single element */
@@ -709,6 +732,23 @@ public class CharArrayTest {
 
 		assertEquals("buffer", array.toString());
 	}
+
+	/** Test appending an empty string does not change array size */
+	@Test
+	public void appendEmptyStringDoesNotChangeSize() {
+		array.append("");
+
+		assertEquals(0, array.size);
+	}
+
+	/** Test appending a null string appends "null" */
+	@Test
+	public void appendNullStringAppendsLiteralNull() {
+		array.append((String) null);
+
+		assertEquals("null", array.toString());
+	}
+
 
 	/** Test appendln(String) appends a line with newline character */
 	@Test
@@ -1273,6 +1313,35 @@ public class CharArrayTest {
 		assertEquals("OneTwoThree", array.toString());
 	}
 
+	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles a null argument */
+	@Test
+	public void appendAllNullArrayTest() {
+		array.append('a');
+		array.appendAll((Object[]) null);
+
+		assertEquals(1, array.size);
+		assertEquals('a', array.items[0]);
+	}
+
+	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles an empty varargs array */
+	@Test
+	public void appendAllEmptyArrayTest() {
+		array.append('a');
+		array.appendAll();
+
+		assertEquals(1, array.size);
+		assertEquals('a', array.items[0]);
+	}
+
+	/** Tests that {@link CharArray#appendAll(Object...)} appends all provided elements */
+	@Test
+	public void appendAllNormalUsageTest() {
+		array.appendAll('a', 'b', 'c');
+
+		assertEquals(3, array.size);
+		assertArrayEquals(new char[]{'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
+	}
+
 	/** Test appendWithSeparators(String[], String) joins array elements with separator */
 	@Test
 	public void appendWithSeparatorsArrayJoinsElements() {
@@ -1497,7 +1566,6 @@ public class CharArrayTest {
 	/** Test toString(String) joins multiple elements with a separator */
 	@Test
 	public void toStringWithSeparatorReturnsJoinedElements() {
-		array.clear();
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
 		String result = array.toString(",");
@@ -1507,48 +1575,35 @@ public class CharArrayTest {
 	/** Test toString(String) returns empty string for empty array */
 	@Test
 	public void toStringWithSeparatorReturnsEmptyForEmptyArray() {
-		array.clear(); // reuse private array field
 		assertEquals("", array.toString(","));
 	}
 
 	/** Test toString(String) returns element itself for single-element array */
 	@Test
 	public void toStringWithSeparatorReturnsSingleElement() {
-		array.clear();
 		array.add('x');
+
 		assertEquals("x", array.toString(","));
 	}
 
-	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles a null argument */
+	/** Test operations on an empty array return expected results */
 	@Test
-	public void appendAllNullArrayTest() {
-
-		array.append('a');
-		array.appendAll((Object[]) null);
-
-		assertEquals(1, array.size);
-		assertEquals('a', array.items[0]);
+	public void emptyArrayOperationsReturnExpected() {
+		assertEquals(-1, array.indexOf('a'));
+		assertEquals(-1, array.lastIndexOf('a'));
+		assertFalse(array.contains('a'));
+		assertFalse(array.removeValue('a'));
 	}
 
-	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles an empty varargs array */
+	/** Test CharArray can handle very large capacity */
 	@Test
-	public void appendAllEmptyArrayTest() {
+	public void largeCapacityArrayHandlesManyElements() {
+		CharArray large = new CharArray(10000);
 
-		array.append('a');
-		array.appendAll();
-
-		assertEquals(1, array.size);
-		assertEquals('a', array.items[0]);
-	}
-
-	/** Tests that {@link CharArray#appendAll(Object...)} appends all provided elements */
-	@Test
-	public void appendAllNormalUsageTest() {
-
-		array.appendAll('a', 'b', 'c');
-
-		assertEquals(3, array.size);
-		assertArrayEquals(new char[]{'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
+		for (int i = 0; i < 10000; i++) {
+			large.add((char)('A' + (i % 26)));
+		}
+		assertEquals(10000, large.size);
 	}
 
 	/** Helper method for specific initialization */
