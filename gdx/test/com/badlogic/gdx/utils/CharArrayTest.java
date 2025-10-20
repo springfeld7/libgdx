@@ -532,45 +532,64 @@ public class CharArrayTest {
 		assertTrue(array.isEmpty());
 	}
 
-	/** Test array operations */
+	/** Test sort() arranges elements in ascending order */
 	@Test
-	public void arrayOperationsTest () {
-
+	public void sortOrdersElementsAscending() {
 		array.addAll('d', 'b', 'e', 'a', 'c');
-
-		// Sort
 		array.sort();
+
 		assertEquals('a', array.get(0));
 		assertEquals('b', array.get(1));
 		assertEquals('c', array.get(2));
 		assertEquals('d', array.get(3));
 		assertEquals('e', array.get(4));
+	}
 
-		// Swap
+	/** Test swap(int, int) exchanges elements at specified indices */
+	@Test
+	public void swapExchangesElements() {
+		array.addAll('d', 'b', 'e', 'a', 'c');
 		array.swap(0, 4);
-		assertEquals('e', array.get(0));
-		assertEquals('a', array.get(4));
 
-		// Reverse
-		CharArray array2 = new CharArray();
-		array2.addAll('1', '2', '3', '4', '5');
-		array2.reverse();
-		assertEquals('5', array2.get(0));
-		assertEquals('4', array2.get(1));
-		assertEquals('3', array2.get(2));
-		assertEquals('2', array2.get(3));
-		assertEquals('1', array2.get(4));
+		assertEquals('c', array.get(0));
+		assertEquals('b', array.get(1));
+		assertEquals('e', array.get(2));
+		assertEquals('a', array.get(3));
+		assertEquals('d', array.get(4));
+	}
 
-		// Truncate
-		array2.truncate(3);
-		assertEquals(3, array2.size);
-		assertEquals('5', array2.get(0));
-		assertEquals('4', array2.get(1));
-		assertEquals('3', array2.get(2));
+	/** Test reverse() inverts the order of elements */
+	@Test
+	public void reverseInvertsOrder() {
+		array.addAll('1', '2', '3', '4', '5');
+		array.reverse();
 
-		// Clear
-		array2.clear();
-		assertEquals(0, array2.size);
+		assertEquals('5', array.get(0));
+		assertEquals('4', array.get(1));
+		assertEquals('3', array.get(2));
+		assertEquals('2', array.get(3));
+		assertEquals('1', array.get(4));
+	}
+
+	/** Test truncate(int) reduces size to specified length, keeping first elements */
+	@Test
+	public void truncateReducesSize() {
+		array.addAll('1', '2', '3', '4', '5');
+		array.truncate(3);
+
+		assertEquals(3, array.size);
+		assertEquals('1', array.get(0));
+		assertEquals('2', array.get(1));
+		assertEquals('3', array.get(2));
+	}
+
+	/** Test clear() removes all elements from the array */
+	@Test
+	public void clearEmptiesArray() {
+		array.addAll('1', '2', '3', '4', '5');
+		array.clear();
+
+		assertEquals(0, array.size);
 	}
 
 	/** Test append methods */
