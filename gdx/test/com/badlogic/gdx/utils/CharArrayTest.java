@@ -100,6 +100,7 @@ public class CharArrayTest {
 	@Test
 	public void stringConstructorCopiesContent() {
 		CharArray array = new CharArray("hello");
+
 		assertEquals(5, array.size);
 		assertEquals("hello", array.toString());
 	}
@@ -109,54 +110,112 @@ public class CharArrayTest {
 	public void stringBuilderConstructorCopiesContent() {
 		StringBuilder sb = new StringBuilder("world");
 		CharArray array = new CharArray(sb);
+
 		assertEquals(5, array.size);
 		assertEquals("world", array.toString());
 	}
 
-	/** Test add methods */
+	/** Test adding a single element */
 	@Test
-	public void addTest () {
-
-		// Single add
+	public void addSingleElement() {
 		array.add('a');
+
 		assertEquals(1, array.size);
 		assertEquals('a', array.get(0));
+	}
 
-		// Multiple adds
+	/** Test adding two elements */
+	@Test
+	public void addTwoElements() {
 		array.add('b', 'c');
-		assertEquals(3, array.size);
-		assertEquals('b', array.get(1));
-		assertEquals('c', array.get(2));
 
+		assertEquals(2, array.size);
+		assertEquals('b', array.get(0));
+		assertEquals('c', array.get(1));
+	}
+
+	/** Test adding three elements */
+	@Test
+	public void addThreeElements() {
 		array.add('d', 'e', 'f');
-		assertEquals(6, array.size);
-		assertEquals('f', array.get(5));
 
+		assertEquals(3, array.size);
+		assertEquals('d', array.get(0));
+		assertEquals('f', array.get(2));
+	}
+
+	/** Test adding four elements */
+	@Test
+	public void addFourElements() {
 		array.add('g', 'h', 'i', 'j');
-		assertEquals(10, array.size);
-		assertEquals('j', array.get(9));
 
-		// AddAll with CharArray
-		CharArray array2 = new CharArray();
-		array2.add('k');
-		array2.add('l');
-		array.addAll(array2);
-		assertEquals(12, array.size);
-		assertEquals('k', array.get(10));
-		assertEquals('l', array.get(11));
+		assertEquals(4, array.size);
+		assertEquals('g', array.get(0));
+		assertEquals('j', array.get(3));
+	}
 
-		// AddAll with array
+	/** Test addAll with another CharArray */
+	@Test
+	public void addAllWithCharArray() {
+		CharArray other = new CharArray();
+		other.add('k');
+		other.add('l');
+
+		array.addAll(other);
+		assertEquals(2, array.size);
+		assertEquals('k', array.get(0));
+		assertEquals('l', array.get(1));
+	}
+
+	/** Test addAll with varargs elements */
+	@Test
+	public void addAllWithVarargs() {
 		array.addAll('m', 'n', 'o');
-		assertEquals(15, array.size);
-		assertEquals('o', array.get(14));
 
-		// AddAll with offset and length
+		assertEquals(3, array.size);
+		assertEquals('m', array.get(0));
+		assertEquals('o', array.get(2));
+	}
+
+	/** Test addAll with char array, offset, and length */
+	@Test
+	public void addAllWithArrayOffsetAndLength() {
 		char[] chars = {'p', 'q', 'r', 's', 't'};
-		array.addAll(chars, 1, 3);
-		assertEquals(18, array.size);
-		assertEquals('q', array.get(15));
-		assertEquals('r', array.get(16));
-		assertEquals('s', array.get(17));
+
+		array.addAll(chars, 1, 3); // adds q, r, s
+
+		assertEquals(3, array.size);
+		assertEquals('q', array.get(0));
+		assertEquals('r', array.get(1));
+		assertEquals('s', array.get(2));
+	}
+
+
+	/** Test addAll with CharArray using full range (offset + length = size) */
+	@Test
+	public void addAllWithOffsetAndLengthFullRange() {
+		CharArray source = new CharArray();
+		source.add('a', 'b', 'c', 'd');
+
+		array.addAll(source, 0, 4);
+
+		assertEquals(4, array.size);
+		assertEquals('a', array.get(0));
+		assertEquals('d', array.get(3));
+	}
+
+	/** Test addAll(CharArray, offset, length) throws when offset + length > size */
+	@Test
+	public void addAllWithOffsetAndLengthThrows() {
+		CharArray source = new CharArray();
+		source.add('x', 'y');
+
+		try {
+			array.addAll(source, 1, 2);
+			fail("Expected IllegalArgumentException");
+		} catch (IllegalArgumentException ex) {
+			assertTrue(ex.getMessage().contains("offset + length must be <= size"));
+		}
 	}
 
 	/** Test add methods */
@@ -202,38 +261,6 @@ public class CharArrayTest {
 
 		assertEquals(8, array4.size);
 		assertTrue(array4.capacity() > oldCap);
-	}
-
-	/** Test addAll with offset and length from another CharArray */
-	@Test
-	public void addAllWithOffsetAndLengthTest() {
-
-		CharArray target = new CharArray();
-		CharArray source = new CharArray();
-
-		array.add('a', 'b', 'c', 'd');
-
-
-		// Normal case: add a subrange (2 elements starting from index 1)
-		target.addAll(array, 1, 2);
-		assertEquals(2, target.size);
-		assertEquals('b', target.get(0));
-		assertEquals('c', target.get(1));
-
-		// Edge case: offset + length exactly array size
-		target.addAll(array, 0, 4);
-		assertEquals(6, target.size); // 2 previous + 4 added
-		assertEquals('a', target.get(2));
-		assertEquals('d', target.get(5));
-
-		// Exception case: offset + length > source size
-		source.add('x', 'y');
-		try {
-			target.addAll(source, 1, 2); // 1 + 2 = 3 > 2
-			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException ex) {
-			assertTrue(ex.getMessage().contains("offset + length must be <= size"));
-		}
 	}
 
 	/** Test get and set methods */
