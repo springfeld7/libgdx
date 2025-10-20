@@ -218,11 +218,9 @@ public class CharArrayTest {
 		}
 	}
 
-	/** Test add methods */
+	/** Test single-argument add triggers resizeBuffer */
 	@Test
-	public void addTriggersResizeBufferTest() {
-
-		// Single add
+	public void addSingleTriggersResize() {
 		CharArray array1 = new CharArray(1);
 		int oldCap = array1.capacity();
 
@@ -231,30 +229,39 @@ public class CharArrayTest {
 
 		assertEquals(2, array1.size);
 		assertTrue(array1.capacity() > oldCap);
+	}
 
-		// Two-argument add
+	/** Test two-argument add triggers resizeBuffer */
+	@Test
+	public void addTwoTriggersResize() {
 		CharArray array2 = new CharArray(2);
-		oldCap = array2.capacity();
+		int oldCap = array2.capacity();
 
 		array2.add('x', 'y'); // fills capacity, no resize yet
 		array2.add('z', 'w'); // triggers resize
 
 		assertEquals(4, array2.size);
 		assertTrue(array2.capacity() > oldCap);
+	}
 
-		// Three-argument add
+	/** Test three-argument add triggers resizeBuffer */
+	@Test
+	public void addThreeTriggersResize() {
 		CharArray array3 = new CharArray(3);
-		oldCap = array3.capacity();
+		int oldCap = array3.capacity();
 
 		array3.add('a', 'b', 'c'); // fills capacity
 		array3.add('d', 'e', 'f'); // triggers resize
 
 		assertEquals(6, array3.size);
 		assertTrue(array3.capacity() > oldCap);
+	}
 
-		// Four-argument add
+	/** Test four-argument add triggers resizeBuffer */
+	@Test
+	public void addFourTriggersResize() {
 		CharArray array4 = new CharArray(4);
-		oldCap = array4.capacity();
+		int oldCap = array4.capacity();
 
 		array4.add('1', '2', '3', '4'); // fills capacity
 		array4.add('5', '6', '7', '8'); // triggers resize
@@ -263,55 +270,69 @@ public class CharArrayTest {
 		assertTrue(array4.capacity() > oldCap);
 	}
 
-	/** Test get and set methods */
+	/** Test get method */
 	@Test
-	public void getSetTest () {
-
+	public void get() {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
-		// Get
 		assertEquals('a', array.get(0));
 		assertEquals('e', array.get(4));
-
-		// Set
-		array.set(2, 'Z');
-		assertEquals('Z', array.get(2));
-
-		// Incr
-		array.set(0, (char)65); // 'A'
-		array.incr(0, (char)1);
-		assertEquals((char)66, array.get(0)); // 'B'
-
-		// Incr all
-		CharArray array2 = new CharArray();
-		array2.addAll((char)1, (char)2, (char)3);
-		array2.incr((char)10);
-		assertEquals((char)11, array2.get(0));
-		assertEquals((char)12, array2.get(1));
-		assertEquals((char)13, array2.get(2));
-
-		// Mul
-		array2.set(0, (char)5);
-		array2.mul(0, (char)3);
-		assertEquals((char)15, array2.get(0));
-
-		// Mul all
-		CharArray array3 = new CharArray();
-		array3.addAll((char)2, (char)3, (char)4);
-		array3.mul((char)2);
-		assertEquals((char)4, array3.get(0));
-		assertEquals((char)6, array3.get(1));
-		assertEquals((char)8, array3.get(2));
 	}
 
-	/** Test remove methods */
+	/** Test set method */
 	@Test
-	public void removeTest () {
-		// Test ordered removal
-		CharArray array = new CharArray(true, 10);
+	public void set() {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
-		// RemoveValue
+		array.set(2, 'Z');
+		assertEquals('Z', array.get(2));
+	}
+
+	/** Test increment of a single element */
+	@Test
+	public void incrSingle() {
+		array.addAll((char)65); // 'A'
+		array.incr(0, (char)1);
+
+		assertEquals((char)66, array.get(0)); // 'B'
+	}
+
+	/** Test increment all elements */
+	@Test
+	public void incrAll() {
+		array.addAll((char)1, (char)2, (char)3);
+		array.incr((char)10);
+
+		assertEquals((char)11, array.get(0));
+		assertEquals((char)12, array.get(1));
+		assertEquals((char)13, array.get(2));
+	}
+
+	/** Test multiply a single element */
+	@Test
+	public void mulSingle() {
+		array.addAll((char)5);
+		array.mul(0, (char)3);
+
+		assertEquals((char)15, array.get(0));
+	}
+
+	/** Test multiply all elements */
+	@Test
+	public void mulAll() {
+		array.addAll((char)2, (char)3, (char)4);
+		array.mul((char)2);
+
+		assertEquals((char)4, array.get(0));
+		assertEquals((char)6, array.get(1));
+		assertEquals((char)8, array.get(2));
+	}
+
+	/** Test removeValue with ordered array */
+	@Test
+	public void removeValueOrdered() {
+		array.addAll('a', 'b', 'c', 'd', 'e');
+
 		assertTrue(array.removeValue('c'));
 		assertEquals(4, array.size);
 		assertEquals('a', array.get(0));
@@ -319,42 +340,67 @@ public class CharArrayTest {
 		assertEquals('d', array.get(2));
 		assertEquals('e', array.get(3));
 		assertFalse(array.removeValue('z'));
+	}
 
-		// RemoveIndex
+	/** Test removeIndex with ordered array */
+	@Test
+	public void removeIndexOrdered() {
+		array.addAll('a', 'b', 'c', 'd', 'e');
+
 		char removed = array.removeIndex(1);
 		assertEquals('b', removed);
-		assertEquals(3, array.size);
+		assertEquals(4, array.size);
 		assertEquals('a', array.get(0));
-		assertEquals('d', array.get(1));
-		assertEquals('e', array.get(2));
+		assertEquals('c', array.get(1));
+		assertEquals('d', array.get(2));
+		assertEquals('e', array.get(3));
+	}
 
-		// RemoveRange
-		array.addAll('f', 'g', 'h', 'i');
-		array.removeRange(1, 4);
-		assertEquals(3, array.size);
+	/** Test removeRange with ordered array */
+	@Test
+	public void removeRangeOrdered() {
+		array.addAll('a','b','c','d','e','f','g','h','i');
+
+		array.removeRange(1, 4); // removes b,c,d,e
+
+		assertEquals(5, array.size);
 		assertEquals('a', array.get(0));
-		assertEquals('h', array.get(1));
-		assertEquals('i', array.get(2));
+		assertEquals('f', array.get(1));
+		assertEquals('g', array.get(2));
+		assertEquals('h', array.get(3));
+		assertEquals('i', array.get(4));
+	}
 
-		// Test unordered removal
+	/** Test removeValue with unordered array */
+	@Test
+	public void removeValueUnordered() {
 		CharArray unordered = new CharArray(false, 10);
+
 		unordered.addAll('a', 'b', 'c', 'd', 'e');
 
 		assertTrue(unordered.removeValue('b'));
 		assertEquals(4, unordered.size);
-		// In unordered removal, last element is moved to removed position
+		// last element moves to removed position
 		assertEquals('a', unordered.get(0));
 		assertEquals('e', unordered.get(1));
 		assertEquals('c', unordered.get(2));
 		assertEquals('d', unordered.get(3));
+	}
 
-		// RemoveAll
+	/** Test removeAll with unordered array */
+	@Test
+	public void removeAllUnordered() {
+		CharArray unordered = new CharArray(false, 10);
+		unordered.addAll('a', 'b', 'c', 'd', 'e');
+
 		CharArray toRemove = new CharArray();
 		toRemove.addAll('a', 'd');
 		assertTrue(unordered.removeAll(toRemove));
-		assertEquals(2, unordered.size);
-		assertEquals('c', unordered.get(0));
-		assertEquals('e', unordered.get(1));
+
+		assertEquals(3, unordered.size);
+		assertEquals('e', unordered.get(0));
+		assertEquals('b', unordered.get(1));
+		assertEquals('c', unordered.get(2));
 	}
 
 	/** Test search methods */
