@@ -1052,20 +1052,30 @@ public class CharArrayTest {
 		assertTrue(array.equalsIgnoreCase("hello world"));
 	}
 
-	/** Test CharSequence methods */
+	/** Test length() returns the correct number of characters */
 	@Test
-	public void charSequenceTest () {
-		CharArray array = createCharArrayWithString("Hello World!");
+	public void lengthReturnsCorrectValue() {
+		array = createCharArrayWithString("Hello World!");
 
-		// Length
 		assertEquals(12, array.length());
+	}
 
-		// CharAt
+	/** Test charAt(int) returns the character at the specified index */
+	@Test
+	public void charAtReturnsCorrectCharacter() {
+		array = createCharArrayWithString("Hello World!");
+
 		assertEquals('H', array.charAt(0));
 		assertEquals('!', array.charAt(11));
+	}
 
-		// SubSequence
+	/** Test subSequence(int, int) returns the correct subsequence */
+	@Test
+	public void subSequenceReturnsCorrectSubstring() {
+		array = createCharArrayWithString("Hello World!");
+
 		CharSequence sub = array.subSequence(0, 5);
+
 		assertEquals("Hello", sub.toString());
 	}
 
