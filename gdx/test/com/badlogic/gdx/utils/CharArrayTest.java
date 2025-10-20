@@ -1463,16 +1463,23 @@ public class CharArrayTest {
 		assertEquals("Start: Hello World", sbuf.toString());
 	}
 
-
-	/** Test setCharAt */
+	/** Test setCharAt(int, char) sets a single character correctly */
 	@Test
-	public void setCharAtTest () {
-		CharArray array = createCharArrayWithString("Hello");
-		array.setCharAt(1, 'a');
-		assertEquals("Hallo", array.toString());
+	public void setCharAtSetsSingleCharacter() {
+		array = createCharArrayWithString("Hello");
 
-		// Chain calls
-		array.setCharAt(2, 'p').setCharAt(3, 'p').setCharAt(4, 'y');
+		array.setCharAt(1, 'a');
+
+		assertEquals("Hallo", array.toString());
+	}
+
+	/** Test setCharAt(int, char) supports chaining for multiple updates */
+	@Test
+	public void setCharAtSupportsChaining() {
+		array = createCharArrayWithString("Hello");
+
+		array.setCharAt(1, 'a').setCharAt(2, 'p').setCharAt(3, 'p').setCharAt(4, 'y');
+
 		assertEquals("Happy", array.toString());
 	}
 
