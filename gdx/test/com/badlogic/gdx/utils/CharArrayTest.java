@@ -592,85 +592,121 @@ public class CharArrayTest {
 		assertEquals(0, array.size);
 	}
 
-	/** Test append methods */
+	/** Test append(boolean) appends "true" or "false" */
 	@Test
-	public void appendTest () {
-
-		// Append boolean
+	public void appendBoolean() {
 		array.append(true);
 		assertEquals("true", array.toString());
 		array.clear();
 
 		array.append(false);
 		assertEquals("false", array.toString());
-		array.clear();
+	}
 
-		// Append char
+	/** Test append(char) appends a single character */
+	@Test
+	public void appendChar() {
 		array.append('X');
 		assertEquals("X", array.toString());
-		array.clear();
+	}
 
-		// Append int
+	/** Test append(int) appends integer as string */
+	@Test
+	public void appendInt() {
 		array.append(123);
+
 		assertEquals("123", array.toString());
-		array.clear();
+	}
 
-		// Append int with padding
+	/** Test append(int, int, char) appends integer with padding */
+	@Test
+	public void appendIntWithPadding() {
 		array.append(42, 5, '0');
+
 		assertEquals("00042", array.toString());
-		array.clear();
+	}
 
-		// Append long
+	/** Test append(long) appends long as string */
+	@Test
+	public void appendLong() {
 		array.append(9876543210L);
+
 		assertEquals("9876543210", array.toString());
-		array.clear();
+	}
 
-		// Append float/double
+	/** Test append(float) appends float as string */
+	@Test
+	public void appendFloat() {
 		array.append(3.14f);
+
 		assertEquals("3.14", array.toString());
-		array.clear();
+	}
 
+	/** Test append(double) appends double as string */
+	@Test
+	public void appendDouble() {
 		array.append(2.71828);
-		assertEquals("2.71828", array.toString());
-		array.clear();
 
-		// Append String
+		assertEquals("2.71828", array.toString());
+	}
+
+	/** Test append(String) appends a string */
+	@Test
+	public void appendString() {
 		array.append("Hello");
 		assertEquals("Hello", array.toString());
 
 		array.append(" World");
 		assertEquals("Hello World", array.toString());
-		array.clear();
+	}
 
-		// Append null
+	/** Test append(null String) appends "null" */
+	@Test
+	public void appendNullString() {
 		array.append((String)null);
+		
 		assertEquals("null", array.toString());
-		array.clear();
+	}
 
-		// Append with separator
+	/** Test append with separator inserts separators between elements */
+	@Test
+	public void appendWithSeparator() {
 		array.append("one");
 		array.appendSeparator(',');
 		array.append("two");
 		array.appendSeparator(',');
 		array.append("three");
+
 		assertEquals("one,two,three", array.toString());
-		array.clear();
+	}
 
-		// Append CharArray
+	/** Test append(CharArray) appends contents of another CharArray */
+	@Test
+	public void appendCharArray() {
 		CharArray other = new CharArray("test");
+
 		array.append(other);
+
 		assertEquals("test", array.toString());
-		array.clear();
+	}
 
-		// Append StringBuilder
+	/** Test append(StringBuilder) appends contents of StringBuilder */
+	@Test
+	public void appendStringBuilder() {
 		StringBuilder sb = new StringBuilder("builder");
-		array.append(sb);
-		assertEquals("builder", array.toString());
-		array.clear();
 
-		// Append StringBuffer
+		array.append(sb);
+
+		assertEquals("builder", array.toString());
+	}
+
+	/** Test append(StringBuffer) appends contents of StringBuffer */
+	@Test
+	public void appendStringBuffer() {
 		StringBuffer sbuf = new StringBuffer("buffer");
+
 		array.append(sbuf);
+
 		assertEquals("buffer", array.toString());
 	}
 
