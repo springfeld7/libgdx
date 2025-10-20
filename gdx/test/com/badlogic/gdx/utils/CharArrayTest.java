@@ -1152,12 +1152,11 @@ public class CharArrayTest {
 		assertNotEquals(array.hashCode(), array3.hashCode());
 	}
 
-	/** Test Reader and Writer */
+	/** Test Reader functionality from CharArray */
 	@Test
-	public void readerWriterTest () throws IOException {
-		CharArray array = createCharArrayWithString("Hello World!");
+	public void readerReturnsCorrectCharacters() throws IOException {
+		array = createCharArrayWithString("Hello World!");
 
-		// Test Reader with try-with-resources
 		try (Reader reader = array.reader()) {
 			char[] buffer = new char[5];
 			int read = reader.read(buffer);
@@ -1172,9 +1171,13 @@ public class CharArrayTest {
 			reader.skip(2);
 			assertEquals('l', reader.read());
 		}
+	}
 
-		// Test Writer with try-with-resources
+	/** Test Writer functionality to CharArray */
+	@Test
+	public void writerWritesCharactersCorrectly() throws IOException {
 		CharArray array2 = new CharArray();
+
 		try (Writer writer = array2.writer()) {
 			writer.write("Test");
 			assertEquals("Test", array2.toString());
