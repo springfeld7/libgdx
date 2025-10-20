@@ -1,3 +1,4 @@
+
 package com.badlogic.gdx.utils;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class CharArrayTest {
 	private CharArray array;
 
 	@Before
-	public void setUp() {
+	public void setUp () {
 		array = new CharArray();
 	}
 
@@ -692,7 +693,7 @@ public class CharArrayTest {
 
 	/** Test Reader and Writer */
 	@Test
-	public void readerWriterTest() throws IOException {
+	public void readerWriterTest () throws IOException {
 		CharArray array = createCharArrayWithString("Hello World!");
 
 		// Test Reader with try-with-resources
@@ -779,8 +780,6 @@ public class CharArrayTest {
 		assertEquals("A-B-C", array.toString());
 	}
 
-
-
 	/** Test edge cases and error conditions */
 	@Test
 	public void edgeCasesTest () {
@@ -850,7 +849,7 @@ public class CharArrayTest {
 
 		// DrainChars
 		char[] target = new char[5];
-		int count = array.drainChars(0,5, target, 0);
+		int count = array.drainChars(0, 5, target, 0);
 		assertEquals(5, count);
 		assertArrayEquals(new char[] {'H', 'e', 'l', 'l', 'o'}, target);
 		assertEquals(" orld!", array.toString());
@@ -971,7 +970,7 @@ public class CharArrayTest {
 	}
 
 	/** Helper method for specific initialization */
-	private CharArray createCharArrayWithString(String value) {
+	private CharArray createCharArrayWithString (String value) {
 		return new CharArray(value);
 	}
 }
