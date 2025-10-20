@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import org.junit.Assert;
@@ -895,6 +896,11 @@ public class CharArrayTest {
 	/** Test random access */
 	@Test
 	public void randomTest () {
+
+		// Test random() when the array is empty
+		char emptyRandom = array.random();
+		assertEquals('\u0000', emptyRandom);
+
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
 		// Random should return one of the elements
@@ -967,6 +973,38 @@ public class CharArrayTest {
 		CharArray single = new CharArray();
 		single.add('x');
 		assertEquals("x", single.toString(","));
+	}
+
+	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles a null argument */
+	@Test
+	public void appendAllNullArrayTest() {
+
+		array.append('a');
+		array.appendAll((Object[]) null);
+
+		assertEquals(1, array.size);
+		assertEquals('a', array.items[0]);
+	}
+
+	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles an empty varargs array */
+	@Test
+	public void appendAllEmptyArrayTest() {
+
+		array.append('a');
+		array.appendAll();
+
+		assertEquals(1, array.size);
+		assertEquals('a', array.items[0]);
+	}
+
+	/** Tests that {@link CharArray#appendAll(Object...)} appends all provided elements */
+	@Test
+	public void appendAllNormalUsageTest() {
+
+		array.appendAll('a', 'b', 'c');
+
+		assertEquals(3, array.size);
+		assertArrayEquals(new char[]{'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Helper method for specific initialization */
