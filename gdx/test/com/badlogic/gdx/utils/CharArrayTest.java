@@ -1488,28 +1488,35 @@ public class CharArrayTest {
 	public void toStringAndClearTest () {
 		CharArray array = createCharArrayWithString("Test String");
 		String result = array.toStringAndClear();
+
 		assertEquals("Test String", result);
 		assertEquals(0, array.size);
 		assertTrue(array.isEmpty());
 	}
 
-	/** Test toString with separator */
+	/** Test toString(String) joins multiple elements with a separator */
 	@Test
-	public void toStringWithSeparatorTest () {
-
+	public void toStringWithSeparatorReturnsJoinedElements() {
+		array.clear();
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
 		String result = array.toString(",");
 		assertEquals("a,b,c,d,e", result);
+	}
 
-		// Empty array
-		CharArray empty = new CharArray();
-		assertEquals("", empty.toString(","));
+	/** Test toString(String) returns empty string for empty array */
+	@Test
+	public void toStringWithSeparatorReturnsEmptyForEmptyArray() {
+		array.clear(); // reuse private array field
+		assertEquals("", array.toString(","));
+	}
 
-		// Single element
-		CharArray single = new CharArray();
-		single.add('x');
-		assertEquals("x", single.toString(","));
+	/** Test toString(String) returns element itself for single-element array */
+	@Test
+	public void toStringWithSeparatorReturnsSingleElement() {
+		array.clear();
+		array.add('x');
+		assertEquals("x", array.toString(","));
 	}
 
 	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles a null argument */
