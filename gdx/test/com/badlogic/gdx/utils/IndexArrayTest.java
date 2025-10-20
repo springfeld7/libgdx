@@ -31,21 +31,6 @@ public class IndexArrayTest {
 		return field.get(instance);
 	}
 
-	// Helper to set private (even final) fields via reflection
-	private void setPrivateFieldValue (Object instance, String fieldName, Object value) throws Exception {
-		Field field = IndexArray.class.getDeclaredField(fieldName);
-		field.setAccessible(true);
-		try {
-			// Try to remove final modifier if present (works on older JDKs)
-			Field modifiersField = Field.class.getDeclaredField("modifiers");
-			modifiersField.setAccessible(true);
-			modifiersField.setInt(field, field.getModifiers() & ~java.lang.reflect.Modifier.FINAL);
-		} catch (NoSuchFieldException ignored) {
-			// On newer JDKs, 'modifiers' may not be available; best-effort set below
-		}
-		field.set(instance, value);
-	}
-
 	/** Test Constructor with positive max indices and getBuffer non-null contract */
 	@SuppressWarnings("deprecation")
 	@Test
