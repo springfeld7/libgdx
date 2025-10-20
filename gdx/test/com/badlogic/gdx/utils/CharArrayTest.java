@@ -99,7 +99,7 @@ public class CharArrayTest {
 	/** Test String constructor */
 	@Test
 	public void stringConstructorCopiesContent() {
-		CharArray array = new CharArray("hello");
+		array = createCharArrayWithString("hello");
 
 		assertEquals(5, array.size);
 		assertEquals("hello", array.toString());
