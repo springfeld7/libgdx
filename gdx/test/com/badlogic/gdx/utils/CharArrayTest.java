@@ -1443,21 +1443,26 @@ public class CharArrayTest {
 		assertTrue(array.contains('e'));
 	}
 
-	/** Test appendTo method */
+	/** Test appendTo(StringBuilder) appends the CharArray content correctly */
 	@Test
-	public void appendToTest () throws IOException {
-		CharArray array = createCharArrayWithString("Hello World");
+	public void appendToStringBuilderAppendsContent() throws IOException {
+		array = createCharArrayWithString("Hello World");
 
-		// Append to StringBuilder
 		StringBuilder sb = new StringBuilder("Start: ");
 		array.appendTo(sb);
 		assertEquals("Start: Hello World", sb.toString());
+	}
 
-		// Append to StringBuffer
+	/** Test appendTo(StringBuffer) appends the CharArray content correctly */
+	@Test
+	public void appendToStringBufferAppendsContent() throws IOException {
+		array = createCharArrayWithString("Hello World");
+
 		StringBuffer sbuf = new StringBuffer("Start: ");
 		array.appendTo(sbuf);
 		assertEquals("Start: Hello World", sbuf.toString());
 	}
+
 
 	/** Test setCharAt */
 	@Test
