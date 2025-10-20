@@ -728,64 +728,83 @@ public class CharArrayTest {
 		assertEquals("\n", array.toString());
 	}
 
-	/** Test padding and fixed width methods */
+	/** Test appendPadding(int, char) appends padding characters after existing content */
 	@Test
-	public void paddingTest () {
-
-		// Append padding
+	public void appendPaddingAddsCorrectCharacters() {
 		array.append("Hello");
 		array.appendPadding(5, '*');
 		assertEquals("Hello*****", array.toString());
-		array.clear();
-
-		// Fixed width pad left
-		array.appendFixedWidthPadLeft("42", 5, '0');
-		assertEquals("00042", array.toString());
-		array.clear();
-
-		array.appendFixedWidthPadLeft("12345", 3, '0');
-		assertEquals("345", array.toString()); // Keeps rightmost chars when too long
-		array.clear();
-
-		// Fixed width pad right
-		array.appendFixedWidthPadRight("Hi", 5, ' ');
-		assertEquals("Hi   ", array.toString());
-		array.clear();
 	}
 
-	/** Test delete methods */
+	/** Test appendFixedWidthPadLeft(String, int, char) pads left correctly */
 	@Test
-	public void deleteTest () {
-		CharArray array = createCharArrayWithString("Hello World!");
+	public void appendFixedWidthPadLeftAddsPadding() {
+		array.appendFixedWidthPadLeft("42", 5, '0');
+		assertEquals("00042", array.toString());
+	}
 
-		// Delete range
+	/** Test appendFixedWidthPadLeft(String, int, char) truncates when string too long */
+	@Test
+	public void appendFixedWidthPadLeftTruncatesWhenTooLong() {
+		array.appendFixedWidthPadLeft("12345", 3, '0');
+		assertEquals("345", array.toString()); // Keeps rightmost chars
+	}
+
+	/** Test appendFixedWidthPadRight(String, int, char) pads right correctly */
+	@Test
+	public void appendFixedWidthPadRightAddsPadding() {
+		array.appendFixedWidthPadRight("Hi", 5, ' ');
+		assertEquals("Hi   ", array.toString());
+	}
+
+	/** Test delete(int, int) removes a range of characters */
+	@Test
+	public void deleteRangeRemovesCharacters() {
+		array = createCharArrayWithString("Hello World!");
 		array.delete(5, 11);
 		assertEquals("Hello!", array.toString());
+	}
 
-		// Delete char at
+	/** Test deleteCharAt(int) removes a character at the specified index */
+	@Test
+	public void deleteCharAtRemovesCharacter() {
+		array = createCharArrayWithString("Hello!");
 		array.deleteCharAt(5);
 		assertEquals("Hello", array.toString());
+	}
 
-		// Delete all occurrences of char
-		array = new CharArray("Hello World!");
+	/** Test deleteAll(char) removes all occurrences of the given character */
+	@Test
+	public void deleteAllCharRemovesAllOccurrences() {
+		array = createCharArrayWithString("Hello World!");
 		array.deleteAll('l');
 		assertEquals("Heo Word!", array.toString());
+	}
 
-		// Delete first occurrence of char
-		array = new CharArray("Hello World!");
+	/** Test deleteFirst(char) removes only the first occurrence of the given character */
+	@Test
+	public void deleteFirstCharRemovesOnlyFirst() {
+		array = createCharArrayWithString("Hello World!");
 		array.deleteFirst('l');
 		assertEquals("Helo World!", array.toString());
+	}
 
-		// Delete all occurrences of string
-		array = new CharArray("Hello World! Hello!");
+	/** Test deleteAll(String) removes all occurrences of the given string */
+	@Test
+	public void deleteAllStringRemovesAllOccurrences() {
+		array = createCharArrayWithString("Hello World! Hello!");
 		array.deleteAll("Hello");
 		assertEquals(" World! !", array.toString());
+	}
 
-		// Delete first occurrence of string
-		array = new CharArray("Hello World! Hello!");
+	/** Test deleteFirst(String) removes only the first occurrence of the given string */
+	@Test
+	public void deleteFirstStringRemovesOnlyFirst() {
+		array = createCharArrayWithString("Hello World! Hello!");
 		array.deleteFirst("Hello");
 		assertEquals(" World! Hello!", array.toString());
 	}
+
 
 	/** Test replace methods */
 	@Test
