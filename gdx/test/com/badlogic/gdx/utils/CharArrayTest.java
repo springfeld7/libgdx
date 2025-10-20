@@ -875,68 +875,110 @@ public class CharArrayTest {
 		assertEquals("a to b to c", array.toString());
 	}
 
-	/** Test insert methods */
+	/** Test insert(int, char) inserts a character at the specified index */
 	@Test
-	public void insertTest () {
-		CharArray array = createCharArrayWithString("Hello!");
+	public void insertCharInsertsAtIndex() {
+		array = createCharArrayWithString("Hello!");
 
-		// Insert char
 		array.insert(5, ' ');
+
 		assertEquals("Hello !", array.toString());
+	}
 
-		// Insert string
+	/** Test insert(int, String) inserts a string at the specified index */
+	@Test
+	public void insertStringInsertsAtIndex() {
+		array = createCharArrayWithString("Hello !");
+
 		array.insert(6, "World");
+
 		assertEquals("Hello World!", array.toString());
+	}
 
-		// Insert at beginning
+	/** Test insert(int, String) inserts at the beginning of the array */
+	@Test
+	public void insertStringAtBeginning() {
+		array = createCharArrayWithString("Hello World!");
+
 		array.insert(0, "Say ");
+
 		assertEquals("Say Hello World!", array.toString());
+	}
 
-		// Insert boolean
-		array = new CharArray("Value: ");
+	/** Test insert(int, boolean) inserts boolean as string at specified index */
+	@Test
+	public void insertBooleanInsertsAsString() {
+		array = createCharArrayWithString("Value: ");
+
 		array.insert(7, true);
+
 		assertEquals("Value: true", array.toString());
+	}
 
-		// Insert numbers
-		array = new CharArray("Number: ");
+	/** Test insert(int, int) inserts integer as string at specified index */
+	@Test
+	public void insertIntInsertsAsString() {
+		array = createCharArrayWithString("Number: ");
+
 		array.insert(8, 42);
+
 		assertEquals("Number: 42", array.toString());
+	}
 
-		// Insert char array
-		array = new CharArray("AB");
+	/** Test insert(int, char[]) inserts an array of characters at specified index */
+	@Test
+	public void insertCharArrayInsertsCharacters() {
+		array = createCharArrayWithString("AB");
 		char[] chars = {'C', 'D', 'E'};
-		array.insert(1, chars);
-		assertEquals("ACDEB", array.toString());
 
-		// Insert range
-		array = new CharArray("AC");
+		array.insert(1, chars);
+
+		assertEquals("ACDEB", array.toString());
+	}
+
+	/** Test insertRange(int, int) inserts a range and allows setting values */
+	@Test
+	public void insertRangeAllowsSettingValues() {
+		array = createCharArrayWithString("AC");
+
 		array.insertRange(1, 2);
 		array.set(1, 'B');
 		array.set(2, 'B');
+
 		assertEquals("ABBC", array.toString());
 	}
 
-	/** Test substring methods */
+	/** Test substring(int, int) and substring(int) returns correct substrings */
 	@Test
-	public void substringTest () {
-		CharArray array = createCharArrayWithString("Hello World!");
-
-		// Substring
+	public void substringReturnsCorrectSubstrings() {
+		array = createCharArrayWithString("Hello World!");
 		assertEquals("Hello", array.substring(0, 5));
 		assertEquals("World!", array.substring(6));
 		assertEquals("World", array.substring(6, 11));
+	}
 
-		// LeftString
+	/** Test leftString(int) returns the leftmost characters correctly */
+	@Test
+	public void leftStringReturnsCorrectSubstring() {
+		array = createCharArrayWithString("Hello World!");
 		assertEquals("Hello", array.leftString(5));
 		assertEquals("", array.leftString(0));
 		assertEquals("Hello World!", array.leftString(20)); // More than length
+	}
 
-		// RightString
+	/** Test rightString(int) returns the rightmost characters correctly */
+	@Test
+	public void rightStringReturnsCorrectSubstring() {
+		array = createCharArrayWithString("Hello World!");
 		assertEquals("World!", array.rightString(6));
 		assertEquals("", array.rightString(0));
 		assertEquals("Hello World!", array.rightString(20)); // More than length
+	}
 
-		// MidString
+	/** Test midString(int, int) returns substring from start index with given length */
+	@Test
+	public void midStringReturnsCorrectSubstring() {
+		array = createCharArrayWithString("Hello World!");
 		assertEquals("World", array.midString(6, 5));
 		assertEquals("", array.midString(6, 0));
 		assertEquals("World!", array.midString(6, 10)); // More than available
