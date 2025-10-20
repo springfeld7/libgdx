@@ -1,4 +1,3 @@
-
 package com.badlogic.gdx.utils;
 
 import java.io.IOException;
@@ -8,14 +7,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CharArrayTest {
 
@@ -26,58 +26,91 @@ public class CharArrayTest {
 		array = new CharArray();
 	}
 
-	/** Test constructors */
+	/** Test default constructor */
 	@Test
-	public void constructorTest () {
-		// Default constructor
-		CharArray array1 = new CharArray();
-		assertEquals(0, array1.size);
-		assertTrue(array1.ordered);
+	public void defaultConstructorInitializesEmptyOrderedArray() {
+		assertEquals(0, array.size);
+		assertTrue(array.ordered);
+	}
 
-		// Capacity constructor
-		CharArray array2 = new CharArray(100);
-		assertEquals(0, array2.size);
-		assertEquals(100, array2.capacity());
-		assertTrue(array2.ordered);
+	/** Test capacity constructor */
+	@Test
+	public void capacityConstructorSetsInitialCapacity() {
+		CharArray array = new CharArray(100);
 
-		// Ordered and capacity constructor
-		CharArray array3 = new CharArray(false, 50);
-		assertEquals(0, array3.size);
-		assertEquals(50, array3.capacity());
-		assertFalse(array3.ordered);
+		assertEquals(0, array.size);
+		assertEquals(100, array.capacity());
+		assertTrue(array.ordered);
+	}
 
-		// Copy constructor
-		CharArray array4 = new CharArray();
-		array4.add('a');
-		array4.add('b');
-		CharArray array5 = new CharArray(array4);
-		assertEquals(2, array5.size);
-		assertEquals('a', array5.get(0));
-		assertEquals('b', array5.get(1));
+	/** Test ordered + capacity constructor */
+	@Test
+	public void orderedCapacityConstructorSetsOrderedAndCapacity() {
+		CharArray array = new CharArray(false, 50);
 
-		// Array constructor
+		assertEquals(0, array.size);
+		assertEquals(50, array.capacity());
+		assertFalse(array.ordered);
+	}
+
+	/** Test copy constructor */
+	@Test
+	public void copyConstructorCopiesElements() {
+		array.add('a', 'b');
+		CharArray copy = new CharArray(array);
+
+		assertEquals(2, copy.size);
+		assertEquals('a', copy.get(0));
+		assertEquals('b', copy.get(1));
+	}
+
+	/** Test array constructor */
+	@Test
+	public void arrayConstructorCopiesArray() {
 		char[] chars = {'x', 'y', 'z'};
-		CharArray array6 = new CharArray(chars);
-		assertEquals(3, array6.size);
-		assertEquals('x', array6.get(0));
-		assertEquals('z', array6.get(2));
+		CharArray array = new CharArray(chars);
 
-		// Array with offset and count
-		CharArray array7 = new CharArray(true, chars, 1, 2);
-		assertEquals(2, array7.size);
-		assertEquals('y', array7.get(0));
-		assertEquals('z', array7.get(1));
+		assertEquals(3, array.size);
+		assertEquals('x', array.get(0));
+		assertEquals('z', array.get(2));
+	}
 
-		// CharSequence constructor
-		CharArray array8 = new CharArray("hello");
-		assertEquals(5, array8.size);
-		assertEquals("hello", array8.toString());
+	/** Test array constructor with offset and count */
+	@Test
+	public void arrayOffsetCountConstructorCopiesSubarray() {
+		char[] chars = {'x', 'y', 'z'};
+		CharArray array = new CharArray(true, chars, 1, 2);
 
-		// StringBuilder constructor
+		assertEquals(2, array.size);
+		assertEquals('y', array.get(0));
+		assertEquals('z', array.get(1));
+	}
+
+	/** Test CharSequence constructor */
+	@Test
+	public void charSequenceConstructorCopiesContent() {
+		CharArray array = new CharArray((CharSequence)new StringBuilder("hello"));
+
+		assertEquals(5, array.size);
+		assertEquals('h', array.get(0));
+		assertEquals('o', array.get(4));
+	}
+
+	/** Test String constructor */
+	@Test
+	public void stringConstructorCopiesContent() {
+		CharArray array = new CharArray("hello");
+		assertEquals(5, array.size);
+		assertEquals("hello", array.toString());
+	}
+
+	/** Test StringBuilder constructor */
+	@Test
+	public void stringBuilderConstructorCopiesContent() {
 		StringBuilder sb = new StringBuilder("world");
-		CharArray array9 = new CharArray(sb);
-		assertEquals(5, array9.size);
-		assertEquals("world", array9.toString());
+		CharArray array = new CharArray(sb);
+		assertEquals(5, array.size);
+		assertEquals("world", array.toString());
 	}
 
 	/** Test add methods */
@@ -124,6 +157,83 @@ public class CharArrayTest {
 		assertEquals('q', array.get(15));
 		assertEquals('r', array.get(16));
 		assertEquals('s', array.get(17));
+	}
+
+	/** Test add methods */
+	@Test
+	public void addTriggersResizeBufferTest() {
+
+		// Single add
+		CharArray array1 = new CharArray(1);
+		int oldCap = array1.capacity();
+
+		array1.add('a'); // fills capacity, no resize yet
+		array1.add('b'); // triggers resize
+
+		assertEquals(2, array1.size);
+		assertTrue(array1.capacity() > oldCap);
+
+		// Two-argument add
+		CharArray array2 = new CharArray(2);
+		oldCap = array2.capacity();
+
+		array2.add('x', 'y'); // fills capacity, no resize yet
+		array2.add('z', 'w'); // triggers resize
+
+		assertEquals(4, array2.size);
+		assertTrue(array2.capacity() > oldCap);
+
+		// Three-argument add
+		CharArray array3 = new CharArray(3);
+		oldCap = array3.capacity();
+
+		array3.add('a', 'b', 'c'); // fills capacity
+		array3.add('d', 'e', 'f'); // triggers resize
+
+		assertEquals(6, array3.size);
+		assertTrue(array3.capacity() > oldCap);
+
+		// Four-argument add
+		CharArray array4 = new CharArray(4);
+		oldCap = array4.capacity();
+
+		array4.add('1', '2', '3', '4'); // fills capacity
+		array4.add('5', '6', '7', '8'); // triggers resize
+
+		assertEquals(8, array4.size);
+		assertTrue(array4.capacity() > oldCap);
+	}
+
+	/** Test addAll with offset and length from another CharArray */
+	@Test
+	public void addAllWithOffsetAndLengthTest() {
+
+		CharArray target = new CharArray();
+		CharArray source = new CharArray();
+
+		array.add('a', 'b', 'c', 'd');
+
+
+		// Normal case: add a subrange (2 elements starting from index 1)
+		target.addAll(array, 1, 2);
+		assertEquals(2, target.size);
+		assertEquals('b', target.get(0));
+		assertEquals('c', target.get(1));
+
+		// Edge case: offset + length exactly array size
+		target.addAll(array, 0, 4);
+		assertEquals(6, target.size); // 2 previous + 4 added
+		assertEquals('a', target.get(2));
+		assertEquals('d', target.get(5));
+
+		// Exception case: offset + length > source size
+		source.add('x', 'y');
+		try {
+			target.addAll(source, 1, 2); // 1 + 2 = 3 > 2
+			fail("Expected IllegalArgumentException");
+		} catch (IllegalArgumentException ex) {
+			assertTrue(ex.getMessage().contains("offset + length must be <= size"));
+		}
 	}
 
 	/** Test get and set methods */
@@ -689,7 +799,7 @@ public class CharArrayTest {
 
 		// HashCode
 		assertEquals(array1.hashCode(), array2.hashCode());
-		Assert.assertNotEquals(array1.hashCode(), array3.hashCode());
+		assertNotEquals(array1.hashCode(), array3.hashCode());
 	}
 
 	/** Test Reader and Writer */
@@ -808,17 +918,19 @@ public class CharArrayTest {
 		// Test boundaries
 		try {
 			array.get(100);
-			Assert.fail("Should throw exception");
+			fail("Should throw exception");
 		} catch (IndexOutOfBoundsException e) {
 			// Expected
 		}
 
 		try {
 			array.set(100, 'x');
-			Assert.fail("Should throw exception");
+			fail("Should throw exception");
 		} catch (IndexOutOfBoundsException e) {
 			// Expected
 		}
+
+
 	}
 
 	/** Test toArray conversions */
