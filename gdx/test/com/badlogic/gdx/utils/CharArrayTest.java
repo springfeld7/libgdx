@@ -403,37 +403,60 @@ public class CharArrayTest {
 		assertEquals('c', unordered.get(2));
 	}
 
-	/** Test search methods */
+	/** Test contains(char) returns correct result for present and absent elements */
 	@Test
-	public void searchTest () {
-
+	public void containsCharReturnsCorrectResult() {
 		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
 
-		// Contains
 		assertTrue(array.contains('l'));
 		assertFalse(array.contains('z'));
+	}
 
-		// IndexOf
+	/** Test indexOf(char) returns first occurrence or -1 if absent */
+	@Test
+	public void indexOfCharReturnsCorrectIndex() {
+		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
+
 		assertEquals(0, array.indexOf('h'));
 		assertEquals(2, array.indexOf('l'));
 		assertEquals(-1, array.indexOf('z'));
+	}
 
-		// LastIndexOf
+	/** Test lastIndexOf(char) returns last occurrence or -1 if absent */
+	@Test
+	public void lastIndexOfCharReturnsCorrectIndex() {
+		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
+
 		assertEquals(9, array.lastIndexOf('l'));
 		assertEquals(7, array.lastIndexOf('o'));
 		assertEquals(-1, array.lastIndexOf('z'));
+	}
 
-		// String contains
+	/** Test contains(CharSequence) returns correct result for present and absent strings */
+	@Test
+	public void containsStringReturnsCorrectResult() {
+		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
+
 		assertTrue(array.contains("hello"));
 		assertTrue(array.contains("world"));
 		assertFalse(array.contains("xyz"));
+	}
 
-		// String indexOf
+	/** Test indexOf(CharSequence) returns first occurrence or -1 if absent */
+	@Test
+	public void indexOfStringReturnsCorrectIndex() {
+		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
+
 		assertEquals(0, array.indexOf("hello"));
 		assertEquals(6, array.indexOf("world"));
 		assertEquals(-1, array.indexOf("xyz"));
+	}
 
-		// LastIndexOf string
+	/** Test lastIndexOf(CharSequence) returns last occurrence of substring */
+	@Test
+	public void lastIndexOfStringReturnsCorrectIndex() {
+		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
+
 		assertEquals(0, array.lastIndexOf("hello"));
 		assertEquals(2, array.lastIndexOf("ll"));
 	}
