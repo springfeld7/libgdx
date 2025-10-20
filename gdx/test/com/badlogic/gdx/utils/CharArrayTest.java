@@ -692,33 +692,35 @@ public class CharArrayTest {
 
 	/** Test Reader and Writer */
 	@Test
-	public void readerWriterTest () throws IOException {
+	public void readerWriterTest() throws IOException {
 		CharArray array = createCharArrayWithString("Hello World!");
 
-		// Test Reader
-		Reader reader = array.reader();
-		char[] buffer = new char[5];
-		int read = reader.read(buffer);
-		assertEquals(5, read);
-		assertArrayEquals(new char[] {'H', 'e', 'l', 'l', 'o'}, buffer);
+		// Test Reader with try-with-resources
+		try (Reader reader = array.reader()) {
+			char[] buffer = new char[5];
+			int read = reader.read(buffer);
+			assertEquals(5, read);
+			assertArrayEquals(new char[] {'H', 'e', 'l', 'l', 'o'}, buffer);
 
-		// Test single char read
-		assertEquals(' ', reader.read());
-		assertEquals('W', reader.read());
+			// Test single char read
+			assertEquals(' ', reader.read());
+			assertEquals('W', reader.read());
 
-		// Test skip
-		reader.skip(2);
-		assertEquals('l', reader.read());
+			// Test skip
+			reader.skip(2);
+			assertEquals('l', reader.read());
+		}
 
-		// Test Writer
+		// Test Writer with try-with-resources
 		CharArray array2 = new CharArray();
-		Writer writer = array2.writer();
-		writer.write("Test");
-		assertEquals("Test", array2.toString());
+		try (Writer writer = array2.writer()) {
+			writer.write("Test");
+			assertEquals("Test", array2.toString());
 
-		writer.write(' ');
-		writer.write(new char[] {'1', '2', '3'});
-		assertEquals("Test 123", array2.toString());
+			writer.write(' ');
+			writer.write(new char[] {'1', '2', '3'});
+			assertEquals("Test 123", array2.toString());
+		}
 	}
 
 	/** Test Unicode/code point methods */
