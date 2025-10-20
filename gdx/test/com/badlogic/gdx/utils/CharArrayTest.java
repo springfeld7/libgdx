@@ -1230,33 +1230,57 @@ public class CharArrayTest {
 		assertEquals("iH", array.substring(0, 2));
 	}
 
-	/** Test iterator methods */
+	/** Test appendAll(Iterable) appends all elements from a collection */
 	@Test
-	public void iteratorTest () {
-
-		// AppendAll with Iterable
+	public void appendAllIterableAppendsElements() {
 		ArrayList<String> list = new ArrayList<>();
 		list.add("One");
 		list.add("Two");
 		list.add("Three");
-		array.appendAll(list);
-		assertEquals("OneTwoThree", array.toString());
 
-		// AppendWithSeparators
+		array.clear();
+		array.appendAll(list);
+
+		assertEquals("OneTwoThree", array.toString());
+	}
+
+	/** Test appendWithSeparators(Iterable, String) joins elements with separator */
+	@Test
+	public void appendWithSeparatorsIterableJoinsElements() {
+		ArrayList<String> list = new ArrayList<>();
+		list.add("One");
+		list.add("Two");
+		list.add("Three");
+
 		array.clear();
 		array.appendWithSeparators(list, ", ");
-		assertEquals("One, Two, Three", array.toString());
 
-		// With Iterator
+		assertEquals("One, Two, Three", array.toString());
+	}
+
+	/** Test appendAll(Iterator) appends all elements from an iterator */
+	@Test
+	public void appendAllIteratorAppendsElements() {
+		ArrayList<String> list = new ArrayList<>();
+		list.add("One");
+		list.add("Two");
+		list.add("Three");
+
 		array.clear();
 		Iterator<String> iter = list.iterator();
 		array.appendAll(iter);
-		assertEquals("OneTwoThree", array.toString());
 
-		// AppendWithSeparators with array
-		array.clear();
+		assertEquals("OneTwoThree", array.toString());
+	}
+
+	/** Test appendWithSeparators(String[], String) joins array elements with separator */
+	@Test
+	public void appendWithSeparatorsArrayJoinsElements() {
 		String[] strArray = {"A", "B", "C"};
+
+		array.clear();
 		array.appendWithSeparators(strArray, "-");
+
 		assertEquals("A-B-C", array.toString());
 	}
 
