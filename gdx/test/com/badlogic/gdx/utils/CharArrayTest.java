@@ -733,6 +733,7 @@ public class CharArrayTest {
 	public void appendPaddingAddsCorrectCharacters() {
 		array.append("Hello");
 		array.appendPadding(5, '*');
+
 		assertEquals("Hello*****", array.toString());
 	}
 
@@ -740,6 +741,7 @@ public class CharArrayTest {
 	@Test
 	public void appendFixedWidthPadLeftAddsPadding() {
 		array.appendFixedWidthPadLeft("42", 5, '0');
+
 		assertEquals("00042", array.toString());
 	}
 
@@ -747,6 +749,7 @@ public class CharArrayTest {
 	@Test
 	public void appendFixedWidthPadLeftTruncatesWhenTooLong() {
 		array.appendFixedWidthPadLeft("12345", 3, '0');
+
 		assertEquals("345", array.toString()); // Keeps rightmost chars
 	}
 
@@ -754,6 +757,7 @@ public class CharArrayTest {
 	@Test
 	public void appendFixedWidthPadRightAddsPadding() {
 		array.appendFixedWidthPadRight("Hi", 5, ' ');
+
 		assertEquals("Hi   ", array.toString());
 	}
 
@@ -762,6 +766,7 @@ public class CharArrayTest {
 	public void deleteRangeRemovesCharacters() {
 		array = createCharArrayWithString("Hello World!");
 		array.delete(5, 11);
+
 		assertEquals("Hello!", array.toString());
 	}
 
@@ -770,6 +775,7 @@ public class CharArrayTest {
 	public void deleteCharAtRemovesCharacter() {
 		array = createCharArrayWithString("Hello!");
 		array.deleteCharAt(5);
+
 		assertEquals("Hello", array.toString());
 	}
 
@@ -778,6 +784,7 @@ public class CharArrayTest {
 	public void deleteAllCharRemovesAllOccurrences() {
 		array = createCharArrayWithString("Hello World!");
 		array.deleteAll('l');
+
 		assertEquals("Heo Word!", array.toString());
 	}
 
@@ -786,6 +793,7 @@ public class CharArrayTest {
 	public void deleteFirstCharRemovesOnlyFirst() {
 		array = createCharArrayWithString("Hello World!");
 		array.deleteFirst('l');
+
 		assertEquals("Helo World!", array.toString());
 	}
 
@@ -794,6 +802,7 @@ public class CharArrayTest {
 	public void deleteAllStringRemovesAllOccurrences() {
 		array = createCharArrayWithString("Hello World! Hello!");
 		array.deleteAll("Hello");
+
 		assertEquals(" World! !", array.toString());
 	}
 
@@ -802,44 +811,67 @@ public class CharArrayTest {
 	public void deleteFirstStringRemovesOnlyFirst() {
 		array = createCharArrayWithString("Hello World! Hello!");
 		array.deleteFirst("Hello");
+
 		assertEquals(" World! Hello!", array.toString());
 	}
 
-
-	/** Test replace methods */
+	/** Test replaceFirst(char, char) replaces the first occurrence of a character */
 	@Test
-	public void replaceTest () {
-		CharArray array = createCharArrayWithString("Hello World!");
+	public void replaceFirstCharReplacesOnlyFirstOccurrence() {
+		array = createCharArrayWithString("Hello World!");
 
-		// Replace first char
 		assertTrue(array.replaceFirst('l', 'L'));
 		assertEquals("HeLlo World!", array.toString());
-		assertFalse(array.replaceFirst('z', 'Z'));
+		assertFalse(array.replaceFirst('z', 'Z')); // returns false if char not found
+	}
 
-		// Replace all chars
-		array = new CharArray("Hello World!");
+	/** Test replaceAll(char, char) replaces all occurrences of a character */
+	@Test
+	public void replaceAllCharReplacesAllOccurrences() {
+		array = createCharArrayWithString("Hello World!");
+
 		int count = array.replaceAll('l', 'L');
 		assertEquals(3, count);
 		assertEquals("HeLLo WorLd!", array.toString());
+	}
 
-		// Replace string range
-		array = new CharArray("Hello World!");
+	/** Test replace(int, int, String) replaces a range of characters with a string */
+	@Test
+	public void replaceRangeWithString() {
+		array = createCharArrayWithString("Hello World!");
+
 		array.replace(0, 5, "Hi");
+
 		assertEquals("Hi World!", array.toString());
+	}
 
-		// Replace all strings
-		array = new CharArray("Hello World! Hello!");
+	/** Test replaceAll(String, String) replaces all occurrences of a string */
+	@Test
+	public void replaceAllStringReplacesAllOccurrences() {
+		array = createCharArrayWithString("Hello World! Hello!");
+
 		array.replaceAll("Hello", "Hi");
+
 		assertEquals("Hi World! Hi!", array.toString());
+	}
 
-		// Replace first string
-		array = new CharArray("Hello World! Hello!");
+	/** Test replaceFirst(String, String) replaces only the first occurrence of a string */
+	@Test
+	public void replaceFirstStringReplacesOnlyFirstOccurrence() {
+		array = createCharArrayWithString("Hello World! Hello!");
+
 		array.replaceFirst("Hello", "Hi");
-		assertEquals("Hi World! Hello!", array.toString());
 
-		// Replace char with string
-		array = new CharArray("a-b-c");
+		assertEquals("Hi World! Hello!", array.toString());
+	}
+
+	/** Test replace(char, String) replaces a character with a string */
+	@Test
+	public void replaceCharWithString() {
+		array = createCharArrayWithString("a-b-c");
+
 		array.replace('-', " to ");
+
 		assertEquals("a to b to c", array.toString());
 	}
 
