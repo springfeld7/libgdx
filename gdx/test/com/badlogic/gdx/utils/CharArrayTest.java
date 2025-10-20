@@ -952,6 +952,7 @@ public class CharArrayTest {
 	@Test
 	public void substringReturnsCorrectSubstrings() {
 		array = createCharArrayWithString("Hello World!");
+
 		assertEquals("Hello", array.substring(0, 5));
 		assertEquals("World!", array.substring(6));
 		assertEquals("World", array.substring(6, 11));
@@ -961,6 +962,7 @@ public class CharArrayTest {
 	@Test
 	public void leftStringReturnsCorrectSubstring() {
 		array = createCharArrayWithString("Hello World!");
+
 		assertEquals("Hello", array.leftString(5));
 		assertEquals("", array.leftString(0));
 		assertEquals("Hello World!", array.leftString(20)); // More than length
@@ -970,6 +972,7 @@ public class CharArrayTest {
 	@Test
 	public void rightStringReturnsCorrectSubstring() {
 		array = createCharArrayWithString("Hello World!");
+
 		assertEquals("World!", array.rightString(6));
 		assertEquals("", array.rightString(0));
 		assertEquals("Hello World!", array.rightString(20)); // More than length
@@ -979,47 +982,72 @@ public class CharArrayTest {
 	@Test
 	public void midStringReturnsCorrectSubstring() {
 		array = createCharArrayWithString("Hello World!");
+
 		assertEquals("World", array.midString(6, 5));
 		assertEquals("", array.midString(6, 0));
 		assertEquals("World!", array.midString(6, 10)); // More than available
 	}
 
-	/** Test string comparison methods */
+	/** Test startsWith(String) returns true if array starts with given string */
 	@Test
-	public void stringComparisonTest () {
-		CharArray array = createCharArrayWithString("Hello World");
+	public void startsWithReturnsCorrectResult() {
+		array = createCharArrayWithString("Hello World");
 
-		// StartsWith
 		assertTrue(array.startsWith("Hello"));
 		assertFalse(array.startsWith("World"));
 		assertTrue(array.startsWith(""));
+	}
 
-		// EndsWith
+	/** Test endsWith(String) returns true if array ends with given string */
+	@Test
+	public void endsWithReturnsCorrectResult() {
+		array = createCharArrayWithString("Hello World");
+
 		assertTrue(array.endsWith("World"));
 		assertFalse(array.endsWith("Hello"));
 		assertTrue(array.endsWith(""));
+	}
 
-		// Contains
+	/** Test contains(String) returns true if substring exists in array */
+	@Test
+	public void containsReturnsCorrectResult() {
+		array = createCharArrayWithString("Hello World");
+
 		assertTrue(array.contains("Hello"));
 		assertTrue(array.contains("World"));
 		assertTrue(array.contains(" "));
 		assertFalse(array.contains("xyz"));
+	}
 
-		// ContainsIgnoreCase
+	/** Test containsIgnoreCase(String) returns true ignoring case */
+	@Test
+	public void containsIgnoreCaseReturnsCorrectResult() {
+		array = createCharArrayWithString("Hello World");
+
 		assertTrue(array.containsIgnoreCase("hello"));
 		assertTrue(array.containsIgnoreCase("WORLD"));
 		assertFalse(array.containsIgnoreCase("xyz"));
+	}
 
-		// Equals
+	/** Test equals(CharArray) and equalsString(String) return true for exact matches */
+	@Test
+	public void equalsReturnsCorrectResult() {
+		array = createCharArrayWithString("Hello World");
 		CharArray other = new CharArray("Hello World");
+
 		assertTrue(array.equals(other));
 		assertTrue(array.equalsString("Hello World"));
 
 		other.append("!");
 		assertFalse(array.equals(other));
+	}
 
-		// EqualsIgnoreCase
+	/** Test equalsIgnoreCase(CharArray/String) returns true ignoring case */
+	@Test
+	public void equalsIgnoreCaseReturnsCorrectResult() {
+		array = createCharArrayWithString("Hello World");
 		CharArray upper = new CharArray("HELLO WORLD");
+
 		assertTrue(array.equalsIgnoreCase(upper));
 		assertTrue(array.equalsIgnoreCase("hello world"));
 	}
