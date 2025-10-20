@@ -1079,34 +1079,52 @@ public class CharArrayTest {
 		assertEquals("Hello", sub.toString());
 	}
 
-	/** Test trim and capacity methods */
+	/** Test capacity() returns initial capacity and size reflects appended elements */
 	@Test
-	public void trimCapacityTest () {
-		CharArray array = new CharArray(100);
+	public void capacityReturnsInitialCapacity() {
+		array = new CharArray(100);
+
 		array.append("Hello");
 
 		assertEquals(100, array.capacity());
 		assertEquals(5, array.size);
+	}
 
-		// Trim
+	/** Test trim() reduces internal buffer but preserves content and size */
+	@Test
+	public void trimReducesBufferPreservingContent() {
+		array = new CharArray(100);
+
+		array.append("Hello");
 		array.trim();
+
 		assertEquals("Hello", array.toString());
 		assertEquals(5, array.size);
+	}
 
-		// TrimToSize
+	/** Test trimToSize() adjusts capacity to match current size */
+	@Test
+	public void trimToSizeAdjustsCapacity() {
 		array = new CharArray(100);
+
 		array.append("Test");
 		array.trimToSize();
-		assertEquals(4, array.capacity());
 
-		// SetLength
-		array = new CharArray("Hello");
+		assertEquals(4, array.capacity());
+	}
+
+	/** Test setLength(int) truncates or extends the array correctly */
+	@Test
+	public void setLengthTruncatesOrExtendsArray() {
+		array = createCharArrayWithString("Hello");
+
+		// Truncate
 		array.setLength(3);
 		assertEquals("Hel", array.toString());
 
+		// Extend (fills with '\0')
 		array.setLength(5);
 		assertEquals(5, array.length());
-		// Extended with null chars
 	}
 
 	/** Test hashCode and equals */
