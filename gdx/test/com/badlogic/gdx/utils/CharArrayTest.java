@@ -1346,23 +1346,28 @@ public class CharArrayTest {
 		assertEquals('d', target[4]);
 	}
 
-
-	/** Test drain methods */
+	/** Test drainChar(int) removes a single character and returns it */
 	@Test
-	public void drainTest () {
-		CharArray array = createCharArrayWithString("Hello World!");
+	public void drainCharRemovesSingleCharacter() {
+		array = createCharArrayWithString("Hello World!");
 
-		// DrainChar
 		char drained = array.drainChar(6);
+
 		assertEquals('W', drained);
 		assertEquals("Hello orld!", array.toString());
+	}
 
-		// DrainChars
+	/** Test drainChars(int, int, char[], int) removes a range of characters correctly */
+	@Test
+	public void drainCharsRemovesRangeCorrectly() {
+		array = createCharArrayWithString("Hello World!");
+
 		char[] target = new char[5];
 		int count = array.drainChars(0, 5, target, 0);
+		
 		assertEquals(5, count);
 		assertArrayEquals(new char[] {'H', 'e', 'l', 'l', 'o'}, target);
-		assertEquals(" orld!", array.toString());
+		assertEquals(" World!", array.toString());
 	}
 
 	/** Test appendSeparator variations */
