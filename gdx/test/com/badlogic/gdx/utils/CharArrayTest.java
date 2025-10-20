@@ -977,10 +977,10 @@ public class CharArrayTest {
 
 	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles a null argument */
 	@Test
-	public void appendAllNullArrayTest() {
+	public void appendAllNullArrayTest () {
 
 		array.append('a');
-		array.appendAll((Object[]) null);
+		array.appendAll((Object[])null);
 
 		assertEquals(1, array.size);
 		assertEquals('a', array.items[0]);
@@ -988,7 +988,7 @@ public class CharArrayTest {
 
 	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles an empty varargs array */
 	@Test
-	public void appendAllEmptyArrayTest() {
+	public void appendAllEmptyArrayTest () {
 
 		array.append('a');
 		array.appendAll();
@@ -999,12 +999,12 @@ public class CharArrayTest {
 
 	/** Tests that {@link CharArray#appendAll(Object...)} appends all provided elements */
 	@Test
-	public void appendAllNormalUsageTest() {
+	public void appendAllNormalUsageTest () {
 
 		array.appendAll('a', 'b', 'c');
 
 		assertEquals(3, array.size);
-		assertArrayEquals(new char[]{'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
+		assertArrayEquals(new char[] {'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Helper method for specific initialization */
