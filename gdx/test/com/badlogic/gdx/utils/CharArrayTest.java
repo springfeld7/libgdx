@@ -664,7 +664,7 @@ public class CharArrayTest {
 	@Test
 	public void appendNullString() {
 		array.append((String)null);
-		
+
 		assertEquals("null", array.toString());
 	}
 
@@ -710,19 +710,21 @@ public class CharArrayTest {
 		assertEquals("buffer", array.toString());
 	}
 
-	/** Test appendln methods */
+	/** Test appendln(String) appends a line with newline character */
 	@Test
-	public void appendlnTest () {
-
+	public void appendlnStringAddsNewline() {
 		array.appendln("Line 1");
 		array.appendln("Line 2");
 		array.append("Line 3");
 
-		String result = array.toString();
-		assertEquals("Line 1\nLine 2\nLine 3", result);
+		assertEquals("Line 1\nLine 2\nLine 3", array.toString());
+	}
 
-		array.clear();
+	/** Test appendln() with no arguments appends just a newline */
+	@Test
+	public void appendlnNoArgsAddsNewline() {
 		array.appendln();
+
 		assertEquals("\n", array.toString());
 	}
 
