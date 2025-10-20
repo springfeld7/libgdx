@@ -1322,26 +1322,30 @@ public class CharArrayTest {
 		} catch (IndexOutOfBoundsException e) {
 			// Expected
 		}
-
-
 	}
-
-	/** Test toArray conversions */
+	/** Test toCharArray() returns a new char array with all elements */
 	@Test
-	public void toArrayTest () {
+	public void toCharArrayReturnsCorrectArray() {
+		array.clear();
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
-		// ToCharArray
 		char[] chars = array.toCharArray();
 		assertArrayEquals(new char[] {'a', 'b', 'c', 'd', 'e'}, chars);
+	}
 
-		// GetChars
+	/** Test getChars(int, int, char[], int) copies elements to target array correctly */
+	@Test
+	public void getCharsCopiesElementsCorrectly() {
+		array.clear();
+		array.addAll('a', 'b', 'c', 'd', 'e');
+
 		char[] target = new char[10];
 		array.getChars(1, 4, target, 2);
 		assertEquals('b', target[2]);
 		assertEquals('c', target[3]);
 		assertEquals('d', target[4]);
 	}
+
 
 	/** Test drain methods */
 	@Test
