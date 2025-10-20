@@ -461,32 +461,74 @@ public class CharArrayTest {
 		assertEquals(2, array.lastIndexOf("ll"));
 	}
 
-	/** Test stack operations */
+	/** Test push (add) operation adds elements to the stack */
 	@Test
-	public void stackTest () {
-
-		// Push (add)
+	public void pushAddsElements() {
 		array.add('a');
 		array.add('b');
 		array.add('c');
 
-		// Pop
+		assertEquals(3, array.size);
+		assertEquals('c', array.peek()); // Top of stack should be last pushed
+	}
+
+	/** Test pop removes and returns the last element */
+	@Test
+	public void popRemovesAndReturnsLastElement() {
+		array.add('a');
+		array.add('b');
+		array.add('c');
+
 		assertEquals('c', array.pop());
 		assertEquals(2, array.size);
+		assertEquals('b', array.peek()); // New top after pop
+	}
 
-		// Peek
+	/** Test peek returns the top element without removing it */
+	@Test
+	public void peekReturnsTopWithoutRemoving() {
+		array.add('a');
+		array.add('b');
+
 		assertEquals('b', array.peek());
 		assertEquals(2, array.size); // Size shouldn't change
+	}
 
-		// First
+	/** Test first() returns the bottom element of the stack */
+	@Test
+	public void firstReturnsBottomElement() {
+		array.add('a');
+		array.add('b');
+		array.add('c');
+
 		assertEquals('a', array.first());
+	}
 
-		// Empty checks
+	/** Test notEmpty() returns true when stack has elements */
+	@Test
+	public void notEmptyReturnsTrueWhenStackHasElements() {
+		array.add('a');
 		assertTrue(array.notEmpty());
-		assertFalse(array.isEmpty());
+	}
 
+	/** Test notEmpty() returns false when stack is empty */
+	@Test
+	public void notEmptyReturnsFalseWhenStackIsEmpty() {
 		array.clear();
 		assertFalse(array.notEmpty());
+	}
+
+	/** Test isEmpty() returns false when stack has elements */
+	@Test
+	public void isEmptyReturnsFalseWhenStackHasElements() {
+		array.add('a');
+		assertFalse(array.isEmpty());
+	}
+
+	/** Test isEmpty() returns true when stack is empty */
+	@Test
+	public void isEmptyReturnsTrueWhenStackIsEmpty() {
+		array.clear();
 		assertTrue(array.isEmpty());
 	}
 
