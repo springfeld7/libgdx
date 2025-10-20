@@ -218,6 +218,20 @@ public class CharArrayTest {
 		}
 	}
 
+	/** Test addAll(char[], int, int) triggers resizeBuffer correctly */
+	@Test
+	public void addAllTriggersResizeBuffer() {
+		array = new CharArray(3);
+		char[] data = {'a', 'b', 'c', 'd', 'e'};
+
+		// This addAll should require resizing
+		array.addAll(data, 0, data.length);
+
+		// Verify all elements were added correctly
+		assertEquals(5, array.size);
+		assertArrayEquals(new char[] {'a', 'b', 'c', 'd', 'e'}, array.toCharArray());
+	}
+
 	/** Test single-argument add triggers resizeBuffer */
 	@Test
 	public void addSingleTriggersResize() {
@@ -320,6 +334,26 @@ public class CharArrayTest {
 		assertEquals((char)66, array.get(0)); // 'B'
 	}
 
+	/** Test incr(int, char) throws IndexOutOfBoundsException for invalid index */
+	@Test
+	public void incrThrowsForInvalidIndex() {
+		array.addAll('a', 'b', 'c'); // size = 3
+
+		try {
+			array.incr(3, (char)1); // index == size, should throw
+			fail("Expected IndexOutOfBoundsException for index >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("index can't be >= size: 3 >= 3", e.getMessage());
+		}
+
+		try {
+			array.incr(10, (char)1); // index > size, should throw
+			fail("Expected IndexOutOfBoundsException for index >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("index can't be >= size: 10 >= 3", e.getMessage());
+		}
+	}
+
 	/** Test increment all elements */
 	@Test
 	public void incrAll() {
@@ -349,6 +383,66 @@ public class CharArrayTest {
 		assertEquals((char)4, array.get(0));
 		assertEquals((char)6, array.get(1));
 		assertEquals((char)8, array.get(2));
+	}
+
+	/** Test mul(int, char) throws IndexOutOfBoundsException for invalid index */
+	@Test
+	public void mulThrowsForInvalidIndex() {
+		array.addAll('a', 'b', 'c'); // size = 3
+
+		try {
+			array.mul(3, (char)2); // index == size, should throw
+			fail("Expected IndexOutOfBoundsException for index >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("index can't be >= size: 3 >= 3", e.getMessage());
+		}
+
+		try {
+			array.mul(10, (char)2); // index > size, should throw
+			fail("Expected IndexOutOfBoundsException for index >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("index can't be >= size: 10 >= 3", e.getMessage());
+		}
+	}
+
+	/** Test swap(int, int) throws IndexOutOfBoundsException if first index is invalid */
+	@Test
+	public void swapThrowsForInvalidFirstIndex() {
+		array.addAll('a', 'b', 'c'); // size = 3
+
+		try {
+			array.swap(3, 1); // first == size, should throw
+			fail("Expected IndexOutOfBoundsException for first >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("first can't be >= size: 3 >= 3", e.getMessage());
+		}
+
+		try {
+			array.swap(10, 1); // first > size, should throw
+			fail("Expected IndexOutOfBoundsException for first >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("first can't be >= size: 10 >= 3", e.getMessage());
+		}
+	}
+
+	/** Test swap(int, int) throws IndexOutOfBoundsException if second index is invalid */
+	@Test
+	public void swapThrowsForInvalidSecondIndex() {
+		array.addAll('a', 'b', 'c'); // size = 3
+
+		try {
+			array.swap(1, 3); // second == size, should throw
+			fail("Expected IndexOutOfBoundsException for second >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("second can't be >= size: 3 >= 3", e.getMessage());
+		}
+
+		try {
+			array.swap(1, 10); // second > size, should throw
+			fail("Expected IndexOutOfBoundsException for second >= size");
+		} catch (IndexOutOfBoundsException e) {
+			assertEquals("second can't be >= size: 10 >= 3", e.getMessage());
+		}
 	}
 
 	/** Test removeValue with ordered array */
