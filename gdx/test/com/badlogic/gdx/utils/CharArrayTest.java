@@ -1364,67 +1364,78 @@ public class CharArrayTest {
 
 		char[] target = new char[5];
 		int count = array.drainChars(0, 5, target, 0);
-		
+
 		assertEquals(5, count);
 		assertArrayEquals(new char[] {'H', 'e', 'l', 'l', 'o'}, target);
 		assertEquals(" World!", array.toString());
 	}
 
-	/** Test appendSeparator variations */
+	/** Test appendSeparator(char) adds separator only after first append */
 	@Test
-	public void appendSeparatorTest () {
-
-		// First append - no separator
+	public void appendSeparatorCharAddsOnlyAfterFirst() {
 		array.appendSeparator(',');
 		array.append("first");
 		assertEquals("first", array.toString());
 
-		// Second append - separator added
 		array.appendSeparator(',');
 		array.append("second");
 		assertEquals("first,second", array.toString());
-
-		// With default for empty
-		CharArray array2 = new CharArray();
-		array2.appendSeparator(',', ';');
-		assertEquals(";", array2.toString());
-
-		// With loop index
-		CharArray array3 = new CharArray();
-		for (int i = 0; i < 3; i++) {
-			array3.appendSeparator(',', i);
-			array3.append("item" + i);
-		}
-		assertEquals("item0,item1,item2", array3.toString());
-
-		// String separators
-		CharArray array4 = new CharArray();
-		array4.append("A");
-		array4.appendSeparator(" | ");
-		array4.append("B");
-		array4.appendSeparator(" | ");
-		array4.append("C");
-		assertEquals("A | B | C", array4.toString());
 	}
 
-	/** Test random access */
+	/** Test appendSeparator(char, char) adds default for empty array */
 	@Test
-	public void randomTest () {
+	public void appendSeparatorWithDefaultAddsForEmptyArray() {
+		array.appendSeparator(',', ';');
 
-		// Test random() when the array is empty
+		assertEquals(";", array.toString());
+	}
+
+	/** Test appendSeparator(char, int) with loop index adds separators correctly */
+	@Test
+	public void appendSeparatorWithIndexAddsSeparators() {
+		for (int i = 0; i < 3; i++) {
+			array.appendSeparator(',', i);
+			array.append("item" + i);
+		}
+		assertEquals("item0,item1,item2", array.toString());
+	}
+
+	/** Test appendSeparator(String) adds string separators correctly */
+	@Test
+	public void appendSeparatorStringAddsSeparators() {
+		array.append("A");
+		array.appendSeparator(" | ");
+		array.append("B");
+		array.appendSeparator(" | ");
+		array.append("C");
+
+		assertEquals("A | B | C", array.toString());
+	}
+
+	/** Test random() returns default for empty array */
+	@Test
+	public void randomReturnsDefaultForEmptyArray() {
 		char emptyRandom = array.random();
+
 		assertEquals('\u0000', emptyRandom);
+	}
 
+	/** Test random() returns an element from the array */
+	@Test
+	public void randomReturnsElementFromArray() {
 		array.addAll('a', 'b', 'c', 'd', 'e');
-
-		// Random should return one of the elements
 		char random = array.random();
-		assertTrue(array.contains(random));
 
-		// Shuffle - just verify size is maintained
+		assertTrue(array.contains(random));
+	}
+
+	/** Test shuffle() maintains size and all elements */
+	@Test
+	public void shuffleMaintainsSizeAndElements() {
+		array.addAll('a', 'b', 'c', 'd', 'e');
 		array.shuffle();
+
 		assertEquals(5, array.size);
-		// Elements should still be there, just in different order
 		assertTrue(array.contains('a'));
 		assertTrue(array.contains('b'));
 		assertTrue(array.contains('c'));
