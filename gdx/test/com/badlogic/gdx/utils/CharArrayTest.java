@@ -1176,42 +1176,58 @@ public class CharArrayTest {
 	/** Test Writer functionality to CharArray */
 	@Test
 	public void writerWritesCharactersCorrectly() throws IOException {
-		CharArray array2 = new CharArray();
 
-		try (Writer writer = array2.writer()) {
+		try (Writer writer = array.writer()) {
 			writer.write("Test");
-			assertEquals("Test", array2.toString());
+			assertEquals("Test", array.toString());
 
 			writer.write(' ');
 			writer.write(new char[] {'1', '2', '3'});
-			assertEquals("Test 123", array2.toString());
+			assertEquals("Test 123", array.toString());
 		}
 	}
-
-	/** Test Unicode/code point methods */
+	/** Test appendCodePoint(int) correctly appends a Unicode code point */
 	@Test
-	public void unicodeTest () {
-
-		// Append code point (emoji)
+	public void appendCodePointAddsSurrogatePair() {
 		int smiley = 0x1F600; // 😀
+
 		array.appendCodePoint(smiley);
+
 		assertEquals(2, array.size); // Surrogate pair
+	}
 
-		// Code point at
+	/** Test codePointAt(int) returns the correct code point */
+	@Test
+	public void codePointAtReturnsCorrectValue() {
+		int smiley = 0x1F600; // 😀
+
+		array.appendCodePoint(smiley);
 		int cp = array.codePointAt(0);
-		assertEquals(smiley, cp);
 
-		// Code point count
+		assertEquals(smiley, cp);
+	}
+
+	/** Test codePointCount(int, int) counts code points correctly */
+	@Test
+	public void codePointCountReturnsCorrectNumber() {
+		int smiley = 0x1F600; // 😀
+
+		array.appendCodePoint(smiley);
 		array.append("Hello");
 		int count = array.codePointCount(0, array.size);
-		assertEquals(6, count); // 1 emoji + 5 chars
 
-		// Reverse with code points
-		CharArray array2 = new CharArray();
-		array2.appendCodePoint(0x1F600); // 😀
-		array2.append("Hi");
-		array2.reverseCodePoints();
-		assertEquals("iH", array2.substring(0, 2));
+		assertEquals(6, count); // 1 emoji + 5 chars
+	}
+
+	/** Test reverseCodePoints() correctly reverses Unicode code points */
+	@Test
+	public void reverseCodePointsReversesUnicode() {
+		array.appendCodePoint(0x1F600); // 😀
+
+		array.append("Hi");
+		array.reverseCodePoints();
+
+		assertEquals("iH", array.substring(0, 2));
 	}
 
 	/** Test iterator methods */
