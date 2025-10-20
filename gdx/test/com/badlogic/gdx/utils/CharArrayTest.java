@@ -1127,23 +1127,29 @@ public class CharArrayTest {
 		assertEquals(5, array.length());
 	}
 
-	/** Test hashCode and equals */
+	/** Test equals(Object) returns true for same instance or content and false otherwise */
 	@Test
-	public void hashCodeEqualsTest () {
-		CharArray array1 = new CharArray("Hello");
-		CharArray array2 = new CharArray("Hello");
-		CharArray array3 = new CharArray("World");
+	public void equalsObjectHandlesVariousCases() {
+		array = createCharArrayWithString("Hello");
+		CharArray array2 = createCharArrayWithString("Hello");
+		CharArray array3 = createCharArrayWithString("World");
 
-		// Equals
-		assertTrue(array1.equals(array1));
-		assertTrue(array1.equals(array2));
-		assertFalse(array1.equals(array3));
-		assertFalse(array1.equals(null));
-		assertFalse(array1.equals("Hello")); // Different type
+		assertTrue(array.equals(array));          // same instance
+		assertTrue(array.equals(array2));          // same content
+		assertFalse(array.equals(array3));         // different content
+		assertFalse(array.equals(null));           // null
+		assertFalse(array.equals("Hello"));        // different type
+	}
 
-		// HashCode
-		assertEquals(array1.hashCode(), array2.hashCode());
-		assertNotEquals(array1.hashCode(), array3.hashCode());
+	/** Test hashCode() returns same value for equal content and different for different content */
+	@Test
+	public void hashCodeReturnsConsistentValues() {
+		array = createCharArrayWithString("Hello");
+		CharArray array2 = createCharArrayWithString("Hello");
+		CharArray array3 = createCharArrayWithString("World");
+
+		assertEquals(array.hashCode(), array2.hashCode());
+		assertNotEquals(array.hashCode(), array3.hashCode());
 	}
 
 	/** Test Reader and Writer */
