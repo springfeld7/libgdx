@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,8 +33,8 @@ public class CharArrayTest {
 	/** Test default constructor */
 	@Test
 	public void defaultConstructorInitializesEmptyOrderedArray() {
-		assertEquals(0, array.size);
-		assertTrue(array.ordered);
+		assertEquals("Size should be 0 after default construction", 0, array.size);
+		assertTrue("Array should be ordered by default", array.ordered);
 	}
 
 	/** Test capacity constructor */
@@ -43,9 +42,9 @@ public class CharArrayTest {
 	public void capacityConstructorSetsInitialCapacity() {
 		CharArray array = new CharArray(100);
 
-		assertEquals(0, array.size);
-		assertEquals(100, array.capacity());
-		assertTrue(array.ordered);
+		assertEquals("Size should be 0 after capacity constructor", 0, array.size);
+		assertEquals("Capacity should match the specified initial capacity", 100, array.capacity());
+		assertTrue("Array should be ordered by default", array.ordered);
 	}
 
 	/** Test ordered + capacity constructor */
@@ -53,9 +52,9 @@ public class CharArrayTest {
 	public void orderedCapacityConstructorSetsOrderedAndCapacity() {
 		CharArray array = new CharArray(false, 50);
 
-		assertEquals(0, array.size);
-		assertEquals(50, array.capacity());
-		assertFalse(array.ordered);
+		assertEquals("Size should be 0 after ordered+capacity constructor", 0, array.size);
+		assertEquals("Capacity should match the specified initial capacity", 50, array.capacity());
+		assertFalse("Array should not be ordered", array.ordered);
 	}
 
 	/** Test copy constructor */
@@ -64,9 +63,9 @@ public class CharArrayTest {
 		array.add('a', 'b');
 		CharArray copy = new CharArray(array);
 
-		assertEquals(2, copy.size);
-		assertEquals('a', copy.get(0));
-		assertEquals('b', copy.get(1));
+		assertEquals("Copied array should have same size as original", 2, copy.size);
+		assertEquals("First element should be copied correctly", 'a', copy.get(0));
+		assertEquals("Second element should be copied correctly", 'b', copy.get(1));
 	}
 
 	/** Test array constructor */
@@ -75,9 +74,9 @@ public class CharArrayTest {
 		char[] chars = {'x', 'y', 'z'};
 		CharArray array = new CharArray(chars);
 
-		assertEquals(3, array.size);
-		assertEquals('x', array.get(0));
-		assertEquals('z', array.get(2));
+		assertEquals("Size should match input array length", 3, array.size);
+		assertEquals("First element should match input array", 'x', array.get(0));
+		assertEquals("Last element should match input array", 'z', array.get(2));
 	}
 
 	/** Test array constructor with offset and count */
@@ -86,9 +85,9 @@ public class CharArrayTest {
 		char[] chars = {'x', 'y', 'z'};
 		CharArray array = new CharArray(true, chars, 1, 2);
 
-		assertEquals(2, array.size);
-		assertEquals('y', array.get(0));
-		assertEquals('z', array.get(1));
+		assertEquals("Size should match the subarray length", 2, array.size);
+		assertEquals("First element of subarray should be copied correctly", 'y', array.get(0));
+		assertEquals("Second element of subarray should be copied correctly", 'z', array.get(1));
 	}
 
 	/** Test CharSequence constructor */
@@ -96,9 +95,9 @@ public class CharArrayTest {
 	public void charSequenceConstructorCopiesContent() {
 		CharArray array = new CharArray((CharSequence)new StringBuilder("hello"));
 
-		assertEquals(5, array.size);
-		assertEquals('h', array.get(0));
-		assertEquals('o', array.get(4));
+		assertEquals("Size should match CharSequence length", 5, array.size);
+		assertEquals("First element should match CharSequence content", 'h', array.get(0));
+		assertEquals("Last element should match CharSequence content", 'o', array.get(4));
 	}
 
 	/** Test String constructor */
@@ -106,8 +105,8 @@ public class CharArrayTest {
 	public void stringConstructorCopiesContent() {
 		array = createCharArrayWithString("hello");
 
-		assertEquals(5, array.size);
-		assertEquals("hello", array.toString());
+		assertEquals("Size should match String length", 5, array.size);
+		assertEquals("toString() should match original String", "hello", array.toString());
 	}
 
 	/** Test StringBuilder constructor */
@@ -116,8 +115,8 @@ public class CharArrayTest {
 		StringBuilder sb = new StringBuilder("world");
 		CharArray array = new CharArray(sb);
 
-		assertEquals(5, array.size);
-		assertEquals("world", array.toString());
+		assertEquals("Size should match StringBuilder length", 5, array.size);
+		assertEquals("toString() should match StringBuilder content", "world", array.toString());
 	}
 
 	/** Test adding a single element */
@@ -125,8 +124,8 @@ public class CharArrayTest {
 	public void addSingleElement() {
 		array.add('a');
 
-		assertEquals(1, array.size);
-		assertEquals('a', array.get(0));
+		assertEquals("Size should be 1 after adding one element", 1, array.size);
+		assertEquals("First element should be 'a'", 'a', array.get(0));
 	}
 
 	/** Test adding two elements */
@@ -134,9 +133,9 @@ public class CharArrayTest {
 	public void addTwoElements() {
 		array.add('b', 'c');
 
-		assertEquals(2, array.size);
-		assertEquals('b', array.get(0));
-		assertEquals('c', array.get(1));
+		assertEquals("Size should be 2 after adding two elements", 2, array.size);
+		assertEquals("First element should be 'b'", 'b', array.get(0));
+		assertEquals("Second element should be 'c'", 'c', array.get(1));
 	}
 
 	/** Test adding three elements */
@@ -144,9 +143,9 @@ public class CharArrayTest {
 	public void addThreeElements() {
 		array.add('d', 'e', 'f');
 
-		assertEquals(3, array.size);
-		assertEquals('d', array.get(0));
-		assertEquals('f', array.get(2));
+		assertEquals("Size should be 3 after adding three elements", 3, array.size);
+		assertEquals("First element should be 'd'", 'd', array.get(0));
+		assertEquals("Last element should be 'f'", 'f', array.get(2));
 	}
 
 	/** Test adding four elements */
@@ -154,9 +153,9 @@ public class CharArrayTest {
 	public void addFourElements() {
 		array.add('g', 'h', 'i', 'j');
 
-		assertEquals(4, array.size);
-		assertEquals('g', array.get(0));
-		assertEquals('j', array.get(3));
+		assertEquals("Size should be 4 after adding four elements", 4, array.size);
+		assertEquals("First element should be 'g'", 'g', array.get(0));
+		assertEquals("Last element should be 'j'", 'j', array.get(3));
 	}
 
 	/** Test addAll with another CharArray */
@@ -167,9 +166,9 @@ public class CharArrayTest {
 		other.add('l');
 
 		array.addAll(other);
-		assertEquals(2, array.size);
-		assertEquals('k', array.get(0));
-		assertEquals('l', array.get(1));
+		assertEquals("Size should match number of elements added from other CharArray", 2, array.size);
+		assertEquals("First element should be 'k'", 'k', array.get(0));
+		assertEquals("Second element should be 'l'", 'l', array.get(1));
 	}
 
 	/** Test addAll with varargs elements */
@@ -177,9 +176,9 @@ public class CharArrayTest {
 	public void addAllWithVarargs() {
 		array.addAll('m', 'n', 'o');
 
-		assertEquals(3, array.size);
-		assertEquals('m', array.get(0));
-		assertEquals('o', array.get(2));
+		assertEquals("Size should match number of elements added via varargs", 3, array.size);
+		assertEquals("First element should be 'm'", 'm', array.get(0));
+		assertEquals("Last element should be 'o'", 'o', array.get(2));
 	}
 
 	/** Test addAll with char array, offset, and length */
@@ -189,12 +188,11 @@ public class CharArrayTest {
 
 		array.addAll(chars, 1, 3); // adds q, r, s
 
-		assertEquals(3, array.size);
-		assertEquals('q', array.get(0));
-		assertEquals('r', array.get(1));
-		assertEquals('s', array.get(2));
+		assertEquals("Size should match number of elements added from array subset", 3, array.size);
+		assertEquals("First added element should be 'q'", 'q', array.get(0));
+		assertEquals("Second added element should be 'r'", 'r', array.get(1));
+		assertEquals("Third added element should be 's'", 's', array.get(2));
 	}
-
 
 	/** Test addAll with CharArray using full range (offset + length = size) */
 	@Test
@@ -204,9 +202,9 @@ public class CharArrayTest {
 
 		array.addAll(source, 0, 4);
 
-		assertEquals(4, array.size);
-		assertEquals('a', array.get(0));
-		assertEquals('d', array.get(3));
+		assertEquals("Size should match number of elements added from full range", 4, array.size);
+		assertEquals("First element should be 'a'", 'a', array.get(0));
+		assertEquals("Last element should be 'd'", 'd', array.get(3));
 	}
 
 	/** Test addAll(CharArray, offset, length) throws when offset + length > size */
@@ -219,7 +217,8 @@ public class CharArrayTest {
 			array.addAll(source, 1, 2);
 			fail("Expected IllegalArgumentException");
 		} catch (IllegalArgumentException ex) {
-			assertTrue(ex.getMessage().contains("offset + length must be <= size"));
+			assertTrue("Exception message should indicate invalid offset+length",
+					ex.getMessage().contains("offset + length must be <= size"));
 		}
 	}
 
@@ -233,8 +232,8 @@ public class CharArrayTest {
 		array.addAll(data, 0, data.length);
 
 		// Verify all elements were added correctly
-		assertEquals(5, array.size);
-		assertArrayEquals(new char[] {'a', 'b', 'c', 'd', 'e'}, array.toCharArray());
+		assertEquals("Size should match number of elements added", 5, array.size);
+		assertArrayEquals("Elements should match input array", new char[] {'a', 'b', 'c', 'd', 'e'}, array.toCharArray());
 	}
 
 	/** Test single-argument add triggers resizeBuffer */
@@ -246,8 +245,8 @@ public class CharArrayTest {
 		array1.add('a'); // fills capacity, no resize yet
 		array1.add('b'); // triggers resize
 
-		assertEquals(2, array1.size);
-		assertTrue(array1.capacity() > oldCap);
+		assertEquals("Size should be 2 after adding two elements", 2, array1.size);
+		assertTrue("Capacity should increase after resize", array1.capacity() > oldCap);
 	}
 
 	/** Test two-argument add triggers resizeBuffer */
@@ -259,8 +258,8 @@ public class CharArrayTest {
 		array2.add('x', 'y'); // fills capacity, no resize yet
 		array2.add('z', 'w'); // triggers resize
 
-		assertEquals(4, array2.size);
-		assertTrue(array2.capacity() > oldCap);
+		assertEquals("Size should be 4 after adding four elements", 4, array2.size);
+		assertTrue("Capacity should increase after resize", array2.capacity() > oldCap);
 	}
 
 	/** Test three-argument add triggers resizeBuffer */
@@ -272,8 +271,8 @@ public class CharArrayTest {
 		array3.add('a', 'b', 'c'); // fills capacity
 		array3.add('d', 'e', 'f'); // triggers resize
 
-		assertEquals(6, array3.size);
-		assertTrue(array3.capacity() > oldCap);
+		assertEquals("Size should be 6 after adding six elements", 6, array3.size);
+		assertTrue("Capacity should increase after resize", array3.capacity() > oldCap);
 	}
 
 	/** Test four-argument add triggers resizeBuffer */
@@ -285,8 +284,8 @@ public class CharArrayTest {
 		array4.add('1', '2', '3', '4'); // fills capacity
 		array4.add('5', '6', '7', '8'); // triggers resize
 
-		assertEquals(8, array4.size);
-		assertTrue(array4.capacity() > oldCap);
+		assertEquals("Size should be 8 after adding eight elements", 8, array4.size);
+		assertTrue("Capacity should increase after resize", array4.capacity() > oldCap);
 	}
 
 	/** Test get method */
@@ -294,8 +293,8 @@ public class CharArrayTest {
 	public void get() {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
-		assertEquals('a', array.get(0));
-		assertEquals('e', array.get(4));
+		assertEquals("First element should be 'a'", 'a', array.get(0));
+		assertEquals("Last element should be 'e'", 'e', array.get(4));
 	}
 
 	/** Test get(int) throws IndexOutOfBoundsException for invalid index */
@@ -303,7 +302,7 @@ public class CharArrayTest {
 	public void getThrowsForInvalidIndex() {
 		try {
 			array.get(100);
-			fail("Should throw exception");
+			fail("Expected IndexOutOfBoundsException for invalid index");
 		} catch (IndexOutOfBoundsException e) {
 			// Expected
 		}
@@ -315,7 +314,7 @@ public class CharArrayTest {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
 		array.set(2, 'Z');
-		assertEquals('Z', array.get(2));
+		assertEquals("Element at index 2 should be set to 'Z'", 'Z', array.get(2));
 	}
 
 	/** Test set(int, char) throws IndexOutOfBoundsException for invalid index */
@@ -323,7 +322,7 @@ public class CharArrayTest {
 	public void setThrowsForInvalidIndex() {
 		try {
 			array.set(100, 'x');
-			fail("Should throw exception");
+			fail("Expected IndexOutOfBoundsException for invalid index");
 		} catch (IndexOutOfBoundsException e) {
 			// Expected
 		}
@@ -335,7 +334,7 @@ public class CharArrayTest {
 		array.addAll((char)65); // 'A'
 		array.incr(0, (char)1);
 
-		assertEquals((char)66, array.get(0)); // 'B'
+		assertEquals("Element at index 0 should increment from 'A' to 'B'", (char)66, array.get(0));
 	}
 
 	/** Test incr(int, char) throws IndexOutOfBoundsException for invalid index */
@@ -364,9 +363,9 @@ public class CharArrayTest {
 		array.addAll((char)1, (char)2, (char)3);
 		array.incr((char)10);
 
-		assertEquals((char)11, array.get(0));
-		assertEquals((char)12, array.get(1));
-		assertEquals((char)13, array.get(2));
+		assertEquals("First element should increment to 11", (char)11, array.get(0));
+		assertEquals("Second element should increment to 12", (char)12, array.get(1));
+		assertEquals("Third element should increment to 13", (char)13, array.get(2));
 	}
 
 	/** Test multiply a single element */
@@ -375,7 +374,7 @@ public class CharArrayTest {
 		array.addAll((char)5);
 		array.mul(0, (char)3);
 
-		assertEquals((char)15, array.get(0));
+		assertEquals("Element at index 0 should multiply to 15", (char)15, array.get(0));
 	}
 
 	/** Test multiply all elements */
@@ -384,9 +383,9 @@ public class CharArrayTest {
 		array.addAll((char)2, (char)3, (char)4);
 		array.mul((char)2);
 
-		assertEquals((char)4, array.get(0));
-		assertEquals((char)6, array.get(1));
-		assertEquals((char)8, array.get(2));
+		assertEquals("First element should multiply to 4", (char)4, array.get(0));
+		assertEquals("Second element should multiply to 6", (char)6, array.get(1));
+		assertEquals("Third element should multiply to 8", (char)8, array.get(2));
 	}
 
 	/** Test mul(int, char) throws IndexOutOfBoundsException for invalid index */
@@ -454,13 +453,13 @@ public class CharArrayTest {
 	public void removeValueOrdered() {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
-		assertTrue(array.removeValue('c'));
-		assertEquals(4, array.size);
-		assertEquals('a', array.get(0));
-		assertEquals('b', array.get(1));
-		assertEquals('d', array.get(2));
-		assertEquals('e', array.get(3));
-		assertFalse(array.removeValue('z'));
+		assertTrue("Should remove existing element 'c'", array.removeValue('c'));
+		assertEquals("Size should decrease after removal", 4, array.size);
+		assertEquals("First element should remain 'a'", 'a', array.get(0));
+		assertEquals("Second element should remain 'b'", 'b', array.get(1));
+		assertEquals("Third element should now be 'd'", 'd', array.get(2));
+		assertEquals("Fourth element should now be 'e'", 'e', array.get(3));
+		assertFalse("Removing non-existing element should return false", array.removeValue('z'));
 	}
 
 	/** Test removeIndex with ordered array */
@@ -469,12 +468,12 @@ public class CharArrayTest {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
 		char removed = array.removeIndex(1);
-		assertEquals('b', removed);
-		assertEquals(4, array.size);
-		assertEquals('a', array.get(0));
-		assertEquals('c', array.get(1));
-		assertEquals('d', array.get(2));
-		assertEquals('e', array.get(3));
+		assertEquals("Removed element should be 'b'", 'b', removed);
+		assertEquals("Size should decrease after removal", 4, array.size);
+		assertEquals("First element should remain 'a'", 'a', array.get(0));
+		assertEquals("Second element should now be 'c'", 'c', array.get(1));
+		assertEquals("Third element should now be 'd'", 'd', array.get(2));
+		assertEquals("Fourth element should now be 'e'", 'e', array.get(3));
 	}
 
 	/** Test removeRange with ordered array */
@@ -484,12 +483,12 @@ public class CharArrayTest {
 
 		array.removeRange(1, 4); // removes b,c,d,e
 
-		assertEquals(5, array.size);
-		assertEquals('a', array.get(0));
-		assertEquals('f', array.get(1));
-		assertEquals('g', array.get(2));
-		assertEquals('h', array.get(3));
-		assertEquals('i', array.get(4));
+		assertEquals("Size should be 5 after removing range", 5, array.size);
+		assertEquals("First element should remain 'a'", 'a', array.get(0));
+		assertEquals("Second element should now be 'f'", 'f', array.get(1));
+		assertEquals("Third element should now be 'g'", 'g', array.get(2));
+		assertEquals("Fourth element should now be 'h'", 'h', array.get(3));
+		assertEquals("Fifth element should now be 'i'", 'i', array.get(4));
 	}
 
 	/** Test removeValue with unordered array */
@@ -499,13 +498,13 @@ public class CharArrayTest {
 
 		unordered.addAll('a', 'b', 'c', 'd', 'e');
 
-		assertTrue(unordered.removeValue('b'));
-		assertEquals(4, unordered.size);
+		assertTrue("Should remove existing element 'b'", unordered.removeValue('b'));
+		assertEquals("Size should decrease after removal", 4, unordered.size);
 		// last element moves to removed position
-		assertEquals('a', unordered.get(0));
-		assertEquals('e', unordered.get(1));
-		assertEquals('c', unordered.get(2));
-		assertEquals('d', unordered.get(3));
+		assertEquals("First element should remain 'a'", 'a', unordered.get(0));
+		assertEquals("Second element should be last element moved ('e')", 'e', unordered.get(1));
+		assertEquals("Third element should remain 'c'", 'c', unordered.get(2));
+		assertEquals("Fourth element should remain 'd'", 'd', unordered.get(3));
 	}
 
 	/** Test removeAll with unordered array */
@@ -516,12 +515,12 @@ public class CharArrayTest {
 
 		CharArray toRemove = new CharArray();
 		toRemove.addAll('a', 'd');
-		assertTrue(unordered.removeAll(toRemove));
+		assertTrue("removeAll should return true if any elements removed", unordered.removeAll(toRemove));
 
-		assertEquals(3, unordered.size);
-		assertEquals('e', unordered.get(0));
-		assertEquals('b', unordered.get(1));
-		assertEquals('c', unordered.get(2));
+		assertEquals("Size should decrease after removeAll", 3, unordered.size);
+		assertEquals("First remaining element should be 'e'", 'e', unordered.get(0));
+		assertEquals("Second remaining element should be 'b'", 'b', unordered.get(1));
+		assertEquals("Third remaining element should be 'c'", 'c', unordered.get(2));
 	}
 
 	/** Test contains(char) returns correct result for present and absent elements */
@@ -529,8 +528,8 @@ public class CharArrayTest {
 	public void containsCharReturnsCorrectResult() {
 		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
 
-		assertTrue(array.contains('l'));
-		assertFalse(array.contains('z'));
+		assertTrue("Array should contain 'l'", array.contains('l'));
+		assertFalse("Array should not contain 'z'", array.contains('z'));
 	}
 
 	/** Test indexOf(char) returns first occurrence or -1 if absent */
@@ -538,9 +537,9 @@ public class CharArrayTest {
 	public void indexOfCharReturnsCorrectIndex() {
 		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
 
-		assertEquals(0, array.indexOf('h'));
-		assertEquals(2, array.indexOf('l'));
-		assertEquals(-1, array.indexOf('z'));
+		assertEquals("First occurrence of 'h' should be at index 0", 0, array.indexOf('h'));
+		assertEquals("First occurrence of 'l' should be at index 2", 2, array.indexOf('l'));
+		assertEquals("Character 'z' is absent, should return -1", -1, array.indexOf('z'));
 	}
 
 	/** Test lastIndexOf(char) returns last occurrence or -1 if absent */
@@ -548,9 +547,9 @@ public class CharArrayTest {
 	public void lastIndexOfCharReturnsCorrectIndex() {
 		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
 
-		assertEquals(9, array.lastIndexOf('l'));
-		assertEquals(7, array.lastIndexOf('o'));
-		assertEquals(-1, array.lastIndexOf('z'));
+		assertEquals("Last occurrence of 'l' should be at index 9", 9, array.lastIndexOf('l'));
+		assertEquals("Last occurrence of 'o' should be at index 7", 7, array.lastIndexOf('o'));
+		assertEquals("Character 'z' is absent, should return -1", -1, array.lastIndexOf('z'));
 	}
 
 	/** Test contains(CharSequence) returns correct result for present and absent strings */
@@ -558,9 +557,9 @@ public class CharArrayTest {
 	public void containsStringReturnsCorrectResult() {
 		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
 
-		assertTrue(array.contains("hello"));
-		assertTrue(array.contains("world"));
-		assertFalse(array.contains("xyz"));
+		assertTrue("Array should contain 'hello'", array.contains("hello"));
+		assertTrue("Array should contain 'world'", array.contains("world"));
+		assertFalse("Array should not contain 'xyz'", array.contains("xyz"));
 	}
 
 	/** Test indexOf(CharSequence) returns first occurrence or -1 if absent */
@@ -568,9 +567,9 @@ public class CharArrayTest {
 	public void indexOfStringReturnsCorrectIndex() {
 		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
 
-		assertEquals(0, array.indexOf("hello"));
-		assertEquals(6, array.indexOf("world"));
-		assertEquals(-1, array.indexOf("xyz"));
+		assertEquals("Index of 'hello' should be 0", 0, array.indexOf("hello"));
+		assertEquals("Index of 'world' should be 6", 6, array.indexOf("world"));
+		assertEquals("String 'xyz' is absent, should return -1", -1, array.indexOf("xyz"));
 	}
 
 	/** Test lastIndexOf(CharSequence) returns last occurrence of substring */
@@ -578,8 +577,8 @@ public class CharArrayTest {
 	public void lastIndexOfStringReturnsCorrectIndex() {
 		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
 
-		assertEquals(0, array.lastIndexOf("hello"));
-		assertEquals(2, array.lastIndexOf("ll"));
+		assertEquals("Last index of 'hello' should be 0", 0, array.lastIndexOf("hello"));
+		assertEquals("Last index of 'll' should be 2", 2, array.lastIndexOf("ll"));
 	}
 
 	/** Test push (add) operation adds elements to the stack */
@@ -589,8 +588,8 @@ public class CharArrayTest {
 		array.add('b');
 		array.add('c');
 
-		assertEquals(3, array.size);
-		assertEquals('c', array.peek()); // Top of stack should be last pushed
+		assertEquals("Stack size should be 3 after pushes", 3, array.size);
+		assertEquals("Top element should be 'c'", 'c', array.peek());
 	}
 
 	/** Test pop removes and returns the last element */
@@ -600,9 +599,9 @@ public class CharArrayTest {
 		array.add('b');
 		array.add('c');
 
-		assertEquals('c', array.pop());
-		assertEquals(2, array.size);
-		assertEquals('b', array.peek()); // New top after pop
+		assertEquals("Pop should return the last element 'c'", 'c', array.pop());
+		assertEquals("Stack size should decrease to 2 after pop", 2, array.size);
+		assertEquals("New top element should be 'b'", 'b', array.peek());
 	}
 
 	/** Test peek returns the top element without removing it */
@@ -611,8 +610,8 @@ public class CharArrayTest {
 		array.add('a');
 		array.add('b');
 
-		assertEquals('b', array.peek());
-		assertEquals(2, array.size); // Size shouldn't change
+		assertEquals("Peek should return top element 'b'", 'b', array.peek());
+		assertEquals("Stack size should remain unchanged after peek", 2, array.size);
 	}
 
 	/** Test first() returns the bottom element of the stack */
@@ -622,35 +621,35 @@ public class CharArrayTest {
 		array.add('b');
 		array.add('c');
 
-		assertEquals('a', array.first());
+		assertEquals("First element (bottom) should be 'a'", 'a', array.first());
 	}
 
 	/** Test notEmpty() returns true when stack has elements */
 	@Test
 	public void notEmptyReturnsTrueWhenStackHasElements() {
 		array.add('a');
-		assertTrue(array.notEmpty());
+		assertTrue("notEmpty should return true when array has elements", array.notEmpty());
 	}
 
 	/** Test notEmpty() returns false when stack is empty */
 	@Test
 	public void notEmptyReturnsFalseWhenStackIsEmpty() {
 		array.clear();
-		assertFalse(array.notEmpty());
+		assertFalse("notEmpty should return false for empty array", array.notEmpty());
 	}
 
 	/** Test isEmpty() returns false when stack has elements */
 	@Test
 	public void isEmptyReturnsFalseWhenStackHasElements() {
 		array.add('a');
-		assertFalse(array.isEmpty());
+		assertFalse("isEmpty should return false when array has elements", array.isEmpty());
 	}
 
 	/** Test isEmpty() returns true when stack is empty */
 	@Test
 	public void isEmptyReturnsTrueWhenStackIsEmpty() {
 		array.clear();
-		assertTrue(array.isEmpty());
+		assertTrue("isEmpty should return true for empty array", array.isEmpty());
 	}
 
 	/** Test sort() arranges elements in ascending order */
@@ -659,11 +658,11 @@ public class CharArrayTest {
 		array.addAll('d', 'b', 'e', 'a', 'c');
 		array.sort();
 
-		assertEquals('a', array.get(0));
-		assertEquals('b', array.get(1));
-		assertEquals('c', array.get(2));
-		assertEquals('d', array.get(3));
-		assertEquals('e', array.get(4));
+		assertEquals("First element should be 'a' after sort", 'a', array.get(0));
+		assertEquals("Second element should be 'b' after sort", 'b', array.get(1));
+		assertEquals("Third element should be 'c' after sort", 'c', array.get(2));
+		assertEquals("Fourth element should be 'd' after sort", 'd', array.get(3));
+		assertEquals("Fifth element should be 'e' after sort", 'e', array.get(4));
 	}
 
 	/** Test swap(int, int) exchanges elements at specified indices */
@@ -672,11 +671,11 @@ public class CharArrayTest {
 		array.addAll('d', 'b', 'e', 'a', 'c');
 		array.swap(0, 4);
 
-		assertEquals('c', array.get(0));
-		assertEquals('b', array.get(1));
-		assertEquals('e', array.get(2));
-		assertEquals('a', array.get(3));
-		assertEquals('d', array.get(4));
+		assertEquals("Element at index 0 should now be 'c'", 'c', array.get(0));
+		assertEquals("Element at index 1 should remain 'b'", 'b', array.get(1));
+		assertEquals("Element at index 2 should remain 'e'", 'e', array.get(2));
+		assertEquals("Element at index 3 should remain 'a'", 'a', array.get(3));
+		assertEquals("Element at index 4 should now be 'd'", 'd', array.get(4));
 	}
 
 	/** Test reverse() inverts the order of elements */
@@ -685,11 +684,11 @@ public class CharArrayTest {
 		array.addAll('1', '2', '3', '4', '5');
 		array.reverse();
 
-		assertEquals('5', array.get(0));
-		assertEquals('4', array.get(1));
-		assertEquals('3', array.get(2));
-		assertEquals('2', array.get(3));
-		assertEquals('1', array.get(4));
+		assertEquals("First element should now be '5'", '5', array.get(0));
+		assertEquals("Second element should now be '4'", '4', array.get(1));
+		assertEquals("Third element should now be '3'", '3', array.get(2));
+		assertEquals("Fourth element should now be '2'", '2', array.get(3));
+		assertEquals("Fifth element should now be '1'", '1', array.get(4));
 	}
 
 	/** Test truncate(int) reduces size to specified length, keeping first elements */
@@ -698,10 +697,10 @@ public class CharArrayTest {
 		array.addAll('1', '2', '3', '4', '5');
 		array.truncate(3);
 
-		assertEquals(3, array.size);
-		assertEquals('1', array.get(0));
-		assertEquals('2', array.get(1));
-		assertEquals('3', array.get(2));
+		assertEquals("Size should be truncated to 3", 3, array.size);
+		assertEquals("First element should remain '1'", '1', array.get(0));
+		assertEquals("Second element should remain '2'", '2', array.get(1));
+		assertEquals("Third element should remain '3'", '3', array.get(2));
 	}
 
 	/** Test clear() removes all elements from the array */
@@ -710,83 +709,77 @@ public class CharArrayTest {
 		array.addAll('1', '2', '3', '4', '5');
 		array.clear();
 
-		assertEquals(0, array.size);
+		assertEquals("Size should be 0 after clear", 0, array.size);
 	}
 
 	/** Test append(boolean) appends "true" or "false" */
 	@Test
 	public void appendBoolean() {
 		array.append(true);
-		assertEquals("true", array.toString());
+		assertEquals("Appending true should result in 'true'", "true", array.toString());
 		array.clear();
 
 		array.append(false);
-		assertEquals("false", array.toString());
+		assertEquals("Appending false should result in 'false'", "false", array.toString());
 	}
 
 	/** Test append(char) appends a single character */
 	@Test
 	public void appendChar() {
 		array.append('X');
-		assertEquals("X", array.toString());
+		assertEquals("Appending 'X' should result in 'X'", "X", array.toString());
 	}
 
 	/** Test append(int) appends integer as string */
 	@Test
 	public void appendInt() {
 		array.append(123);
-
-		assertEquals("123", array.toString());
+		assertEquals("Appending integer 123 should result in '123'", "123", array.toString());
 	}
 
 	/** Test append(int, int, char) appends integer with padding */
 	@Test
 	public void appendIntWithPadding() {
 		array.append(42, 5, '0');
-
-		assertEquals("00042", array.toString());
+		assertEquals("Appending 42 with width 5 and padding '0' should result in '00042'", "00042", array.toString());
 	}
 
 	/** Test append(long) appends long as string */
 	@Test
 	public void appendLong() {
 		array.append(9876543210L);
-
-		assertEquals("9876543210", array.toString());
+		assertEquals("Appending long 9876543210 should result in '9876543210'", "9876543210", array.toString());
 	}
 
 	/** Test append(float) appends float as string */
 	@Test
 	public void appendFloat() {
 		array.append(3.14f);
-
-		assertEquals("3.14", array.toString());
+		assertEquals("Appending float 3.14 should result in '3.14'", "3.14", array.toString());
 	}
 
 	/** Test append(double) appends double as string */
 	@Test
 	public void appendDouble() {
 		array.append(2.71828);
-
-		assertEquals("2.71828", array.toString());
+		assertEquals("Appending double 2.71828 should result in '2.71828'", "2.71828", array.toString());
 	}
 
 	/** Test append(String) appends a string */
 	@Test
 	public void appendString() {
 		array.append("Hello");
-		assertEquals("Hello", array.toString());
+		assertEquals("Appending 'Hello' should result in 'Hello'", "Hello", array.toString());
 
 		array.append(" World");
-		assertEquals("Hello World", array.toString());
+		assertEquals("Appending ' World' should result in 'Hello World'", "Hello World", array.toString());
 	}
 
 	/** Test append(null String) appends "null" */
 	@Test
 	public void appendNullString() {
 		array.append((String)null);
-
-		assertEquals("null", array.toString());
+		assertEquals("Appending null string should result in 'null'", "null", array.toString());
 	}
 
 	/** Test append with separator inserts separators between elements */
@@ -798,55 +791,49 @@ public class CharArrayTest {
 		array.appendSeparator(',');
 		array.append("three");
 
-		assertEquals("one,two,three", array.toString());
+		assertEquals("Appending strings with separator ',' should result in 'one,two,three'", "one,two,three", array.toString());
 	}
 
 	/** Test append(CharArray) appends contents of another CharArray */
 	@Test
 	public void appendCharArray() {
 		CharArray other = new CharArray("test");
-
 		array.append(other);
 
-		assertEquals("test", array.toString());
+		assertEquals("Appending another CharArray 'test' should result in 'test'", "test", array.toString());
 	}
 
 	/** Test append(StringBuilder) appends contents of StringBuilder */
 	@Test
 	public void appendStringBuilder() {
 		StringBuilder sb = new StringBuilder("builder");
-
 		array.append(sb);
 
-		assertEquals("builder", array.toString());
+		assertEquals("Appending StringBuilder 'builder' should result in 'builder'", "builder", array.toString());
 	}
 
 	/** Test append(StringBuffer) appends contents of StringBuffer */
 	@Test
 	public void appendStringBuffer() {
 		StringBuffer sbuf = new StringBuffer("buffer");
-
 		array.append(sbuf);
 
-		assertEquals("buffer", array.toString());
+		assertEquals("Appending StringBuffer 'buffer' should result in 'buffer'", "buffer", array.toString());
 	}
 
 	/** Test appending an empty string does not change array size */
 	@Test
 	public void appendEmptyStringDoesNotChangeSize() {
 		array.append("");
-
-		assertEquals(0, array.size);
+		assertEquals("Appending empty string should not change size", 0, array.size);
 	}
 
 	/** Test appending a null string appends "null" */
 	@Test
 	public void appendNullStringAppendsLiteralNull() {
 		array.append((String) null);
-
-		assertEquals("null", array.toString());
+		assertEquals("Appending null string should result in 'null'", "null", array.toString());
 	}
-
 
 	/** Test appendln(String) appends a line with newline character */
 	@Test
@@ -855,15 +842,14 @@ public class CharArrayTest {
 		array.appendln("Line 2");
 		array.append("Line 3");
 
-		assertEquals("Line 1\nLine 2\nLine 3", array.toString());
+		assertEquals("Appending lines with appendln should result in correct newline placement", "Line 1\nLine 2\nLine 3", array.toString());
 	}
 
 	/** Test appendln() with no arguments appends just a newline */
 	@Test
 	public void appendlnNoArgsAddsNewline() {
 		array.appendln();
-
-		assertEquals("\n", array.toString());
+		assertEquals("Appending appendln() with no arguments should add a single newline", "\n", array.toString());
 	}
 
 	/** Test appendPadding(int, char) appends padding characters after existing content */
@@ -871,32 +857,28 @@ public class CharArrayTest {
 	public void appendPaddingAddsCorrectCharacters() {
 		array.append("Hello");
 		array.appendPadding(5, '*');
-
-		assertEquals("Hello*****", array.toString());
+		assertEquals("Appending 5 '*' characters after 'Hello' should result in 'Hello*****'", "Hello*****", array.toString());
 	}
 
 	/** Test appendFixedWidthPadLeft(String, int, char) pads left correctly */
 	@Test
 	public void appendFixedWidthPadLeftAddsPadding() {
 		array.appendFixedWidthPadLeft("42", 5, '0');
-
-		assertEquals("00042", array.toString());
+		assertEquals("Pad left with '0' to width 5 should result in '00042'", "00042", array.toString());
 	}
 
 	/** Test appendFixedWidthPadLeft(String, int, char) truncates when string too long */
 	@Test
 	public void appendFixedWidthPadLeftTruncatesWhenTooLong() {
 		array.appendFixedWidthPadLeft("12345", 3, '0');
-
-		assertEquals("345", array.toString()); // Keeps rightmost chars
+		assertEquals("Truncate string to width 3 should result in '345'", "345", array.toString());
 	}
 
 	/** Test appendFixedWidthPadRight(String, int, char) pads right correctly */
 	@Test
 	public void appendFixedWidthPadRightAddsPadding() {
 		array.appendFixedWidthPadRight("Hi", 5, ' ');
-
-		assertEquals("Hi   ", array.toString());
+		assertEquals("Pad right with spaces to width 5 should result in 'Hi   '", "Hi   ", array.toString());
 	}
 
 	/** Test delete(int, int) removes a range of characters */
@@ -904,8 +886,7 @@ public class CharArrayTest {
 	public void deleteRangeRemovesCharacters() {
 		array = createCharArrayWithString("Hello World!");
 		array.delete(5, 11);
-
-		assertEquals("Hello!", array.toString());
+		assertEquals("Deleting characters from index 5 to 11 should result in 'Hello!'", "Hello!", array.toString());
 	}
 
 	/** Test deleteCharAt(int) removes a character at the specified index */
@@ -913,8 +894,7 @@ public class CharArrayTest {
 	public void deleteCharAtRemovesCharacter() {
 		array = createCharArrayWithString("Hello!");
 		array.deleteCharAt(5);
-
-		assertEquals("Hello", array.toString());
+		assertEquals("Deleting character at index 5 should result in 'Hello'", "Hello", array.toString());
 	}
 
 	/** Test deleteAll(char) removes all occurrences of the given character */
@@ -922,8 +902,7 @@ public class CharArrayTest {
 	public void deleteAllCharRemovesAllOccurrences() {
 		array = createCharArrayWithString("Hello World!");
 		array.deleteAll('l');
-
-		assertEquals("Heo Word!", array.toString());
+		assertEquals("Deleting all occurrences of 'l' should result in 'Heo Word!'", "Heo Word!", array.toString());
 	}
 
 	/** Test deleteFirst(char) removes only the first occurrence of the given character */
@@ -932,7 +911,7 @@ public class CharArrayTest {
 		array = createCharArrayWithString("Hello World!");
 		array.deleteFirst('l');
 
-		assertEquals("Helo World!", array.toString());
+		assertEquals("Deleting first 'l' should result in 'Helo World!'", "Helo World!", array.toString());
 	}
 
 	/** Test deleteAll(String) removes all occurrences of the given string */
@@ -941,7 +920,7 @@ public class CharArrayTest {
 		array = createCharArrayWithString("Hello World! Hello!");
 		array.deleteAll("Hello");
 
-		assertEquals(" World! !", array.toString());
+		assertEquals("Deleting all 'Hello' should result in ' World! !'", " World! !", array.toString());
 	}
 
 	/** Test deleteFirst(String) removes only the first occurrence of the given string */
@@ -950,7 +929,7 @@ public class CharArrayTest {
 		array = createCharArrayWithString("Hello World! Hello!");
 		array.deleteFirst("Hello");
 
-		assertEquals(" World! Hello!", array.toString());
+		assertEquals("Deleting first 'Hello' should result in ' World! Hello!'", " World! Hello!", array.toString());
 	}
 
 	/** Test replaceFirst(char, char) replaces the first occurrence of a character */
@@ -958,9 +937,9 @@ public class CharArrayTest {
 	public void replaceFirstCharReplacesOnlyFirstOccurrence() {
 		array = createCharArrayWithString("Hello World!");
 
-		assertTrue(array.replaceFirst('l', 'L'));
-		assertEquals("HeLlo World!", array.toString());
-		assertFalse(array.replaceFirst('z', 'Z')); // returns false if char not found
+		assertTrue("Replacing first 'l' with 'L' should return true", array.replaceFirst('l', 'L'));
+		assertEquals("After replacement, array should be 'HeLlo World!'", "HeLlo World!", array.toString());
+		assertFalse("Replacing 'z' with 'Z' should return false", array.replaceFirst('z', 'Z')); // returns false if char not found
 	}
 
 	/** Test replaceAll(char, char) replaces all occurrences of a character */
@@ -969,8 +948,8 @@ public class CharArrayTest {
 		array = createCharArrayWithString("Hello World!");
 
 		int count = array.replaceAll('l', 'L');
-		assertEquals(3, count);
-		assertEquals("HeLLo WorLd!", array.toString());
+		assertEquals("Number of replaced 'l' should be 3", 3, count);
+		assertEquals("After replacement, array should be 'HeLLo WorLd!'", "HeLLo WorLd!", array.toString());
 	}
 
 	/** Test replace(int, int, String) replaces a range of characters with a string */
@@ -980,7 +959,7 @@ public class CharArrayTest {
 
 		array.replace(0, 5, "Hi");
 
-		assertEquals("Hi World!", array.toString());
+		assertEquals("Replacing range 0-5 with 'Hi' should result in 'Hi World!'", "Hi World!", array.toString());
 	}
 
 	/** Test replaceAll(String, String) replaces all occurrences of a string */
@@ -990,7 +969,7 @@ public class CharArrayTest {
 
 		array.replaceAll("Hello", "Hi");
 
-		assertEquals("Hi World! Hi!", array.toString());
+		assertEquals("Replacing all 'Hello' with 'Hi' should result in 'Hi World! Hi!'", "Hi World! Hi!", array.toString());
 	}
 
 	/** Test replaceFirst(String, String) replaces only the first occurrence of a string */
@@ -1000,7 +979,7 @@ public class CharArrayTest {
 
 		array.replaceFirst("Hello", "Hi");
 
-		assertEquals("Hi World! Hello!", array.toString());
+		assertEquals("Replacing first 'Hello' with 'Hi' should result in 'Hi World! Hello!'", "Hi World! Hello!", array.toString());
 	}
 
 	/** Test replaceFirst when value == replacement */
@@ -1008,9 +987,8 @@ public class CharArrayTest {
 	public void replaceFirstWithSameValueReturnsFalse() {
 		array.addAll('a', 'b', 'c');
 
-		assertFalse(array.replaceFirst('a', 'a')); // value == replacement
+		assertFalse("Replacing 'a' with same 'a' should return false", array.replaceFirst('a', 'a')); // value == replacement
 	}
-
 
 	/** Test replace(char, String) replaces a character with a string */
 	@Test
@@ -1019,7 +997,7 @@ public class CharArrayTest {
 
 		array.replace('-', " to ");
 
-		assertEquals("a to b to c", array.toString());
+		assertEquals("Replacing '-' with ' to ' should result in 'a to b to c'", "a to b to c", array.toString());
 	}
 
 	/** Test insert(int, char) inserts a character at the specified index */
@@ -1029,7 +1007,7 @@ public class CharArrayTest {
 
 		array.insert(5, ' ');
 
-		assertEquals("Hello !", array.toString());
+		assertEquals("Inserting ' ' at index 5 should result in 'Hello !'", "Hello !", array.toString());
 	}
 
 	/** Test insert(int, String) inserts a string at the specified index */
@@ -1039,7 +1017,7 @@ public class CharArrayTest {
 
 		array.insert(6, "World");
 
-		assertEquals("Hello World!", array.toString());
+		assertEquals("Inserting 'World' at index 6 should result in 'Hello World!'", "Hello World!", array.toString());
 	}
 
 	/** Test insert(int, String) inserts at the beginning of the array */
@@ -1049,7 +1027,7 @@ public class CharArrayTest {
 
 		array.insert(0, "Say ");
 
-		assertEquals("Say Hello World!", array.toString());
+		assertEquals("Inserting 'Say ' at index 0 should result in 'Say Hello World!'", "Say Hello World!", array.toString());
 	}
 
 	/** Test insert(int, boolean) inserts boolean as string at specified index */
@@ -1059,7 +1037,7 @@ public class CharArrayTest {
 
 		array.insert(7, true);
 
-		assertEquals("Value: true", array.toString());
+		assertEquals("Inserting boolean true at index 7 should result in 'Value: true'", "Value: true", array.toString());
 	}
 
 	/** Test insert(int, int) inserts integer as string at specified index */
@@ -1069,7 +1047,7 @@ public class CharArrayTest {
 
 		array.insert(8, 42);
 
-		assertEquals("Number: 42", array.toString());
+		assertEquals("Inserting integer 42 at index 8 should result in 'Number: 42'", "Number: 42", array.toString());
 	}
 
 	/** Test insert(int, char[]) inserts an array of characters at specified index */
@@ -1080,7 +1058,7 @@ public class CharArrayTest {
 
 		array.insert(1, chars);
 
-		assertEquals("ACDEB", array.toString());
+		assertEquals("Inserting char array {'C','D','E'} at index 1 should result in 'ACDEB'", "ACDEB", array.toString());
 	}
 
 	/** Test insertRange(int, int) inserts a range and allows setting values */
@@ -1092,7 +1070,7 @@ public class CharArrayTest {
 		array.set(1, 'B');
 		array.set(2, 'B');
 
-		assertEquals("ABBC", array.toString());
+		assertEquals("Inserting range at index 1 and setting values should result in 'ABBC'", "ABBC", array.toString());
 	}
 
 	/** Test substring(int, int) and substring(int) returns correct substrings */
@@ -1100,9 +1078,9 @@ public class CharArrayTest {
 	public void substringReturnsCorrectSubstrings() {
 		array = createCharArrayWithString("Hello World!");
 
-		assertEquals("Hello", array.substring(0, 5));
-		assertEquals("World!", array.substring(6));
-		assertEquals("World", array.substring(6, 11));
+		assertEquals("substring(0,5) should return 'Hello'", "Hello", array.substring(0, 5));
+		assertEquals("substring(6) should return 'World!'", "World!", array.substring(6));
+		assertEquals("substring(6,11) should return 'World'", "World", array.substring(6, 11));
 	}
 
 	/** Test leftString(int) returns the leftmost characters correctly */
@@ -1110,9 +1088,9 @@ public class CharArrayTest {
 	public void leftStringReturnsCorrectSubstring() {
 		array = createCharArrayWithString("Hello World!");
 
-		assertEquals("Hello", array.leftString(5));
-		assertEquals("", array.leftString(0));
-		assertEquals("Hello World!", array.leftString(20)); // More than length
+		assertEquals("leftString(5) should return 'Hello'", "Hello", array.leftString(5));
+		assertEquals("leftString(0) should return empty string", "", array.leftString(0));
+		assertEquals("leftString(20) should return full string when count > length", "Hello World!", array.leftString(20));
 	}
 
 	/** Test rightString(int) returns the rightmost characters correctly */
@@ -1120,9 +1098,9 @@ public class CharArrayTest {
 	public void rightStringReturnsCorrectSubstring() {
 		array = createCharArrayWithString("Hello World!");
 
-		assertEquals("World!", array.rightString(6));
-		assertEquals("", array.rightString(0));
-		assertEquals("Hello World!", array.rightString(20)); // More than length
+		assertEquals("rightString(6) should return 'World!'", "World!", array.rightString(6));
+		assertEquals("rightString(0) should return empty string", "", array.rightString(0));
+		assertEquals("rightString(20) should return full string when count > length", "Hello World!", array.rightString(20));
 	}
 
 	/** Test midString(int, int) returns substring from start index with given length */
@@ -1130,9 +1108,9 @@ public class CharArrayTest {
 	public void midStringReturnsCorrectSubstring() {
 		array = createCharArrayWithString("Hello World!");
 
-		assertEquals("World", array.midString(6, 5));
-		assertEquals("", array.midString(6, 0));
-		assertEquals("World!", array.midString(6, 10)); // More than available
+		assertEquals("midString(6,5) should return 'World'", "World", array.midString(6, 5));
+		assertEquals("midString(6,0) should return empty string", "", array.midString(6, 0));
+		assertEquals("midString(6,10) should return 'World!' when length > available", "World!", array.midString(6, 10));
 	}
 
 	/** Test startsWith(String) returns true if array starts with given string */
@@ -1140,9 +1118,9 @@ public class CharArrayTest {
 	public void startsWithReturnsCorrectResult() {
 		array = createCharArrayWithString("Hello World");
 
-		assertTrue(array.startsWith("Hello"));
-		assertFalse(array.startsWith("World"));
-		assertTrue(array.startsWith(""));
+		assertTrue("startsWith('Hello') should return true", array.startsWith("Hello"));
+		assertFalse("startsWith('World') should return false", array.startsWith("World"));
+		assertTrue("startsWith('') should always return true", array.startsWith(""));
 	}
 
 	/** Test endsWith(String) returns true if array ends with given string */
@@ -1150,9 +1128,9 @@ public class CharArrayTest {
 	public void endsWithReturnsCorrectResult() {
 		array = createCharArrayWithString("Hello World");
 
-		assertTrue(array.endsWith("World"));
-		assertFalse(array.endsWith("Hello"));
-		assertTrue(array.endsWith(""));
+		assertTrue("endsWith('World') should return true", array.endsWith("World"));
+		assertFalse("endsWith('Hello') should return false", array.endsWith("Hello"));
+		assertTrue("endsWith('') should always return true", array.endsWith(""));
 	}
 
 	/** Test contains(String) returns true if substring exists in array */
@@ -1160,10 +1138,10 @@ public class CharArrayTest {
 	public void containsReturnsCorrectResult() {
 		array = createCharArrayWithString("Hello World");
 
-		assertTrue(array.contains("Hello"));
-		assertTrue(array.contains("World"));
-		assertTrue(array.contains(" "));
-		assertFalse(array.contains("xyz"));
+		assertTrue("contains('Hello') should return true", array.contains("Hello"));
+		assertTrue("contains('World') should return true", array.contains("World"));
+		assertTrue("contains(' ') should return true", array.contains(" "));
+		assertFalse("contains('xyz') should return false", array.contains("xyz"));
 	}
 
 	/** Test containsIgnoreCase(String) returns true ignoring case */
@@ -1171,9 +1149,9 @@ public class CharArrayTest {
 	public void containsIgnoreCaseReturnsCorrectResult() {
 		array = createCharArrayWithString("Hello World");
 
-		assertTrue(array.containsIgnoreCase("hello"));
-		assertTrue(array.containsIgnoreCase("WORLD"));
-		assertFalse(array.containsIgnoreCase("xyz"));
+		assertTrue("containsIgnoreCase('hello') should return true", array.containsIgnoreCase("hello"));
+		assertTrue("containsIgnoreCase('WORLD') should return true", array.containsIgnoreCase("WORLD"));
+		assertFalse("containsIgnoreCase('xyz') should return false", array.containsIgnoreCase("xyz"));
 	}
 
 	/** Test equals(CharArray) and equalsString(String) return true for exact matches */
@@ -1182,11 +1160,11 @@ public class CharArrayTest {
 		array = createCharArrayWithString("Hello World");
 		CharArray other = new CharArray("Hello World");
 
-		assertTrue(array.equals(other));
-		assertTrue(array.equalsString("Hello World"));
+		assertTrue("equals(CharArray) should return true for identical arrays", array.equals(other));
+		assertTrue("equalsString(String) should return true for identical strings", array.equalsString("Hello World"));
 
 		other.append("!");
-		assertFalse(array.equals(other));
+		assertFalse("equals(CharArray) should return false if arrays differ", array.equals(other));
 	}
 
 	/** Test equalsIgnoreCase(CharArray/String) returns true ignoring case */
@@ -1195,8 +1173,8 @@ public class CharArrayTest {
 		array = createCharArrayWithString("Hello World");
 		CharArray upper = new CharArray("HELLO WORLD");
 
-		assertTrue(array.equalsIgnoreCase(upper));
-		assertTrue(array.equalsIgnoreCase("hello world"));
+		assertTrue("equalsIgnoreCase(CharArray) should return true ignoring case", array.equalsIgnoreCase(upper));
+		assertTrue("equalsIgnoreCase(String) should return true ignoring case", array.equalsIgnoreCase("hello world"));
 	}
 
 	/** Test length() returns the correct number of characters */
@@ -1204,7 +1182,7 @@ public class CharArrayTest {
 	public void lengthReturnsCorrectValue() {
 		array = createCharArrayWithString("Hello World!");
 
-		assertEquals(12, array.length());
+		assertEquals("length() should return 12", 12, array.length());
 	}
 
 	/** Test charAt(int) returns the character at the specified index */
@@ -1212,8 +1190,8 @@ public class CharArrayTest {
 	public void charAtReturnsCorrectCharacter() {
 		array = createCharArrayWithString("Hello World!");
 
-		assertEquals('H', array.charAt(0));
-		assertEquals('!', array.charAt(11));
+		assertEquals("charAt(0) should return 'H'", 'H', array.charAt(0));
+		assertEquals("charAt(11) should return '!'", '!', array.charAt(11));
 	}
 
 	/** Test subSequence(int, int) returns the correct subsequence */
@@ -1223,7 +1201,7 @@ public class CharArrayTest {
 
 		CharSequence sub = array.subSequence(0, 5);
 
-		assertEquals("Hello", sub.toString());
+		assertEquals("subSequence(0,5) should return 'Hello'", "Hello", sub.toString());
 	}
 
 	/** Test capacity() returns initial capacity and size reflects appended elements */
@@ -1233,8 +1211,8 @@ public class CharArrayTest {
 
 		array.append("Hello");
 
-		assertEquals(100, array.capacity());
-		assertEquals(5, array.size);
+		assertEquals("capacity() should return initial capacity of 100", 100, array.capacity());
+		assertEquals("size should reflect number of appended elements (5)", 5, array.size);
 	}
 
 	/** Test trim() reduces internal buffer but preserves content and size */
@@ -1245,8 +1223,8 @@ public class CharArrayTest {
 		array.append("Hello");
 		array.trim();
 
-		assertEquals("Hello", array.toString());
-		assertEquals(5, array.size);
+		assertEquals("trim() should preserve content", "Hello", array.toString());
+		assertEquals("trim() should preserve size", 5, array.size);
 	}
 
 	/** Test trimToSize() adjusts capacity to match current size */
@@ -1257,7 +1235,7 @@ public class CharArrayTest {
 		array.append("Test");
 		array.trimToSize();
 
-		assertEquals(4, array.capacity());
+		assertEquals("trimToSize() should adjust capacity to match current size", 4, array.capacity());
 	}
 
 	/** Test setLength(int) truncates or extends the array correctly */
@@ -1267,11 +1245,11 @@ public class CharArrayTest {
 
 		// Truncate
 		array.setLength(3);
-		assertEquals("Hel", array.toString());
+		assertEquals("setLength should truncate the array to 'Hel'", "Hel", array.toString());
 
 		// Extend (fills with '\0')
 		array.setLength(5);
-		assertEquals(5, array.length());
+		assertEquals("setLength should extend the array to length 5", 5, array.length());
 	}
 
 	/** Test equals(Object) returns true for same instance or content and false otherwise */
@@ -1281,11 +1259,11 @@ public class CharArrayTest {
 		CharArray array2 = createCharArrayWithString("Hello");
 		CharArray array3 = createCharArrayWithString("World");
 
-		assertTrue(array.equals(array));          // same instance
-		assertTrue(array.equals(array2));          // same content
-		assertFalse(array.equals(array3));         // different content
-		assertFalse(array.equals(null));           // null
-		assertFalse(array.equals("Hello"));        // different type
+		assertTrue("equals should return true for same instance", array.equals(array));
+		assertTrue("equals should return true for same content", array.equals(array2));
+		assertFalse("equals should return false for different content", array.equals(array3));
+		assertFalse("equals should return false for null", array.equals(null));
+		assertFalse("equals should return false for different type", array.equals("Hello"));
 	}
 
 	/** Test hashCode() returns same value for equal content and different for different content */
@@ -1295,8 +1273,8 @@ public class CharArrayTest {
 		CharArray array2 = createCharArrayWithString("Hello");
 		CharArray array3 = createCharArrayWithString("World");
 
-		assertEquals(array.hashCode(), array2.hashCode());
-		assertNotEquals(array.hashCode(), array3.hashCode());
+		assertEquals("hashCode should be equal for equal content", array.hashCode(), array2.hashCode());
+		assertNotEquals("hashCode should differ for different content", array.hashCode(), array3.hashCode());
 	}
 
 	/** Test Reader functionality from CharArray */
@@ -1307,16 +1285,16 @@ public class CharArrayTest {
 		try (Reader reader = array.reader()) {
 			char[] buffer = new char[5];
 			int read = reader.read(buffer);
-			assertEquals(5, read);
-			assertArrayEquals(new char[] {'H', 'e', 'l', 'l', 'o'}, buffer);
+			assertEquals("Reader should read 5 characters", 5, read);
+			assertArrayEquals("Reader should read 'Hello'", new char[] {'H', 'e', 'l', 'l', 'o'}, buffer);
 
 			// Test single char read
-			assertEquals(' ', reader.read());
-			assertEquals('W', reader.read());
+			assertEquals("Reader should read space character", ' ', reader.read());
+			assertEquals("Reader should read 'W'", 'W', reader.read());
 
 			// Test skip
 			reader.skip(2);
-			assertEquals('l', reader.read());
+			assertEquals("Reader should read 'l' after skip", 'l', reader.read());
 		}
 	}
 
@@ -1326,13 +1304,14 @@ public class CharArrayTest {
 
 		try (Writer writer = array.writer()) {
 			writer.write("Test");
-			assertEquals("Test", array.toString());
+			assertEquals("Writer should write 'Test'", "Test", array.toString());
 
 			writer.write(' ');
 			writer.write(new char[] {'1', '2', '3'});
-			assertEquals("Test 123", array.toString());
+			assertEquals("Writer should write 'Test 123'", "Test 123", array.toString());
 		}
 	}
+
 	/** Test appendCodePoint(int) correctly appends a Unicode code point */
 	@Test
 	public void appendCodePointAddsSurrogatePair() {
@@ -1340,7 +1319,7 @@ public class CharArrayTest {
 
 		array.appendCodePoint(smiley);
 
-		assertEquals(2, array.size); // Surrogate pair
+		assertEquals("appendCodePoint should add 2 characters (surrogate pair)", 2, array.size);
 	}
 
 	/** Test codePointAt(int) returns the correct code point */
@@ -1351,7 +1330,7 @@ public class CharArrayTest {
 		array.appendCodePoint(smiley);
 		int cp = array.codePointAt(0);
 
-		assertEquals(smiley, cp);
+		assertEquals("codePointAt should return the correct code point", smiley, cp);
 	}
 
 	/** Test codePointCount(int, int) counts code points correctly */
@@ -1363,7 +1342,7 @@ public class CharArrayTest {
 		array.append("Hello");
 		int count = array.codePointCount(0, array.size);
 
-		assertEquals(6, count); // 1 emoji + 5 chars
+		assertEquals("codePointCount should count 1 emoji + 5 chars = 6", 6, count);
 	}
 
 	/** Test reverseCodePoints() correctly reverses Unicode code points */
@@ -1374,7 +1353,7 @@ public class CharArrayTest {
 		array.append("Hi");
 		array.reverseCodePoints();
 
-		assertEquals("iH", array.substring(0, 2));
+		assertEquals("reverseCodePoints should reverse code points", "iH", array.substring(0, 2));
 	}
 
 	/** Test appendAll(Iterable) appends all elements from a collection */
@@ -1388,7 +1367,7 @@ public class CharArrayTest {
 		array.clear();
 		array.appendAll(list);
 
-		assertEquals("OneTwoThree", array.toString());
+		assertEquals("appendAll(Iterable) should append all elements", "OneTwoThree", array.toString());
 	}
 
 	/** Test appendWithSeparators(Iterable, String) joins elements with separator */
@@ -1402,7 +1381,7 @@ public class CharArrayTest {
 		array.clear();
 		array.appendWithSeparators(list, ", ");
 
-		assertEquals("One, Two, Three", array.toString());
+		assertEquals("appendWithSeparators should join elements with ', '", "One, Two, Three", array.toString());
 	}
 
 	/** Test appendAll(Iterator) appends all elements from an iterator */
@@ -1417,7 +1396,7 @@ public class CharArrayTest {
 		Iterator<String> iter = list.iterator();
 		array.appendAll(iter);
 
-		assertEquals("OneTwoThree", array.toString());
+		assertEquals("appendAll(Iterator) should append all elements", "OneTwoThree", array.toString());
 	}
 
 	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles a null argument */
@@ -1426,8 +1405,8 @@ public class CharArrayTest {
 		array.append('a');
 		array.appendAll((Object[]) null);
 
-		assertEquals(1, array.size);
-		assertEquals('a', array.items[0]);
+		assertEquals("appendAll(null) should not change array size", 1, array.size);
+		assertEquals("First element should remain 'a'", 'a', array.items[0]);
 	}
 
 	/** Tests that {@link CharArray#appendAll(Object...)} correctly handles an empty varargs array */
@@ -1436,8 +1415,8 @@ public class CharArrayTest {
 		array.append('a');
 		array.appendAll();
 
-		assertEquals(1, array.size);
-		assertEquals('a', array.items[0]);
+		assertEquals("appendAll() with empty array should not change array size", 1, array.size);
+		assertEquals("First element should remain 'a'", 'a', array.items[0]);
 	}
 
 	/** Tests that {@link CharArray#appendAll(Object...)} appends all provided elements */
@@ -1445,8 +1424,8 @@ public class CharArrayTest {
 	public void appendAllNormalUsageTest() {
 		array.appendAll('a', 'b', 'c');
 
-		assertEquals(3, array.size);
-		assertArrayEquals(new char[]{'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
+		assertEquals("appendAll should append all elements", 3, array.size);
+		assertArrayEquals("Array contents should match appended elements", new char[]{'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test appendWithSeparators(String[], String) joins array elements with separator */
@@ -1457,48 +1436,9 @@ public class CharArrayTest {
 		array.clear();
 		array.appendWithSeparators(strArray, "-");
 
-		assertEquals("A-B-C", array.toString());
+		assertEquals("appendWithSeparators should join array elements with '-'", "A-B-C", array.toString());
 	}
 
-	/** Test edge cases and error conditions */
-	@Test
-	public void edgeCasesTest () {
-
-		// Empty array operations
-		assertEquals(-1, array.indexOf('a'));
-		assertEquals(-1, array.lastIndexOf('a'));
-		assertFalse(array.contains('a'));
-		assertFalse(array.removeValue('a'));
-
-		// Append empty/null strings
-		array.append("");
-		assertEquals(0, array.size);
-
-		array.append((String)null);
-		assertEquals("null", array.toString());
-
-		// Large capacity
-		CharArray large = new CharArray(10000);
-		for (int i = 0; i < 10000; i++) {
-			large.add((char)('A' + (i % 26)));
-		}
-		assertEquals(10000, large.size);
-
-		// Test boundaries
-		try {
-			array.get(100);
-			fail("Should throw exception");
-		} catch (IndexOutOfBoundsException e) {
-			// Expected
-		}
-
-		try {
-			array.set(100, 'x');
-			fail("Should throw exception");
-		} catch (IndexOutOfBoundsException e) {
-			// Expected
-		}
-	}
 	/** Test toCharArray() returns a new char array with all elements */
 	@Test
 	public void toCharArrayReturnsCorrectArray() {
@@ -1506,7 +1446,7 @@ public class CharArrayTest {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
 		char[] chars = array.toCharArray();
-		assertArrayEquals(new char[] {'a', 'b', 'c', 'd', 'e'}, chars);
+		assertArrayEquals("toCharArray should return all elements", new char[] {'a', 'b', 'c', 'd', 'e'}, chars);
 	}
 
 	/** Test getChars(int, int, char[], int) copies elements to target array correctly */
@@ -1517,9 +1457,9 @@ public class CharArrayTest {
 
 		char[] target = new char[10];
 		array.getChars(1, 4, target, 2);
-		assertEquals('b', target[2]);
-		assertEquals('c', target[3]);
-		assertEquals('d', target[4]);
+		assertEquals("getChars should copy 'b' to target[2]", 'b', target[2]);
+		assertEquals("getChars should copy 'c' to target[3]", 'c', target[3]);
+		assertEquals("getChars should copy 'd' to target[4]", 'd', target[4]);
 	}
 
 	/** Test drainChar(int) removes a single character and returns it */
@@ -1529,8 +1469,8 @@ public class CharArrayTest {
 
 		char drained = array.drainChar(6);
 
-		assertEquals('W', drained);
-		assertEquals("Hello orld!", array.toString());
+		assertEquals("drainChar should remove character at index 6 ('W')", 'W', drained);
+		assertEquals("drainChar should update array contents", "Hello orld!", array.toString());
 	}
 
 	/** Test drainChars(int, int, char[], int) removes a range of characters correctly */
@@ -1541,9 +1481,9 @@ public class CharArrayTest {
 		char[] target = new char[5];
 		int count = array.drainChars(0, 5, target, 0);
 
-		assertEquals(5, count);
-		assertArrayEquals(new char[] {'H', 'e', 'l', 'l', 'o'}, target);
-		assertEquals(" World!", array.toString());
+		assertEquals("drainChars should return count of removed characters", 5, count);
+		assertArrayEquals("drainChars should copy removed characters to target", new char[] {'H', 'e', 'l', 'l', 'o'}, target);
+		assertEquals("drainChars should update array contents", " World!", array.toString());
 	}
 
 	/** Test appendSeparator(char) adds separator only after first append */
@@ -1551,11 +1491,11 @@ public class CharArrayTest {
 	public void appendSeparatorCharAddsOnlyAfterFirst() {
 		array.appendSeparator(',');
 		array.append("first");
-		assertEquals("first", array.toString());
+		assertEquals("appendSeparator should not add separator before first append", "first", array.toString());
 
 		array.appendSeparator(',');
 		array.append("second");
-		assertEquals("first,second", array.toString());
+		assertEquals("appendSeparator should add separator before subsequent appends", "first,second", array.toString());
 	}
 
 	/** Test appendSeparator(char, char) adds default for empty array */
@@ -1563,7 +1503,7 @@ public class CharArrayTest {
 	public void appendSeparatorWithDefaultAddsForEmptyArray() {
 		array.appendSeparator(',', ';');
 
-		assertEquals(";", array.toString());
+		assertEquals("appendSeparator with default should add default to empty array", ";", array.toString());
 	}
 
 	/** Test appendSeparator(char, int) with loop index adds separators correctly */
@@ -1573,7 +1513,7 @@ public class CharArrayTest {
 			array.appendSeparator(',', i);
 			array.append("item" + i);
 		}
-		assertEquals("item0,item1,item2", array.toString());
+		assertEquals("appendSeparator with index should add separators correctly", "item0,item1,item2", array.toString());
 	}
 
 	/** Test that setSize throws IllegalArgumentException when newSize is negative. */
@@ -1584,7 +1524,7 @@ public class CharArrayTest {
 			array.setSize(-1);
 			fail("Expected IllegalArgumentException for negative size");
 		} catch (IllegalArgumentException ex) {
-			assertTrue(ex.getMessage().contains("newSize must be >= 0"));
+			assertTrue("Exception message should indicate newSize must be >= 0", ex.getMessage().contains("newSize must be >= 0"));
 		}
 	}
 
@@ -1596,8 +1536,8 @@ public class CharArrayTest {
 
 		array.setSize(10);
 
-		assertNotSame(oldItems, array.items);
-		assertEquals(10, array.size);
+		assertNotSame("setSize should allocate new array when larger than capacity", oldItems, array.items);
+		assertEquals("setSize should update size to newSize", 10, array.size);
 	}
 
 	/**
@@ -1610,8 +1550,8 @@ public class CharArrayTest {
 
 		array.setSize(3);
 
-		assertSame(oldItems, array.items);
-		assertEquals(3, array.size);
+		assertSame("setSize should not allocate new array if within capacity", oldItems, array.items);
+		assertEquals("setSize should update size correctly", 3, array.size);
 	}
 
 	/** Test toArray() returns a copy with correct contents */
@@ -1622,9 +1562,9 @@ public class CharArrayTest {
 		array.add('c');
 		char[] result = array.toArray();
 
-		assertArrayEquals(new char[] {'a', 'b', 'c'}, result);
-		assertEquals(3, result.length);
-		assertNotSame(array.items, result);
+		assertArrayEquals("toArray should return a copy with correct elements", new char[] {'a', 'b', 'c'}, result);
+		assertEquals("toArray should return array of correct length", 3, result.length);
+		assertNotSame("toArray should return a new array, not the internal items array", array.items, result);
 	}
 
 	/** Test appendSeparator(String) adds string separators correctly */
@@ -1636,7 +1576,7 @@ public class CharArrayTest {
 		array.appendSeparator(" | ");
 		array.append("C");
 
-		assertEquals("A | B | C", array.toString());
+		assertEquals("appendSeparator(String) should add separators correctly", "A | B | C", array.toString());
 	}
 
 	/** Test insert(int, char[], int, int) inserts NULL placeholder when array is null */
@@ -1645,12 +1585,12 @@ public class CharArrayTest {
 		array.add('a');
 		array.insert(0, null, 0, 0);
 
-		assertEquals(5, array.size); // "null" = 4 chars + 'a'
-		assertEquals('n', array.items[0]);
-		assertEquals('u', array.items[1]);
-		assertEquals('l', array.items[2]);
-		assertEquals('l', array.items[3]);
-		assertEquals('a', array.items[4]);
+		assertEquals("insert should add 'null' placeholder when array is null, total size", 5, array.size); // "null" = 4 chars + 'a'
+		assertEquals("insert: first char should be 'n'", 'n', array.items[0]);
+		assertEquals("insert: second char should be 'u'", 'u', array.items[1]);
+		assertEquals("insert: third char should be 'l'", 'l', array.items[2]);
+		assertEquals("insert: fourth char should be 'l'", 'l', array.items[3]);
+		assertEquals("insert: fifth char should be original 'a'", 'a', array.items[4]);
 	}
 
 	/** Test insert(int, char[], int, int) throws IndexOutOfBoundsException for invalid offset */
@@ -1674,8 +1614,8 @@ public class CharArrayTest {
 		char[] src = {'x','y'};
 		array.insert(0, src, 0, 0);
 
-		assertEquals(1, array.size);
-		assertEquals('a', array.items[0]);
+		assertEquals("insert with length 0 should not change size", 1, array.size);
+		assertEquals("insert with length 0 should not modify original element", 'a', array.items[0]);
 	}
 
 	/** Test insert(int, char[], int, int) inserts characters correctly */
@@ -1685,11 +1625,11 @@ public class CharArrayTest {
 		char[] src = {'x','y','z'};
 		array.insert(0, src, 0, 3);
 
-		assertEquals(4, array.size); // 3 inserted + 1 original
-		assertEquals('x', array.items[0]);
-		assertEquals('y', array.items[1]);
-		assertEquals('z', array.items[2]);
-		assertEquals('a', array.items[3]);
+		assertEquals("insert should increase size correctly", 4, array.size); // 3 inserted + 1 original
+		assertEquals("first inserted char should be 'x'", 'x', array.items[0]);
+		assertEquals("second inserted char should be 'y'", 'y', array.items[1]);
+		assertEquals("third inserted char should be 'z'", 'z', array.items[2]);
+		assertEquals("original char should be shifted to index 3", 'a', array.items[3]);
 	}
 
 	/** Test insert(int, long) inserts the string representation of the long value */
@@ -1698,11 +1638,11 @@ public class CharArrayTest {
 		array.add('a');
 		array.insert(0, 123L);
 
-		assertEquals(4, array.size); // "123" is 3 chars + original 'a'
-		assertEquals('1', array.items[0]);
-		assertEquals('2', array.items[1]);
-		assertEquals('3', array.items[2]);
-		assertEquals('a', array.items[3]);
+		assertEquals("insert should increase size for string representation of long", 4, array.size); // "123" is 3 chars + original 'a'
+		assertEquals("first char should be '1'", '1', array.items[0]);
+		assertEquals("second char should be '2'", '2', array.items[1]);
+		assertEquals("third char should be '3'", '3', array.items[2]);
+		assertEquals("original char should be at index 3", 'a', array.items[3]);
 	}
 
 	/** Test insert(int, float) inserts the string representation of the float value */
@@ -1712,8 +1652,8 @@ public class CharArrayTest {
 		array.insert(0, 1.5f);
 
 		String inserted = new String(array.items, 0, array.size);
-		assertTrue(inserted.startsWith("1.5"));
-		assertTrue(inserted.endsWith("x"));
+		assertTrue("inserted string should start with float representation '1.5'", inserted.startsWith("1.5"));
+		assertTrue("inserted string should end with original char 'x'", inserted.endsWith("x"));
 	}
 
 	/** Test insert(int, double) inserts the string representation of the double value */
@@ -1723,8 +1663,8 @@ public class CharArrayTest {
 		array.insert(0, 2.75);
 
 		String inserted = new String(array.items, 0, array.size);
-		assertTrue(inserted.startsWith("2.75"));
-		assertTrue(inserted.endsWith("y"));
+		assertTrue("inserted string should start with double representation '2.75'", inserted.startsWith("2.75"));
+		assertTrue("inserted string should end with original char 'y'", inserted.endsWith("y"));
 	}
 
 	/** Test insert(int, Object) inserts object string when object is not null */
@@ -1733,8 +1673,8 @@ public class CharArrayTest {
 		array.add('a');
 		array.insert(0, "b");
 
-		assertEquals(2, array.size);
-		assertEquals('b', array.items[0]);
+		assertEquals("insert should increase size when inserting non-null object", 2, array.size);
+		assertEquals("first char should be 'b'", 'b', array.items[0]);
 	}
 
 	/** Test insert(int, Object) inserts NULL placeholder when object is null */
@@ -1743,12 +1683,12 @@ public class CharArrayTest {
 		array.add('a');
 		array.insert(0, (Object) null);
 
-		assertEquals(5, array.size); // 3 chars "null" + 'a'
-		assertEquals('n', array.items[0]);
-		assertEquals('u', array.items[1]);
-		assertEquals('l', array.items[2]);
-		assertEquals('l', array.items[3]);
-		assertEquals('a', array.items[4]);
+		assertEquals("insert should add 'null' placeholder when object is null, total size", 5, array.size); // 4 chars "null" + 'a'
+		assertEquals("first char should be 'n'", 'n', array.items[0]);
+		assertEquals("second char should be 'u'", 'u', array.items[1]);
+		assertEquals("third char should be 'l'", 'l', array.items[2]);
+		assertEquals("fourth char should be 'l'", 'l', array.items[3]);
+		assertEquals("original char should be at index 4", 'a', array.items[4]);
 	}
 
 	/** Test lastIndexOf(char, int) returns correct index when character is present */
@@ -1759,9 +1699,9 @@ public class CharArrayTest {
 		array.add('c');
 		array.add('b');
 
-		assertEquals(3, array.lastIndexOf('b', 3));
-		assertEquals(1, array.lastIndexOf('b', 2));
-		assertEquals(0, array.lastIndexOf('a', 3));
+		assertEquals("lastIndexOf should find last 'b' at index 3", 3, array.lastIndexOf('b', 3));
+		assertEquals("lastIndexOf should find previous 'b' at index 1", 1, array.lastIndexOf('b', 2));
+		assertEquals("lastIndexOf should find 'a' at index 0", 0, array.lastIndexOf('a', 3));
 	}
 
 	/** Test lastIndexOf(char, int) returns -1 when character is not present */
@@ -1771,7 +1711,7 @@ public class CharArrayTest {
 		array.add('b');
 		array.add('c');
 
-		assertEquals(-1, array.lastIndexOf('x', 2));
+		assertEquals("lastIndexOf should return -1 if char not present", -1, array.lastIndexOf('x', 2));
 	}
 
 	/** Test lastIndexOf(char, int) handles start index out of bounds */
@@ -1780,8 +1720,8 @@ public class CharArrayTest {
 		array.add('a');
 		array.add('b');
 
-		assertEquals(1, array.lastIndexOf('b', 10));  // start > size
-		assertEquals(-1, array.lastIndexOf('a', -5)); // start < 0
+		assertEquals("lastIndexOf with start > size should return last occurrence", 1, array.lastIndexOf('b', 10));
+		assertEquals("lastIndexOf with start < 0 should return -1", -1, array.lastIndexOf('a', -5));
 	}
 
 	/** Test readFrom(CharBuffer) reads all remaining characters and returns correct delta */
@@ -1795,12 +1735,12 @@ public class CharArrayTest {
 
 		int result = array.readFrom(buffer);
 
-		assertEquals(10, result);                  // newly read chars
-		assertEquals(11, array.size);              // 1 old + 10 new
+		assertEquals("readFrom should return number of characters read", 10, result);                  // newly read chars
+		assertEquals("readFrom should update array size correctly", 11, array.size);              // 1 old + 10 new
 		char[] expected = new char[11];
 		expected[0] = 'x';
 		Arrays.fill(expected, 1, expected.length, 'y');
-		assertArrayEquals(expected, Arrays.copyOf(array.items, array.size));
+		assertArrayEquals("readFrom should append buffer contents correctly", expected, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Readable) delegates to Reader and returns correct delta */
@@ -1813,9 +1753,10 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader);
 
-		assertEquals(10, result);
-		assertEquals(11, array.size);
-		assertArrayEquals(("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(Reader) should return number of chars read", 10, result);
+		assertEquals("readFrom(Reader) should update size correctly", 11, array.size);
+		assertArrayEquals("readFrom(Reader) should append input after existing content",
+				("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Readable) delegates to CharBuffer and returns correct delta */
@@ -1826,9 +1767,10 @@ public class CharArrayTest {
 
 		int result = array.readFrom(buffer);
 
-		assertEquals(2, result);
-		assertEquals(3, array.size);
-		assertArrayEquals(new char[] {'x', 'y', 'z'}, Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(CharBuffer) should return number of chars read", 2, result);
+		assertEquals("readFrom(CharBuffer) should update size correctly", 3, array.size);
+		assertArrayEquals("readFrom(CharBuffer) should append buffer after existing content",
+				new char[] {'x', 'y', 'z'}, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Readable) reads from generic Readable and returns correct delta */
@@ -1842,7 +1784,7 @@ public class CharArrayTest {
 		Readable readable = new Readable() {
 			int pos = 0;
 			@Override
-			public int read(@NotNull CharBuffer cb) {
+			public int read(CharBuffer cb) {
 				if (pos >= data.length) return -1;
 				int n = Math.min(cb.remaining(), data.length - pos);
 				cb.put(data, pos, n);
@@ -1853,12 +1795,13 @@ public class CharArrayTest {
 
 		int result = array.readFrom(readable);
 
-		assertEquals(10, result);
-		assertEquals(11, array.size);
+		assertEquals("readFrom(Readable) should return number of chars read", 10, result);
+		assertEquals("readFrom(Readable) should update size correctly", 11, array.size);
 		char[] expected = new char[11];
 		expected[0] = 'x';
 		Arrays.fill(expected, 1, expected.length, 'p');
-		assertArrayEquals(expected, Arrays.copyOf(array.items, array.size));
+		assertArrayEquals("readFrom(Readable) should append all read chars correctly",
+				expected, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Reader) triggers require(), resizes buffer, and returns correct delta */
@@ -1870,9 +1813,10 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader);
 
-		assertEquals(input.length(), result);       // newly read chars
-		assertEquals(input.length() + 1, array.size); // old + new
-		assertArrayEquals(("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(Reader) should return number of chars read", input.length(), result);       // newly read chars
+		assertEquals("readFrom(Reader) should update size correctly", input.length() + 1, array.size); // old + new
+		assertArrayEquals("readFrom(Reader) should append input correctly after existing content",
+				("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Reader, int) triggers require(), resizes buffer, and returns correct delta */
@@ -1885,9 +1829,10 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader, input.length());
 
-		assertEquals(10, result);
-		assertEquals(11, array.size);
-		assertArrayEquals(("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(Reader, count) should return number of chars read", 10, result);
+		assertEquals("readFrom(Reader, count) should update size correctly", 11, array.size);
+		assertArrayEquals("readFrom(Reader, count) should append input correctly",
+				("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Readable) triggers require(), resizes buffer, and returns correct delta */
@@ -1901,7 +1846,7 @@ public class CharArrayTest {
 			int pos = 0;
 
 			@Override
-			public int read(@NotNull CharBuffer cb) {
+			public int read(CharBuffer cb) {
 				if (pos >= data.length) return -1;
 				int n = Math.min(cb.remaining(), data.length - pos);
 				cb.put(data, pos, n);
@@ -1912,9 +1857,10 @@ public class CharArrayTest {
 
 		int result = array.readFrom(readable);
 
-		assertEquals(input.length(), result);
-		assertEquals(input.length() + 1, array.size);
-		assertArrayEquals(("z" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(Readable) should return number of chars read", input.length(), result);
+		assertEquals("readFrom(Readable) should update size correctly", input.length() + 1, array.size);
+		assertArrayEquals("readFrom(Readable) should append all read chars correctly",
+				("z" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Reader) returns -1 when reader is empty */
@@ -1924,8 +1870,8 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader);
 
-		assertEquals(-1, result);
-		assertEquals(0, array.size);
+		assertEquals("readFrom(Reader) should return -1 when empty", -1, result);
+		assertEquals("readFrom(Reader) should not change size when empty", 0, array.size);
 	}
 
 	/** Test readFrom(Reader) reads all characters until end of stream */
@@ -1935,10 +1881,10 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader);
 
-		assertEquals(3, result);
-		assertEquals(3, array.size);
-		assertArrayEquals(new char[] {'a', 'b', 'c'},
-				Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(Reader) should return total chars read", 3, result);
+		assertEquals("readFrom(Reader) should update size correctly", 3, array.size);
+		assertArrayEquals("readFrom(Reader) should store correct chars",
+				new char[] {'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test readFrom(Reader, int) returns -1 when reader is empty */
@@ -1948,8 +1894,8 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader, 3);
 
-		assertEquals(-1, result);
-		assertEquals(0, array.size);
+		assertEquals("readFrom(Reader, count) should return -1 when empty", -1, result);
+		assertEquals("readFrom(Reader, count) should not change size when empty", 0, array.size);
 	}
 
 	/** Test readFrom(Reader, int) returns 0 when count is zero or negative */
@@ -1957,8 +1903,8 @@ public class CharArrayTest {
 	public void readFromWithCountReturnsZeroForNonPositiveCount() throws IOException {
 		Reader reader = new StringReader("abc");
 
-		assertEquals(0, array.readFrom(reader, 0));
-		assertEquals(0, array.readFrom(reader, -5));
+		assertEquals("readFrom(Reader, 0) should return 0", 0, array.readFrom(reader, 0));
+		assertEquals("readFrom(Reader, negative) should return 0", 0, array.readFrom(reader, -5));
 	}
 
 	/** Test readFrom(Reader, int) reads exactly count characters */
@@ -1971,11 +1917,11 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader, 3); // count < input.length()
 
-		assertEquals(3, result);
-		assertEquals(4, array.size); // 1 old + 3 new
-		assertArrayEquals(new char[] {'x', 'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(Reader, count) should return count chars read", 3, result);
+		assertEquals("readFrom(Reader, count) should update size correctly", 4, array.size); // 1 old + 3 new
+		assertArrayEquals("readFrom(Reader, count) should store correct chars",
+				new char[] {'x', 'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
 	}
-
 
 	/** Test readFrom(Reader, int) reads until EOS if reader has fewer chars than count */
 	@Test
@@ -1987,9 +1933,10 @@ public class CharArrayTest {
 
 		int result = array.readFrom(reader, 5); // count > input.length()
 
-		assertEquals(2, result);
-		assertEquals(3, array.size); // 1 old + 2 new
-		assertArrayEquals(new char[] {'x', 'a', 'b'}, Arrays.copyOf(array.items, array.size));
+		assertEquals("readFrom(Reader, count) should return number of chars actually read", 2, result);
+		assertEquals("readFrom(Reader, count) should update size correctly", 3, array.size); // 1 old + 2 new
+		assertArrayEquals("readFrom(Reader, count) should store correct chars",
+				new char[] {'x', 'a', 'b'}, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test random() returns default for empty array */
@@ -1997,7 +1944,7 @@ public class CharArrayTest {
 	public void randomReturnsDefaultForEmptyArray() {
 		char emptyRandom = array.random();
 
-		assertEquals('\u0000', emptyRandom);
+		assertEquals("random() on empty array should return '\\u0000'", '\u0000', emptyRandom);
 	}
 
 	/** Test random() returns an element from the array */
@@ -2006,7 +1953,7 @@ public class CharArrayTest {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 		char random = array.random();
 
-		assertTrue(array.contains(random));
+		assertTrue("random() should return a character that exists in the array", array.contains(random));
 	}
 
 	/** Test shuffle() maintains size and all elements */
@@ -2015,7 +1962,7 @@ public class CharArrayTest {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 		array.shuffle();
 
-		assertEquals(5, array.size);
+		assertEquals("shuffle() should maintain array size", 5, array.size);
 		assertTrue(array.contains('a'));
 		assertTrue(array.contains('b'));
 		assertTrue(array.contains('c'));
@@ -2030,7 +1977,8 @@ public class CharArrayTest {
 
 		StringBuilder sb = new StringBuilder("Start: ");
 		array.appendTo(sb);
-		assertEquals("Start: Hello World", sb.toString());
+		assertEquals("appendTo(StringBuilder) should append CharArray content correctly",
+				"Start: Hello World", sb.toString());
 	}
 
 	/** Test appendTo(StringBuffer) appends the CharArray content correctly */
@@ -2040,7 +1988,8 @@ public class CharArrayTest {
 
 		StringBuffer sbuf = new StringBuffer("Start: ");
 		array.appendTo(sbuf);
-		assertEquals("Start: Hello World", sbuf.toString());
+		assertEquals("appendTo(StringBuffer) should append CharArray content correctly",
+				"Start: Hello World", sbuf.toString());
 	}
 
 	/** Test setCharAt(int, char) sets a single character correctly */
@@ -2050,7 +1999,7 @@ public class CharArrayTest {
 
 		array.setCharAt(1, 'a');
 
-		assertEquals("Hallo", array.toString());
+		assertEquals("setCharAt() should update character at specified index", "Hallo", array.toString());
 	}
 
 	/** Test setCharAt(int, char) supports chaining for multiple updates */
@@ -2060,7 +2009,7 @@ public class CharArrayTest {
 
 		array.setCharAt(1, 'a').setCharAt(2, 'p').setCharAt(3, 'p').setCharAt(4, 'y');
 
-		assertEquals("Happy", array.toString());
+		assertEquals("setCharAt() chaining should update all specified indices", "Happy", array.toString());
 	}
 
 	/** Test toStringAndClear */
@@ -2069,9 +2018,9 @@ public class CharArrayTest {
 		CharArray array = createCharArrayWithString("Test String");
 		String result = array.toStringAndClear();
 
-		assertEquals("Test String", result);
-		assertEquals(0, array.size);
-		assertTrue(array.isEmpty());
+		assertEquals("toStringAndClear() should return previous content", "Test String", result);
+		assertEquals("toStringAndClear() should reset size to 0", 0, array.size);
+		assertTrue("toStringAndClear() should make array empty", array.isEmpty());
 	}
 
 	/** Test toString(String) joins multiple elements with a separator */
@@ -2080,13 +2029,13 @@ public class CharArrayTest {
 		array.addAll('a', 'b', 'c', 'd', 'e');
 
 		String result = array.toString(",");
-		assertEquals("a,b,c,d,e", result);
+		assertEquals("toString(separator) should join elements with separator", "a,b,c,d,e", result);
 	}
 
 	/** Test toString(String) returns empty string for empty array */
 	@Test
 	public void toStringWithSeparatorReturnsEmptyForEmptyArray() {
-		assertEquals("", array.toString(","));
+		assertEquals("toString(separator) on empty array should return empty string", "", array.toString(","));
 	}
 
 	/** Test toString(String) returns element itself for single-element array */
@@ -2094,16 +2043,16 @@ public class CharArrayTest {
 	public void toStringWithSeparatorReturnsSingleElement() {
 		array.add('x');
 
-		assertEquals("x", array.toString(","));
+		assertEquals("toString(separator) on single-element array should return the element itself", "x", array.toString(","));
 	}
 
 	/** Test operations on an empty array return expected results */
 	@Test
 	public void emptyArrayOperationsReturnExpected() {
-		assertEquals(-1, array.indexOf('a'));
-		assertEquals(-1, array.lastIndexOf('a'));
-		assertFalse(array.contains('a'));
-		assertFalse(array.removeValue('a'));
+		assertEquals("indexOf() on empty array should return -1", -1, array.indexOf('a'));
+		assertEquals("lastIndexOf() on empty array should return -1", -1, array.lastIndexOf('a'));
+		assertFalse("contains() on empty array should return false", array.contains('a'));
+		assertFalse("removeValue() on empty array should return false", array.removeValue('a'));
 	}
 
 	/** Test CharArray can handle very large capacity */
@@ -2114,10 +2063,8 @@ public class CharArrayTest {
 		for (int i = 0; i < 10000; i++) {
 			large.add((char)('A' + (i % 26)));
 		}
-		assertEquals(10000, large.size);
+		assertEquals("Large CharArray should store all elements correctly", 10000, large.size);
 	}
-
-
 
 	/** Helper method for specific initialization */
 	private CharArray createCharArrayWithString (String value) {
