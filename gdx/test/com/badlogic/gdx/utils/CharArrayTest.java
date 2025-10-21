@@ -532,16 +532,6 @@ public class CharArrayTest {
 		assertFalse("Array should not contain 'z'", array.contains('z'));
 	}
 
-	/** Test indexOf(char) returns first occurrence or -1 if absent */
-	@Test
-	public void indexOfCharReturnsCorrectIndex() {
-		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
-
-		assertEquals("First occurrence of 'h' should be at index 0", 0, array.indexOf('h'));
-		assertEquals("First occurrence of 'l' should be at index 2", 2, array.indexOf('l'));
-		assertEquals("Character 'z' is absent, should return -1", -1, array.indexOf('z'));
-	}
-
 	/** Test lastIndexOf(char) returns last occurrence or -1 if absent */
 	@Test
 	public void lastIndexOfCharReturnsCorrectIndex() {
@@ -550,6 +540,16 @@ public class CharArrayTest {
 		assertEquals("Last occurrence of 'l' should be at index 9", 9, array.lastIndexOf('l'));
 		assertEquals("Last occurrence of 'o' should be at index 7", 7, array.lastIndexOf('o'));
 		assertEquals("Character 'z' is absent, should return -1", -1, array.lastIndexOf('z'));
+	}
+
+	/** Test lastIndexOf(char) works correctly with single element arrays */
+	@Test
+	public void lastIndexOfCharSingleElementArray() {
+		array.add('q');
+		assertEquals("Single element array should return 0 if it matches",
+				0, array.lastIndexOf('q'));
+		assertEquals("Single element array should return -1 if it does not match",
+				-1, array.lastIndexOf('w'));
 	}
 
 	/** Test contains(CharSequence) returns correct result for present and absent strings */
@@ -570,6 +570,16 @@ public class CharArrayTest {
 		assertEquals("Index of 'hello' should be 0", 0, array.indexOf("hello"));
 		assertEquals("Index of 'world' should be 6", 6, array.indexOf("world"));
 		assertEquals("String 'xyz' is absent, should return -1", -1, array.indexOf("xyz"));
+	}
+
+	/** Test indexOf(char) returns first occurrence or -1 if absent */
+	@Test
+	public void indexOfCharReturnsCorrectIndex() {
+		array.addAll('h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd');
+
+		assertEquals("First occurrence of 'h' should be at index 0", 0, array.indexOf('h'));
+		assertEquals("First occurrence of 'l' should be at index 2", 2, array.indexOf('l'));
+		assertEquals("Character 'z' is absent, should return -1", -1, array.indexOf('z'));
 	}
 
 	/** Test lastIndexOf(CharSequence) returns last occurrence of substring */
@@ -1516,6 +1526,16 @@ public class CharArrayTest {
 		assertEquals("appendSeparator with index should add separators correctly", "item0,item1,item2", array.toString());
 	}
 
+	/** Test that setSize returns the internal items array. */
+	@Test
+	public void setSizeReturnsItemsArray() {
+		array = new CharArray(5);
+
+		char[] returned = array.setSize(3);
+
+		assertSame("setSize should return internal items array", array.items, returned);
+	}
+
 	/** Test that setSize throws IllegalArgumentException when newSize is negative. */
 	@Test
 	public void setSizeThrowsWhenNegative() {
@@ -1528,16 +1548,32 @@ public class CharArrayTest {
 		}
 	}
 
-	/** Test that setSize resizes when newSize is greater than current capacity. */
+	/** Test that setSize allows zero and updates size correctly. */
+	@Test
+	public void setSizeAllowsZero() {
+		array = new CharArray(5); // ensure capacity is enough
+
+		char[] returned = array.setSize(0);
+
+		assertEquals("Size should be set to 0 when newSize is 0", 0, array.size);
+		assertSame("setSize should return internal items array", array.items, returned);
+	}
+
+	/** Test that setSize resizes only when newSize is greater than current capacity. */
 	@Test
 	public void setSizeResizesWhenLarger() {
 		array = new CharArray(2);
 		char[] oldItems = array.items;
 
-		array.setSize(10);
+		array.setSize(2); // equal to capacity → should not resize
+		assertSame("Items array should not change when newSize equals current capacity",
+				oldItems, array.items);
 
-		assertNotSame("setSize should allocate new array when larger than capacity", oldItems, array.items);
-		assertEquals("setSize should update size to newSize", 10, array.size);
+		array.setSize(3); // greater than capacity → should resize
+		assertNotSame("Items array should change when newSize exceeds current capacity",
+				oldItems, array.items);
+		assertEquals("Size should be updated to newSize after resizing",
+				3, array.size);
 	}
 
 	/**
@@ -1694,34 +1730,43 @@ public class CharArrayTest {
 	/** Test lastIndexOf(char, int) returns correct index when character is present */
 	@Test
 	public void lastIndexOfReturnsCorrectIndexWhenPresent() {
-		array.add('a');
-		array.add('b');
-		array.add('c');
-		array.add('b');
+		array.addAll('a', 'b', 'c', 'b');
 
-		assertEquals("lastIndexOf should find last 'b' at index 3", 3, array.lastIndexOf('b', 3));
-		assertEquals("lastIndexOf should find previous 'b' at index 1", 1, array.lastIndexOf('b', 2));
-		assertEquals("lastIndexOf should find 'a' at index 0", 0, array.lastIndexOf('a', 3));
+		assertEquals("Should find last 'b' at index 3 when starting from 3", 3, array.lastIndexOf('b', 3));
+		assertEquals("Should find previous 'b' at index 1 when starting from 2", 1, array.lastIndexOf('b', 2));
+		assertEquals("Should find 'a' at index 0 when starting from 3", 0, array.lastIndexOf('a', 3));
 	}
 
 	/** Test lastIndexOf(char, int) returns -1 when character is not present */
 	@Test
 	public void lastIndexOfReturnsMinusOneWhenNotPresent() {
-		array.add('a');
-		array.add('b');
-		array.add('c');
+		array.addAll('a', 'b', 'c');
 
-		assertEquals("lastIndexOf should return -1 if char not present", -1, array.lastIndexOf('x', 2));
+		assertEquals("Should return -1 if char not present", -1, array.lastIndexOf('x', 2));
 	}
 
-	/** Test lastIndexOf(char, int) handles start index out of bounds */
+	/** Test lastIndexOf(char, int) handles start index greater than size */
 	@Test
-	public void lastIndexOfHandlesStartIndexOutOfBounds() {
-		array.add('a');
-		array.add('b');
+	public void lastIndexOfHandlesStartGreaterThanSize() {
+		array.addAll('a', 'b', 'c');
 
-		assertEquals("lastIndexOf with start > size should return last occurrence", 1, array.lastIndexOf('b', 10));
-		assertEquals("lastIndexOf with start < 0 should return -1", -1, array.lastIndexOf('a', -5));
+		assertEquals("When start >= size, should clamp to last index", 2, array.lastIndexOf('c', 5));
+		assertEquals("When start == size, should also clamp to last index", 2, array.lastIndexOf('c', 3));
+	}
+
+	/** Test lastIndexOf(char, int) returns -1 when start is negative */
+	@Test
+	public void lastIndexOfHandlesNegativeStart() {
+		array.addAll('a', 'b', 'c');
+
+		assertEquals("Negative start index should return -1", -1, array.lastIndexOf('a', -1));
+	}
+
+	/** Test lastIndexOf(char, int) finds match at exact boundary index 0 */
+	@Test
+	public void lastIndexOfFindsAtIndexZero() {
+		array.addAll('a', 'b', 'c');
+		assertEquals("Should find match at index 0 when start is 0", 0, array.lastIndexOf('a', 0));
 	}
 
 	/** Test readFrom(CharBuffer) reads all remaining characters and returns correct delta */
