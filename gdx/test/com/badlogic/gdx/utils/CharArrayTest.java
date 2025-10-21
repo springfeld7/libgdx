@@ -2,11 +2,14 @@ package com.badlogic.gdx.utils;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +17,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -316,7 +321,6 @@ public class CharArrayTest {
 	/** Test set(int, char) throws IndexOutOfBoundsException for invalid index */
 	@Test
 	public void setThrowsForInvalidIndex() {
-		array.clear();
 		try {
 			array.set(100, 'x');
 			fail("Should throw exception");
@@ -999,6 +1003,15 @@ public class CharArrayTest {
 		assertEquals("Hi World! Hello!", array.toString());
 	}
 
+	/** Test replaceFirst when value == replacement */
+	@Test
+	public void replaceFirstWithSameValueReturnsFalse() {
+		array.addAll('a', 'b', 'c');
+
+		assertFalse(array.replaceFirst('a', 'a')); // value == replacement
+	}
+
+
 	/** Test replace(char, String) replaces a character with a string */
 	@Test
 	public void replaceCharWithString() {
@@ -1563,6 +1576,57 @@ public class CharArrayTest {
 		assertEquals("item0,item1,item2", array.toString());
 	}
 
+	/** Test that setSize throws IllegalArgumentException when newSize is negative. */
+	@Test
+	public void setSizeThrowsWhenNegative() {
+
+		try {
+			array.setSize(-1);
+			fail("Expected IllegalArgumentException for negative size");
+		} catch (IllegalArgumentException ex) {
+			assertTrue(ex.getMessage().contains("newSize must be >= 0"));
+		}
+	}
+
+	/** Test that setSize resizes when newSize is greater than current capacity. */
+	@Test
+	public void setSizeResizesWhenLarger() {
+		array = new CharArray(2);
+		char[] oldItems = array.items;
+
+		array.setSize(10);
+
+		assertNotSame(oldItems, array.items);
+		assertEquals(10, array.size);
+	}
+
+	/**
+	 * Tests that setSize does not resize when newSize fits within capacity.
+	 */
+	@Test
+	public void setSizeNoResizeWhenWithinCapacity() {
+		array = new CharArray(5);
+		char[] oldItems = array.items;
+
+		array.setSize(3);
+
+		assertSame(oldItems, array.items);
+		assertEquals(3, array.size);
+	}
+
+	/** Test toArray() returns a copy with correct contents */
+	@Test
+	public void toArrayReturnsCopyWithCorrectContents() {
+		array.add('a');
+		array.add('b');
+		array.add('c');
+		char[] result = array.toArray();
+
+		assertArrayEquals(new char[] {'a', 'b', 'c'}, result);
+		assertEquals(3, result.length);
+		assertNotSame(array.items, result);
+	}
+
 	/** Test appendSeparator(String) adds string separators correctly */
 	@Test
 	public void appendSeparatorStringAddsSeparators() {
@@ -1573,6 +1637,359 @@ public class CharArrayTest {
 		array.append("C");
 
 		assertEquals("A | B | C", array.toString());
+	}
+
+	/** Test insert(int, char[], int, int) inserts NULL placeholder when array is null */
+	@Test
+	public void insertCharArrayInsertsNullPlaceholderWhenArrayIsNull() {
+		array.add('a');
+		array.insert(0, null, 0, 0);
+
+		assertEquals(5, array.size); // "null" = 4 chars + 'a'
+		assertEquals('n', array.items[0]);
+		assertEquals('u', array.items[1]);
+		assertEquals('l', array.items[2]);
+		assertEquals('l', array.items[3]);
+		assertEquals('a', array.items[4]);
+	}
+
+	/** Test insert(int, char[], int, int) throws IndexOutOfBoundsException for invalid offset */
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void insertCharArrayThrowsForInvalidOffset() {
+		char[] src = {'x','y'};
+		array.insert(0, src, -1, 1);
+	}
+
+	/** Test insert(int, char[], int, int) throws IndexOutOfBoundsException for invalid length */
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void insertCharArrayThrowsForInvalidLength() {
+		char[] src = {'x','y'};
+		array.insert(0, src, 0, 5);
+	}
+
+	/** Test insert(int, char[], int, int) with length 0 does not change size */
+	@Test
+	public void insertCharArrayWithZeroLengthDoesNothing() {
+		array.add('a');
+		char[] src = {'x','y'};
+		array.insert(0, src, 0, 0);
+
+		assertEquals(1, array.size);
+		assertEquals('a', array.items[0]);
+	}
+
+	/** Test insert(int, char[], int, int) inserts characters correctly */
+	@Test
+	public void insertCharArrayInsertsCharactersCorrectly() {
+		array.add('a');
+		char[] src = {'x','y','z'};
+		array.insert(0, src, 0, 3);
+
+		assertEquals(4, array.size); // 3 inserted + 1 original
+		assertEquals('x', array.items[0]);
+		assertEquals('y', array.items[1]);
+		assertEquals('z', array.items[2]);
+		assertEquals('a', array.items[3]);
+	}
+
+	/** Test insert(int, long) inserts the string representation of the long value */
+	@Test
+	public void insertInsertsStringOfLong() {
+		array.add('a');
+		array.insert(0, 123L);
+
+		assertEquals(4, array.size); // "123" is 3 chars + original 'a'
+		assertEquals('1', array.items[0]);
+		assertEquals('2', array.items[1]);
+		assertEquals('3', array.items[2]);
+		assertEquals('a', array.items[3]);
+	}
+
+	/** Test insert(int, float) inserts the string representation of the float value */
+	@Test
+	public void insertInsertsStringOfFloat() {
+		array.add('x');
+		array.insert(0, 1.5f);
+
+		String inserted = new String(array.items, 0, array.size);
+		assertTrue(inserted.startsWith("1.5"));
+		assertTrue(inserted.endsWith("x"));
+	}
+
+	/** Test insert(int, double) inserts the string representation of the double value */
+	@Test
+	public void insertInsertsStringOfDouble() {
+		array.add('y');
+		array.insert(0, 2.75);
+
+		String inserted = new String(array.items, 0, array.size);
+		assertTrue(inserted.startsWith("2.75"));
+		assertTrue(inserted.endsWith("y"));
+	}
+
+	/** Test insert(int, Object) inserts object string when object is not null */
+	@Test
+	public void insertInsertsObjectStringWhenObjectIsNotNull() {
+		array.add('a');
+		array.insert(0, "b");
+
+		assertEquals(2, array.size);
+		assertEquals('b', array.items[0]);
+	}
+
+	/** Test insert(int, Object) inserts NULL placeholder when object is null */
+	@Test
+	public void insertInsertsNullPlaceholderWhenObjectIsNull() {
+		array.add('a');
+		array.insert(0, (Object) null);
+
+		assertEquals(5, array.size); // 3 chars "null" + 'a'
+		assertEquals('n', array.items[0]);
+		assertEquals('u', array.items[1]);
+		assertEquals('l', array.items[2]);
+		assertEquals('l', array.items[3]);
+		assertEquals('a', array.items[4]);
+	}
+
+	/** Test lastIndexOf(char, int) returns correct index when character is present */
+	@Test
+	public void lastIndexOfReturnsCorrectIndexWhenPresent() {
+		array.add('a');
+		array.add('b');
+		array.add('c');
+		array.add('b');
+
+		assertEquals(3, array.lastIndexOf('b', 3));
+		assertEquals(1, array.lastIndexOf('b', 2));
+		assertEquals(0, array.lastIndexOf('a', 3));
+	}
+
+	/** Test lastIndexOf(char, int) returns -1 when character is not present */
+	@Test
+	public void lastIndexOfReturnsMinusOneWhenNotPresent() {
+		array.add('a');
+		array.add('b');
+		array.add('c');
+
+		assertEquals(-1, array.lastIndexOf('x', 2));
+	}
+
+	/** Test lastIndexOf(char, int) handles start index out of bounds */
+	@Test
+	public void lastIndexOfHandlesStartIndexOutOfBounds() {
+		array.add('a');
+		array.add('b');
+
+		assertEquals(1, array.lastIndexOf('b', 10));  // start > size
+		assertEquals(-1, array.lastIndexOf('a', -5)); // start < 0
+	}
+
+	/** Test readFrom(CharBuffer) reads all remaining characters and returns correct delta */
+	@Test
+	public void readFromCharBufferReadsAllRemainingCharacters() {
+		array = new CharArray(5); // small initial capacity
+		array.add('x');            // oldSize > 0
+		char[] data = new char[10];
+		Arrays.fill(data, 'y');
+		CharBuffer buffer = CharBuffer.wrap(data);
+
+		int result = array.readFrom(buffer);
+
+		assertEquals(10, result);                  // newly read chars
+		assertEquals(11, array.size);              // 1 old + 10 new
+		char[] expected = new char[11];
+		expected[0] = 'x';
+		Arrays.fill(expected, 1, expected.length, 'y');
+		assertArrayEquals(expected, Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Readable) delegates to Reader and returns correct delta */
+	@Test
+	public void readFromReadableDelegatesToReader() throws IOException {
+		array = new CharArray(5);
+		array.add('x');
+		String input = "abcdefghij"; // 10 chars > initial capacity
+		Reader reader = new StringReader(input);
+
+		int result = array.readFrom(reader);
+
+		assertEquals(10, result);
+		assertEquals(11, array.size);
+		assertArrayEquals(("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Readable) delegates to CharBuffer and returns correct delta */
+	@Test
+	public void readFromReadableDelegatesToCharBuffer() {
+		array.add('x'); // oldSize > 0
+		CharBuffer buffer = CharBuffer.wrap(new char[] {'y', 'z'});
+
+		int result = array.readFrom(buffer);
+
+		assertEquals(2, result);
+		assertEquals(3, array.size);
+		assertArrayEquals(new char[] {'x', 'y', 'z'}, Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Readable) reads from generic Readable and returns correct delta */
+	@Test
+	public void readFromReadableReadsFromGenericReadable() throws IOException {
+		array = new CharArray(5);
+		array.add('x');
+		char[] data = new char[10];
+		Arrays.fill(data, 'p');
+
+		Readable readable = new Readable() {
+			int pos = 0;
+			@Override
+			public int read(@NotNull CharBuffer cb) {
+				if (pos >= data.length) return -1;
+				int n = Math.min(cb.remaining(), data.length - pos);
+				cb.put(data, pos, n);
+				pos += n;
+				return n;
+			}
+		};
+
+		int result = array.readFrom(readable);
+
+		assertEquals(10, result);
+		assertEquals(11, array.size);
+		char[] expected = new char[11];
+		expected[0] = 'x';
+		Arrays.fill(expected, 1, expected.length, 'p');
+		assertArrayEquals(expected, Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Reader) triggers require(), resizes buffer, and returns correct delta */
+	@Test
+	public void readFromReaderTriggersRequire() throws IOException {
+		array.add('x'); // oldSize > 0
+		String input = "abcdef"; // longer than initial capacity
+		Reader reader = new StringReader(input);
+
+		int result = array.readFrom(reader);
+
+		assertEquals(input.length(), result);       // newly read chars
+		assertEquals(input.length() + 1, array.size); // old + new
+		assertArrayEquals(("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Reader, int) triggers require(), resizes buffer, and returns correct delta */
+	@Test
+	public void readFromReaderWithCountTriggersRequire() throws IOException {
+		array = new CharArray(5);
+		array.add('x');
+		String input = "abcdefghij"; // 10 chars
+		Reader reader = new StringReader(input);
+
+		int result = array.readFrom(reader, input.length());
+
+		assertEquals(10, result);
+		assertEquals(11, array.size);
+		assertArrayEquals(("x" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Readable) triggers require(), resizes buffer, and returns correct delta */
+	@Test
+	public void readFromReadableTriggersRequire() throws IOException {
+		array.add('z'); // oldSize > 0
+		String input = "abcdef";
+
+		Readable readable = new Readable() {
+			final char[] data = input.toCharArray();
+			int pos = 0;
+
+			@Override
+			public int read(@NotNull CharBuffer cb) {
+				if (pos >= data.length) return -1;
+				int n = Math.min(cb.remaining(), data.length - pos);
+				cb.put(data, pos, n);
+				pos += n;
+				return n;
+			}
+		};
+
+		int result = array.readFrom(readable);
+
+		assertEquals(input.length(), result);
+		assertEquals(input.length() + 1, array.size);
+		assertArrayEquals(("z" + input).toCharArray(), Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Reader) returns -1 when reader is empty */
+	@Test
+	public void readFromReturnsMinusOneWhenReaderEmpty() throws IOException {
+		Reader reader = new StringReader(""); // immediate EOS
+
+		int result = array.readFrom(reader);
+
+		assertEquals(-1, result);
+		assertEquals(0, array.size);
+	}
+
+	/** Test readFrom(Reader) reads all characters until end of stream */
+	@Test
+	public void readFromReadsAllCharactersUntilEndOfStream() throws IOException {
+		Reader reader = new StringReader("abc");
+
+		int result = array.readFrom(reader);
+
+		assertEquals(3, result);
+		assertEquals(3, array.size);
+		assertArrayEquals(new char[] {'a', 'b', 'c'},
+				Arrays.copyOf(array.items, array.size));
+	}
+
+	/** Test readFrom(Reader, int) returns -1 when reader is empty */
+	@Test
+	public void readFromWithCountReturnsMinusOneWhenReaderEmpty() throws IOException {
+		Reader reader = new StringReader(""); // immediate EOS
+
+		int result = array.readFrom(reader, 3);
+
+		assertEquals(-1, result);
+		assertEquals(0, array.size);
+	}
+
+	/** Test readFrom(Reader, int) returns 0 when count is zero or negative */
+	@Test
+	public void readFromWithCountReturnsZeroForNonPositiveCount() throws IOException {
+		Reader reader = new StringReader("abc");
+
+		assertEquals(0, array.readFrom(reader, 0));
+		assertEquals(0, array.readFrom(reader, -5));
+	}
+
+	/** Test readFrom(Reader, int) reads exactly count characters */
+	@Test
+	public void readFromWithCountReadsExactNumberOfCharacters() throws IOException {
+		array = new CharArray(5);
+		array.add('x');
+		String input = "abcdef";
+		Reader reader = new StringReader(input);
+
+		int result = array.readFrom(reader, 3); // count < input.length()
+
+		assertEquals(3, result);
+		assertEquals(4, array.size); // 1 old + 3 new
+		assertArrayEquals(new char[] {'x', 'a', 'b', 'c'}, Arrays.copyOf(array.items, array.size));
+	}
+
+
+	/** Test readFrom(Reader, int) reads until EOS if reader has fewer chars than count */
+	@Test
+	public void readFromWithCountReadsUntilEos() throws IOException {
+		array = new CharArray(5);
+		array.add('x');
+		String input = "ab"; // fewer than count
+		Reader reader = new StringReader(input);
+
+		int result = array.readFrom(reader, 5); // count > input.length()
+
+		assertEquals(2, result);
+		assertEquals(3, array.size); // 1 old + 2 new
+		assertArrayEquals(new char[] {'x', 'a', 'b'}, Arrays.copyOf(array.items, array.size));
 	}
 
 	/** Test random() returns default for empty array */
@@ -1699,6 +2116,8 @@ public class CharArrayTest {
 		}
 		assertEquals(10000, large.size);
 	}
+
+
 
 	/** Helper method for specific initialization */
 	private CharArray createCharArrayWithString (String value) {
