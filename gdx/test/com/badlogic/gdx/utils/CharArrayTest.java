@@ -855,11 +855,226 @@ public class CharArrayTest {
 		assertEquals("Appending lines with appendln should result in correct newline placement", "Line 1\nLine 2\nLine 3", array.toString());
 	}
 
+	/** Test appendln(boolean) appends true/false and newline, returns same instance */
+	@Test
+	public void appendlnBooleanAppendsValueAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln(true);
+		CharArray returned2 = array.appendln(false);
+
+		assertEquals("Array should contain 'true\\nfalse\\n'", "true\nfalse\n", array.toString());
+		assertSame("appendln(true) should return the same instance", array, returned1);
+		assertSame("appendln(false) should return the same instance", array, returned2);
+	}
+
+	/** Test appendln(char) appends character and newline, returns same instance */
+	@Test
+	public void appendlnCharAppendsCharAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln('x');
+		CharArray returned2 = array.appendln('y');
+
+		assertEquals("Array should contain 'x\\ny\\n'", "x\ny\n", array.toString());
+		assertSame("appendln('x') should return the same instance", array, returned1);
+		assertSame("appendln('y') should return the same instance", array, returned2);
+	}
+
+	/** Test appendln(char[]) appends char array and newline, handles null, returns same instance */
+	@Test
+	public void appendlnCharArrayAppendsArrayAndReturnsSameInstance() {
+		char[] chars = {'a', 'b', 'c'};
+		CharArray returned1 = array.appendln(chars);
+		CharArray returned2 = array.appendln((char[]) null); // should call appendNull()
+
+		assertEquals("Array should contain 'abc\\nnull\\n'", "abc\nnull\n", array.toString());
+		assertSame("appendln(chars) should return the same instance", array, returned1);
+		assertSame("appendln(null char[]) should return the same instance", array, returned2);
+	}
+
+	/** Test appendln(int) appends int and newline, returns same instance */
+	@Test
+	public void appendlnIntAppendsValueAndReturnsSameInstance() {
+		CharArray returned = array.appendln(42);
+
+		assertEquals("Array should contain '42\\n'", "42\n", array.toString());
+		assertSame("appendln(int) should return the same instance", array, returned);
+	}
+
+	/** Test appendln(long) appends long and newline, returns same instance */
+	@Test
+	public void appendlnLongAppendsValueAndReturnsSameInstance() {
+		CharArray returned = array.appendln(1234567890123L);
+
+		assertEquals("Array should contain '1234567890123\\n'", "1234567890123\n", array.toString());
+		assertSame("appendln(long) should return the same instance", array, returned);
+	}
+
+	/** Test appendln(float) appends float and newline, returns same instance */
+	@Test
+	public void appendlnFloatAppendsValueAndReturnsSameInstance() {
+		CharArray returned = array.appendln(3.14f);
+
+		assertEquals("Array should contain '3.14\\n'", "3.14\n", array.toString());
+		assertSame("appendln(float) should return the same instance", array, returned);
+	}
+
+	/** Test appendln(double) appends double and newline, returns same instance */
+	@Test
+	public void appendlnDoubleAppendsValueAndReturnsSameInstance() {
+		CharArray returned = array.appendln(2.71828);
+
+		assertEquals("Array should contain '2.71828\\n'", "2.71828\n", array.toString());
+		assertSame("appendln(double) should return the same instance", array, returned);
+	}
+
+	/** Test appendln(Object) appends object and newline, handles null, returns same instance */
+	@Test
+	public void appendlnObjectAppendsValueAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln("hello");
+		CharArray returned2 = array.appendln((Object) null);
+
+		assertEquals("Array should contain 'hello\\nnull\\n'", "hello\nnull\n", array.toString());
+		assertSame("appendln(Object) with value should return the same instance", array, returned1);
+		assertSame("appendln(Object) with null should return the same instance", array, returned2);
+	}
+
+	/** Test appendln(char[], start, length) appends nothing if length is 0 */
+	@Test
+	public void appendlnCharArrayWithOffsetLengthZero() {
+		char[] chars = {'x', 'y'};
+		array.appendln(chars, 1, 0); // length = 0, should append only newline
+
+		assertEquals("Array should contain only newline when length is 0", "\n", array.toString());
+	}
+
+	/** Test appendln(char[], start, length) throws exception for invalid start or length */
+	@Test
+	public void appendlnCharArrayWithOffsetThrowsForInvalidStartOrLength() {
+		char[] chars = {'a', 'b'};
+
+		try {
+			array.appendln(chars, -1, 1);
+			fail("Expected IndexOutOfBoundsException for negative start");
+		} catch (IndexOutOfBoundsException ex) {
+			assertEquals("Invalid start: -1", ex.getMessage());
+		}
+
+		try {
+			array.appendln(chars, 1, -1);
+			fail("Expected IndexOutOfBoundsException for negative length");
+		} catch (IndexOutOfBoundsException ex) {
+			assertEquals("Invalid length: -1", ex.getMessage());
+		}
+
+		try {
+			array.appendln(chars, 1, 5); // start + length > array.length
+			fail("Expected IndexOutOfBoundsException for start + length > array.length");
+		} catch (IndexOutOfBoundsException ex) {
+			assertEquals("Invalid length: 5", ex.getMessage());
+		}
+	}
+
 	/** Test appendln() with no arguments appends just a newline */
 	@Test
 	public void appendlnNoArgsAddsNewline() {
 		array.appendln();
 		assertEquals("Appending appendln() with no arguments should add a single newline", "\n", array.toString());
+	}
+
+	/** Test appendLine(String) appends string and newline, handles null, returns same instance */
+	@Test
+	public void appendLineStringAppendsValueAndReturnsSameInstance() {
+		CharArray returned1 = array.appendLine("hello");
+		CharArray returned2 = array.appendLine((String) null);
+
+		assertEquals("Array should contain 'hello\\nnull\\n'", "hello\nnull\n", array.toString());
+		assertSame("appendLine(String) with value should return same instance", array, returned1);
+		assertSame("appendLine(String) with null should return same instance", array, returned2);
+	}
+
+	/** Test appendln(String, start, end) appends substring and newline, handles null, returns same instance */
+	@Test
+	public void appendlnStringWithOffsetAppendsSubstringAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln("abcdef", 1, 4); // append "bcd"
+		CharArray returned2 = array.appendln((String) null, 0, 0);
+
+		assertEquals("Array should contain 'bcd\\nnull\\n'", "bcd\nnull\n", array.toString());
+		assertSame("appendln(String, start, end) should return same instance", array, returned1);
+		assertSame("appendln(null String, 0, 0) should return same instance", array, returned2);
+	}
+
+	/** Test appendln(StringBuffer) appends buffer and newline, handles null, returns same instance */
+	@Test
+	public void appendlnStringBufferAppendsValueAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln(new StringBuffer("buff"));
+		CharArray returned2 = array.appendln((StringBuffer) null);
+
+		assertEquals("Array should contain 'buff\\nnull\\n'", "buff\nnull\n", array.toString());
+		assertSame("appendln(StringBuffer) with value should return same instance", array, returned1);
+		assertSame("appendln(StringBuffer) with null should return same instance", array, returned2);
+	}
+
+	/** Test appendln(StringBuffer, start, end) appends substring and newline, handles null, returns same instance */
+	@Test
+	public void appendlnStringBufferWithOffsetAppendsSubstringAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln(new StringBuffer("abcdef"), 2, 5); // append "cde"
+		CharArray returned2 = array.appendln((StringBuffer) null, 0, 0);
+
+		assertEquals("Array should contain 'cde\\nnull\\n'", "cde\nnull\n", array.toString());
+		assertSame("appendln(StringBuffer, start, end) should return same instance", array, returned1);
+		assertSame("appendln(null StringBuffer, 0, 0) should return same instance", array, returned2);
+	}
+
+	/** Test appendln(StringBuilder) appends builder and newline, handles null, returns same instance */
+	@Test
+	public void appendlnStringBuilderAppendsValueAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln(new StringBuilder("build"));
+		CharArray returned2 = array.appendln((StringBuilder) null);
+
+		assertEquals("Array should contain 'build\\nnull\\n'", "build\nnull\n", array.toString());
+		assertSame("appendln(StringBuilder) with value should return same instance", array, returned1);
+		assertSame("appendln(StringBuilder) with null should return same instance", array, returned2);
+	}
+
+	/** Test appendln(StringBuilder, start, end) appends substring and newline, handles null, returns same instance */
+	@Test
+	public void appendlnStringBuilderWithOffsetAppendsSubstringAndReturnsSameInstance() {
+		CharArray returned1 = array.appendln(new StringBuilder("abcdef"), 1, 4); // append "bcd"
+		CharArray returned2 = array.appendln((StringBuilder) null, 0, 0);
+
+		assertEquals("Array should contain 'bcd\\nnull\\n'", "bcd\nnull\n", array.toString());
+		assertSame("appendln(StringBuilder, start, end) should return same instance", array, returned1);
+		assertSame("appendln(null StringBuilder, 0, 0) should return same instance", array, returned2);
+	}
+
+	/** Test appendln(CharArray) appends another CharArray and newline, handles null, returns same instance */
+	@Test
+	public void appendlnCharArrayAppendsValueAndReturnsSameInstance() {
+		CharArray other = createCharArrayWithString("xyz");
+		CharArray returned1 = array.appendln(other);
+		CharArray returned2 = array.appendln((CharArray) null);
+
+		assertEquals("Array should contain 'xyz\\nnull\\n'", "xyz\nnull\n", array.toString());
+		assertSame("appendln(CharArray) with value should return same instance", array, returned1);
+		assertSame("appendln(CharArray) with null should return same instance", array, returned2);
+	}
+
+	/** Test appendln(CharArray, start, end) appends subarray and newline, handles null, returns same instance */
+	@Test
+	public void appendlnCharArrayWithOffsetAppendsSubarrayAndReturnsSameInstance() {
+		CharArray other = createCharArrayWithString("abcdef");
+		CharArray returned1 = array.appendln(other, 1, 4); // append "bcd"
+		CharArray returned2 = array.appendln((CharArray) null, 0, 0);
+
+		assertEquals("Array should contain 'bcd\\nnull\\n'", "bcd\nnull\n", array.toString());
+		assertSame("appendln(CharArray, start, end) should return same instance", array, returned1);
+		assertSame("appendln(null CharArray, 0, 0) should return same instance", array, returned2);
+	}
+
+	/** Test appendln() appends only newline */
+	@Test
+	public void appendlnNoArgsAppendsOnlyNewline() {
+		array.appendln().appendln();
+
+		assertEquals("Array should contain two newlines", "\n\n", array.toString());
 	}
 
 	/** Test appendPadding(int, char) appends padding characters after existing content */
@@ -1133,6 +1348,21 @@ public class CharArrayTest {
 		assertTrue("startsWith('') should always return true", array.startsWith(""));
 	}
 
+	/** Test startsWith returns false if string length exceeds array size */
+	@Test
+	public void startsWithReturnsFalseForLongString() {
+		array = new CharArray(true, 5);
+		array.addAll('a', 'b', 'c'); // size = 3
+
+		String tooLong = "abcd"; // length 4 > size 3
+		assertFalse("startsWith should return false when string length > array size",
+				array.startsWith(tooLong));
+
+		String exactSize = "abc"; // length == size
+		assertTrue("startsWith should return true when string matches entire array",
+				array.startsWith(exactSize));
+	}
+
 	/** Test endsWith(String) returns true if array ends with given string */
 	@Test
 	public void endsWithReturnsCorrectResult() {
@@ -1163,6 +1393,19 @@ public class CharArrayTest {
 		assertTrue("containsIgnoreCase('WORLD') should return true", array.containsIgnoreCase("WORLD"));
 		assertFalse("containsIgnoreCase('xyz') should return false", array.containsIgnoreCase("xyz"));
 	}
+
+	/** Test startsWith returns false if the string length is greater than the array size */
+	@Test
+	public void startsWithReturnsFalseIfLengthGreaterThanSize() {
+		// Create an array with a small known size
+		array = new CharArray(true, 5);
+		array.addAll('a', 'b', 'c');
+
+		String longPrefix = "abcdef"; // length 6 > array size 3
+		assertFalse("startsWith should return false if string length > array size",
+				array.startsWith(longPrefix));
+	}
+
 
 	/** Test equals(CharArray) and equalsString(String) return true for exact matches */
 	@Test
@@ -1237,6 +1480,30 @@ public class CharArrayTest {
 		assertEquals("trim() should preserve size", 5, array.size);
 	}
 
+	/** Test trim removes leading spaces */
+	@Test
+	public void trimRemovesLeadingSpaces() {
+		CharArray array = new CharArray("   abc".toCharArray());
+		array = array.trim();
+		assertEquals("abc", array.toString());
+	}
+
+	/** Test trim removes trailing spaces */
+	@Test
+	public void trimRemovesTrailingSpaces() {
+		CharArray array = new CharArray("abc   ".toCharArray());
+		array = array.trim();
+		assertEquals("abc", array.toString());
+	}
+
+	/** Test trim removes both leading and trailing spaces */
+	@Test
+	public void trimRemovesLeadingAndTrailingSpaces() {
+		CharArray array = new CharArray("  abc  ".toCharArray());
+		array = array.trim();
+		assertEquals("abc", array.toString());
+	}
+
 	/** Test trimToSize() adjusts capacity to match current size */
 	@Test
 	public void trimToSizeAdjustsCapacity() {
@@ -1248,32 +1515,339 @@ public class CharArrayTest {
 		assertEquals("trimToSize() should adjust capacity to match current size", 4, array.capacity());
 	}
 
-	/** Test setLength(int) truncates or extends the array correctly */
+	/** Test trim returns same instance when array is empty */
 	@Test
-	public void setLengthTruncatesOrExtendsArray() {
-		array = createCharArrayWithString("Hello");
-
-		// Truncate
-		array.setLength(3);
-		assertEquals("setLength should truncate the array to 'Hel'", "Hel", array.toString());
-
-		// Extend (fills with '\0')
-		array.setLength(5);
-		assertEquals("setLength should extend the array to length 5", 5, array.length());
+	public void trimReturnsThisForEmptyArray() {
+		array = new CharArray(true, 10); // empty array
+		CharArray returned = array.trim();
+		assertSame("trim should return the same instance for an empty array", array, returned);
 	}
 
-	/** Test equals(Object) returns true for same instance or content and false otherwise */
+	/** Test appendSeparator appends separator only if separator is not null and loopIndex > 0 */
 	@Test
-	public void equalsObjectHandlesVariousCases() {
-		array = createCharArrayWithString("Hello");
-		CharArray array2 = createCharArrayWithString("Hello");
-		CharArray array3 = createCharArrayWithString("World");
+	public void appendSeparatorAppendsWhenSeparatorNotNullAndLoopIndexPositive() {
+		array = createCharArrayWithString("a");
+		array.appendSeparator(", ", 1);
 
+		assertEquals("Separator should be appended when loopIndex > 0 and separator is not null", "a, ", array.toString());
+	}
+
+	/** Test appendSeparator does not append when loopIndex is 0 */
+	@Test
+	public void appendSeparatorDoesNotAppendWhenLoopIndexZero() {
+		array = createCharArrayWithString("a");
+		array.appendSeparator(", ", 0);
+
+		assertEquals("Separator should not be appended when loopIndex is 0", "a", array.toString());
+	}
+
+	/** Test appendSeparator does not append when separator is null */
+	@Test
+	public void appendSeparatorDoesNotAppendWhenSeparatorIsNull() {
+		array = createCharArrayWithString("a");
+		array.appendSeparator(null, 1);
+
+		assertEquals("Separator should not be appended when separator is null", "a", array.toString());
+	}
+
+	/** Test appendSeparator does not append when separator is null and loopIndex is 0 */
+	@Test
+	public void appendSeparatorDoesNotAppendWhenSeparatorNullAndLoopIndexZero() {
+		array = createCharArrayWithString("a");
+		array.appendSeparator(null, 0);
+
+		assertEquals("Separator should not be appended when separator is null and loopIndex is 0", "a", array.toString());
+	}
+
+	/** Test codePointBefore returns correct code point for given index */
+	@Test
+	public void codePointBeforeReturnsCorrectCodePoint() {
+		array = createCharArrayWithString("abc");
+
+		int cp = array.codePointBefore(1); // before 'a' → index 0
+		assertEquals("codePointBefore(1) should return code point of 'a'", 'a', cp);
+
+		cp = array.codePointBefore(3); // before 'c' → index 2
+		assertEquals("codePointBefore(3) should return code point of 'c'", 'c', cp);
+	}
+
+
+	/** Test offsetByCodePoints with positive offsets */
+	@Test
+	public void offsetByCodePointsPositiveOffset() {
+		array = createCharArrayWithString("abc");
+		int index = 0;
+		int offset = 2; // move forward 2 code points
+		int result = array.offsetByCodePoints(index, offset);
+
+		assertEquals("Offset by 2 code points from index 0 should be 2", 2, result);
+	}
+
+	/** Test offsetByCodePoints with negative offsets */
+	@Test
+	public void offsetByCodePointsNegativeOffset() {
+		array = createCharArrayWithString("abc");
+		int index = 2;
+		int offset = -1; // move back 1 code point
+		int result = array.offsetByCodePoints(index, offset);
+
+		assertEquals("Offset by -1 code point from index 2 should be 1", 1, result);
+	}
+
+	/** Test offsetByCodePoints with zero offset returns same index */
+	@Test
+	public void offsetByCodePointsZeroOffset() {
+		array = createCharArrayWithString("abc");
+		int index = 1;
+		int result = array.offsetByCodePoints(index, 0);
+
+		assertEquals("Offset by 0 code points should return the same index", 1, result);
+	}
+
+	/** Test offsetByCodePoints handles surrogate pairs correctly */
+	@Test
+	public void offsetByCodePointsWithSurrogatePairs() {
+		// U+1F600 😀 = surrogate pair
+		array = new CharArray("a\uD83D\uDE00b".toCharArray()); // "a😀b"
+		int index = 0;
+		int result = array.offsetByCodePoints(index, 2); // move past 'a' + 😀
+		assertEquals("Offset by 2 code points from index 0 should land after 😀", 3, result);
+
+		result = array.offsetByCodePoints(3, -2); // move back 2 code points
+		assertEquals("Offset back by 2 code points should return to index 0", 0, result);
+	}
+
+	/** Test codePointBefore throws exception for index < 1 with correct message */
+	@Test
+	public void codePointBeforeThrowsForIndexLessThanOneWithMessage() {
+		array = createCharArrayWithString("abc");
+		try {
+			array.codePointBefore(0);
+			fail("Expected IndexOutOfBoundsException for index < 1");
+		} catch (IndexOutOfBoundsException ex) {
+			assertEquals("Exception message should indicate index and size",
+					"index: 0, size: 3", ex.getMessage());
+		}
+	}
+
+	/** Test codePointBefore throws exception for index > size with correct message */
+	@Test
+	public void codePointBeforeThrowsForIndexGreaterThanSizeWithMessage() {
+		array = createCharArrayWithString("abc");
+		try {
+			array.codePointBefore(4); // size = 3
+			fail("Expected IndexOutOfBoundsException for index > size");
+		} catch (IndexOutOfBoundsException ex) {
+			assertEquals("Exception message should indicate index and size",
+					"index: 4, size: 3", ex.getMessage());
+		}
+	}
+
+	/** Test that setLength throws for negative length */
+	@Test
+	public void setLengthThrowsForNegative() {
+		array = createCharArrayWithString("Hello");
+		try {
+			array.setLength(-1);
+			fail("Expected IndexOutOfBoundsException for negative length");
+		} catch (IndexOutOfBoundsException ex) {
+			assertEquals("length: -1", ex.getMessage());
+		}
+	}
+
+	/** Test that setLength truncates the array when length < size */
+	@Test
+	public void setLengthTruncatesArray() {
+		array = createCharArrayWithString("Hello");
+		CharArray returned = array.setLength(3);
+		assertEquals("Array should truncate to 'Hel'", "Hel", array.toString());
+		assertSame("setLength should return the same instance", array, returned);
+	}
+
+	/** Test that setLength does nothing when length == size */
+	@Test
+	public void setLengthNoChangeWhenLengthEqualsSize() {
+		array = createCharArrayWithString("Hello");
+		CharArray returned = array.setLength(5); // size == 5
+		assertEquals("Array size should remain 5", 5, array.size);
+		assertSame(array, returned);
+	}
+
+	/** Test that setLength extends the array and fills new portion with '\0' */
+	@Test
+	public void setLengthExtendsArrayAndFills() {
+		array = createCharArrayWithString("Hello"); // size = 5
+		CharArray returned = array.setLength(7); // extend to 7
+		char[] expected = {'H','e','l','l','o','\0','\0'};
+		for (int i = 0; i < 7; i++) {
+			assertEquals("Extended portion should be correct", expected[i], array.items[i]);
+		}
+		assertSame(array, returned);
+	}
+
+	/** Test that setLength truncates completely to zero */
+	@Test
+	public void setLengthTruncateToZero() {
+		array = createCharArrayWithString("Hello");
+		CharArray returned = array.setLength(0);
+		assertEquals("Array should truncate to length 0", 0, array.size);
+		assertSame(array, returned);
+	}
+
+	/** Test set(CharSequence) replaces contents with a new string */
+	@Test
+	public void setReplacesContents() {
+		array = createCharArrayWithString("Hello");
+
+		array.set("World");
+		assertEquals("Array size should match new string length", 5, array.size);
+		assertEquals("Array contents should match 'World'", "World", array.toString());
+	}
+
+	/** Test set(CharSequence) with empty string clears the array */
+	@Test
+	public void setWithEmptyStringClearsArray() {
+		array = createCharArrayWithString("Hello");
+
+		array.set("");
+		assertEquals("Array size should be 0 after setting empty string", 0, array.size);
+		assertEquals("Array should be empty", "", array.toString());
+	}
+
+	/** Test set(CharSequence) returns this for chaining */
+	@Test
+	public void setReturnsThisForChaining() {
+		array = createCharArrayWithString("Hello");
+
+		CharArray returned = array.set("Test");
+		assertSame("set should return the same instance for chaining", array, returned);
+	}
+
+	/** Test toCharArray returns correct subarray for valid ranges */
+	@Test
+	public void toCharArrayReturnsSubarray() {
+		array = createCharArrayWithString("abcdef");
+
+		char[] result1 = array.toCharArray(0, 3);
+		assertArrayEquals("Subarray 0..3 should be ['a','b','c']", new char[] {'a','b','c'}, result1);
+
+		char[] result2 = array.toCharArray(2, 6);
+		assertArrayEquals("Subarray 2..6 should be ['c','d','e','f']", new char[] {'c','d','e','f'}, result2);
+
+		char[] result3 = array.toCharArray(3, 3);
+		assertArrayEquals("Subarray 3..3 should be empty", new char[] {}, result3);
+	}
+
+	/** Test toCharArray throws exception for invalid ranges */
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void toCharArrayThrowsForNegativeStart() {
+		array = createCharArrayWithString("abcdef");
+		array.toCharArray(-1, 3);
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void toCharArrayThrowsForEndBeforeStart() {
+		array = createCharArrayWithString("abcdef");
+		array.toCharArray(3, 2);
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void toCharArrayThrowsForEndBeyondSize() {
+		array = createCharArrayWithString("abcdef");
+		array.toCharArray(2, 100); // end > size is invalid
+	}
+
+	/** Test equals returns true for the same instance */
+	@Test
+	public void equalsReturnsTrueForSameInstance() {
+		array = createCharArrayWithString("Hello");
 		assertTrue("equals should return true for same instance", array.equals(array));
-		assertTrue("equals should return true for same content", array.equals(array2));
-		assertFalse("equals should return false for different content", array.equals(array3));
+	}
+
+	/** Test equals returns false when this array is unordered */
+	@Test
+	public void equalsReturnsFalseIfThisIsUnordered() {
+		array = createCharArrayWithString("Hello");
+		array.ordered = false; // make this unordered
+		CharArray other = createCharArrayWithString("Hello");
+		assertFalse("equals should return false if this array is unordered", array.equals((Object) other));
+	}
+
+	/** Test equals returns false for null and different types */
+	@Test
+	public void equalsReturnsFalseForNullOrDifferentType() {
+		array = createCharArrayWithString("Hello");
 		assertFalse("equals should return false for null", array.equals(null));
 		assertFalse("equals should return false for different type", array.equals("Hello"));
+	}
+
+	/** Test equals returns false if the other array is unordered */
+	@Test
+	public void equalsReturnsFalseIfOtherIsUnordered() {
+		array = new CharArray(true, 16);
+		array.addAll('H','e','l','l','o');
+
+		CharArray other = new CharArray(false, 16);
+		other.addAll('H','e','l','l','o');
+
+		assertFalse("equals should return false if other array is unordered", array.equals( (Object) other));
+	}
+
+	/** Test equals returns false for arrays of different sizes */
+	@Test
+	public void equalsReturnsFalseForDifferentSizes() {
+		array = createCharArrayWithString("Hello");
+		CharArray other = createCharArrayWithString("Hell");
+		assertFalse("equals should return false for arrays of different sizes", array.equals(other));
+	}
+
+	/** Test equals returns false for arrays with different content */
+	@Test
+	public void equalsReturnsFalseForDifferentContent() {
+		array = createCharArrayWithString("Hello");
+		CharArray other = createCharArrayWithString("World");
+		assertFalse("equals should return false for arrays with different content", array.equals(other));
+	}
+
+	/** Test equals returns true for arrays with same content and ordered */
+	@Test
+	public void equalsReturnsTrueForSameContent() {
+		array = createCharArrayWithString("Hello");
+		CharArray other = createCharArrayWithString("Hello");
+		assertTrue("equals should return true for arrays with same content and ordered", array.equals(other));
+	}
+
+	/** Test equals returns false if the other array has a different size */
+	@Test
+	public void equalsReturnsFalseIfOtherHasDifferentSize() {
+		array = new CharArray(true, 5);
+		array.addAll('H','e','l','l','o');
+		CharArray other = new CharArray(true, 6);
+		other.addAll('H','e','l','l','o','!');
+
+		assertFalse(array.equals((Object) other));
+	}
+
+	/** Test equals returns false if the other array has the same size but different content */
+	@Test
+	public void equalsReturnsFalseIfOtherHasDifferentContent() {
+		array = new CharArray(true, 5);
+		array.addAll('H','e','l','l','o');
+		CharArray other = new CharArray(true, 5);
+		other.addAll('H','x','l','l','o'); // differs at index 1
+
+		assertFalse(array.equals((Object) other));
+	}
+
+	/** Test equals returns true if the other array has the same size and identical content */
+	@Test
+	public void equalsReturnsTrueIfOtherHasSameContent() {
+		array = new CharArray(true, 5);
+		array.addAll('H','e','l','l','o');
+		CharArray other = new CharArray(true, 5);
+		other.addAll('H','e','l','l','o');
+
+		assertTrue(array.equals((Object) other));
 	}
 
 	/** Test hashCode() returns same value for equal content and different for different content */
@@ -1769,6 +2343,27 @@ public class CharArrayTest {
 		assertEquals("Should find match at index 0 when start is 0", 0, array.lastIndexOf('a', 0));
 	}
 
+	/** Test lastIndexOf(String, int) returns -1 when substring is not present */
+	@Test
+	public void lastIndexOfReturnsMinusOneIfNotFoundInArray() {
+		array = createCharArrayWithString("abcdef");
+
+		assertEquals(-1, array.lastIndexOf("xyz", 5));
+	}
+
+	/** Test lastIndexOf(String, int) throws IllegalArgumentException when string is null */
+	@Test
+	public void lastIndexOfThrowsForNullString() {
+		array = createCharArrayWithString("abcdef");
+
+		try {
+			array.lastIndexOf(null, 3);
+			fail("Expected IllegalArgumentException for null string");
+		} catch (IllegalArgumentException ex) {
+			assertEquals("str cannot be null.", ex.getMessage());
+		}
+	}
+
 	/** Test readFrom(CharBuffer) reads all remaining characters and returns correct delta */
 	@Test
 	public void readFromCharBufferReadsAllRemainingCharacters() {
@@ -2055,6 +2650,60 @@ public class CharArrayTest {
 		array.setCharAt(1, 'a').setCharAt(2, 'p').setCharAt(3, 'p').setCharAt(4, 'y');
 
 		assertEquals("setCharAt() chaining should update all specified indices", "Happy", array.toString());
+	}
+
+	/** Test CharArray.wrap(char[]) creates array with correct size and content */
+	@Test
+	public void wrapArrayCreatesCorrectCharArray() {
+		char[] chars = {'a', 'b', 'c'};
+		array = CharArray.wrap(chars);
+
+		assertEquals("Wrapped array should have size equal to initial buffer length", chars.length, array.size);
+		for (int i = 0; i < chars.length; i++) {
+			assertEquals("Wrapped array element at index " + i + " should match original", chars[i], array.get(i));
+		}
+
+		// Test that changes to original array are reflected
+		chars[0] = 'z';
+		assertEquals("Wrapped array should reflect changes to original array", 'z', array.get(0));
+	}
+
+	/** Test CharArray.wrap(char[], int) creates array with correct size and content */
+	@Test
+	public void wrapArrayWithLengthCreatesCorrectCharArray() {
+		char[] chars = {'x', 'y', 'z'};
+		array = CharArray.wrap(chars, 2);
+
+		assertEquals("Wrapped array should have size equal to specified length", 2, array.size);
+		assertEquals("Element at index 0 should match original", 'x', array.get(0));
+		assertEquals("Element at index 1 should match original", 'y', array.get(1));
+	}
+
+	/** Test CharArray.with(...) creates array with correct size and content */
+	@Test
+	public void withArrayCreatesCorrectCharArray() {
+		array = CharArray.with('m', 'n', 'o');
+
+		assertEquals("Array created with 'with' should have correct size", 3, array.size);
+		assertEquals("Element at index 0 should be 'm'", 'm', array.get(0));
+		assertEquals("Element at index 1 should be 'n'", 'n', array.get(1));
+		assertEquals("Element at index 2 should be 'o'", 'o', array.get(2));
+	}
+
+	/** Test numChars with zero and small positive values */
+	@Test
+	public void numCharsHandlesZeroAndPositive() {
+		assertEquals("numChars(0,10) should return 1 for zero", 1, CharArray.numChars(0L, 10));
+		assertEquals("numChars(5,10) should return 1 for single digit positive", 1, CharArray.numChars(5L, 10));
+		assertEquals("numChars(123,10) should return 3 for multiple digit positive", 3, CharArray.numChars(123L, 10));
+	}
+
+	/** Test numChars with negative values */
+	@Test
+	public void numCharsHandlesNegative() {
+		assertEquals("numChars(-1,10) should return 2 for single digit negative", 2, CharArray.numChars(-1L, 10));
+		assertEquals("numChars(-1234,10) should return 5 for multiple digit negative", 5, CharArray.numChars(-1234L, 10));
+		assertEquals("numChars(Long.MIN_VALUE,10) should return 20 for extreme negative", 20, CharArray.numChars(Long.MIN_VALUE, 10));
 	}
 
 	/** Test toStringAndClear */
