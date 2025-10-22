@@ -106,10 +106,12 @@ jacoco {
 dependencies {
 	testImplementation libraries.junit
 	api "com.badlogicgames.gdx:gdx-jnigen-loader:2.5.2"
+	testRuntimeOnly testnatives.desktop
 }
 
 test {
 	dependsOn("validateIOSHeader")
+	dependsOn(":fetchNatives")
 	testLogging {
 		events "passed", "skipped", "failed", "standardOut", "standardError"
 	}
