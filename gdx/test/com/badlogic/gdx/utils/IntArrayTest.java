@@ -1,19 +1,15 @@
+
 package com.badlogic.gdx.utils;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-/**
- * Comprehensive test suite for IntArray class.
- * Tests cover constructors, add/remove operations, searching, sorting,
- * capacity management, and edge cases for both ordered and unordered arrays.
- */
+/** Comprehensive test suite for IntArray class. Tests cover constructors, add/remove operations, searching, sorting, capacity
+ * management, and edge cases for both ordered and unordered arrays. */
 public class IntArrayTest {
 
-	/**
-	 * Tests default constructor creates an empty ordered array.
-	 */
+	/** Tests default constructor creates an empty ordered array. */
 	@Test
 	public void testDefaultConstructor () {
 		IntArray array = new IntArray();
@@ -22,9 +18,7 @@ public class IntArrayTest {
 		assertNotNull(array.items);
 	}
 
-	/**
-	 * Tests constructor with capacity creates array with specified initial capacity.
-	 */
+	/** Tests constructor with capacity creates array with specified initial capacity. */
 	@Test
 	public void testConstructorWithCapacity () {
 		IntArray array = new IntArray(32);
@@ -33,9 +27,7 @@ public class IntArrayTest {
 		assertTrue(array.items.length >= 32);
 	}
 
-	/**
-	 * Tests constructor with ordered flag and capacity.
-	 */
+	/** Tests constructor with ordered flag and capacity. */
 	@Test
 	public void testConstructorWithOrderedAndCapacity () {
 		IntArray orderedArray = new IntArray(true, 10);
@@ -47,9 +39,7 @@ public class IntArrayTest {
 		assertEquals(0, unorderedArray.size);
 	}
 
-	/**
-	 * Tests copy constructor creates identical but separate array.
-	 */
+	/** Tests copy constructor creates identical but separate array. */
 	@Test
 	public void testCopyConstructor () {
 		IntArray original = new IntArray();
@@ -72,9 +62,7 @@ public class IntArrayTest {
 		assertEquals(4, copy.size);
 	}
 
-	/**
-	 * Tests constructor from int array.
-	 */
+	/** Tests constructor from int array. */
 	@Test
 	public void testConstructorFromArray () {
 		int[] values = {5, 10, 15, 20};
@@ -88,9 +76,7 @@ public class IntArrayTest {
 		assertEquals(20, array.get(3));
 	}
 
-	/**
-	 * Tests constructor from array with ordered flag, start index and count.
-	 */
+	/** Tests constructor from array with ordered flag, start index and count. */
 	@Test
 	public void testConstructorFromArrayWithRange () {
 		int[] values = {1, 2, 3, 4, 5};
@@ -103,9 +89,7 @@ public class IntArrayTest {
 		assertEquals(4, array.get(2));
 	}
 
-	/**
-	 * Tests static factory method with().
-	 */
+	/** Tests static factory method with(). */
 	@Test
 	public void testWithFactoryMethod () {
 		IntArray array = IntArray.with(7, 8, 9);
@@ -115,9 +99,7 @@ public class IntArrayTest {
 		assertEquals(9, array.get(2));
 	}
 
-	/**
-	 * Tests add single value and automatic resizing.
-	 */
+	/** Tests add single value and automatic resizing. */
 	@Test
 	public void testAddSingleValue () {
 		IntArray array = new IntArray(2);
@@ -131,9 +113,7 @@ public class IntArrayTest {
 		assertEquals(3, array.get(2));
 	}
 
-	/**
-	 * Tests add two values at once.
-	 */
+	/** Tests add two values at once. */
 	@Test
 	public void testAddTwoValues () {
 		IntArray array = new IntArray();
@@ -144,9 +124,7 @@ public class IntArrayTest {
 		assertEquals(20, array.get(1));
 	}
 
-	/**
-	 * Tests add three values at once.
-	 */
+	/** Tests add three values at once. */
 	@Test
 	public void testAddThreeValues () {
 		IntArray array = new IntArray();
@@ -158,9 +136,7 @@ public class IntArrayTest {
 		assertEquals(15, array.get(2));
 	}
 
-	/**
-	 * Tests add four values at once.
-	 */
+	/** Tests add four values at once. */
 	@Test
 	public void testAddFourValues () {
 		IntArray array = new IntArray();
@@ -173,9 +149,7 @@ public class IntArrayTest {
 		assertEquals(4, array.get(3));
 	}
 
-	/**
-	 * Tests addAll with another IntArray.
-	 */
+	/** Tests addAll with another IntArray. */
 	@Test
 	public void testAddAllIntArray () {
 		IntArray array1 = new IntArray();
@@ -195,9 +169,7 @@ public class IntArrayTest {
 		assertEquals(4, array1.get(3));
 	}
 
-	/**
-	 * Tests addAll with IntArray, offset and length.
-	 */
+	/** Tests addAll with IntArray, offset and length. */
 	@Test
 	public void testAddAllIntArrayWithOffsetAndLength () {
 		IntArray array1 = new IntArray();
@@ -217,9 +189,7 @@ public class IntArrayTest {
 		assertEquals(30, array1.get(2));
 	}
 
-	/**
-	 * Tests addAll with int varargs.
-	 */
+	/** Tests addAll with int varargs. */
 	@Test
 	public void testAddAllVarargs () {
 		IntArray array = new IntArray();
@@ -233,9 +203,7 @@ public class IntArrayTest {
 		assertEquals(4, array.get(3));
 	}
 
-	/**
-	 * Tests addAll with int array, offset and length.
-	 */
+	/** Tests addAll with int array, offset and length. */
 	@Test
 	public void testAddAllArrayWithOffsetAndLength () {
 		IntArray array = new IntArray();
@@ -251,9 +219,7 @@ public class IntArrayTest {
 		assertEquals(40, array.get(3));
 	}
 
-	/**
-	 * Tests get and set operations.
-	 */
+	/** Tests get and set operations. */
 	@Test
 	public void testGetAndSet () {
 		IntArray array = new IntArray();
@@ -269,9 +235,7 @@ public class IntArrayTest {
 		assertEquals(100, array.get(1));
 	}
 
-	/**
-	 * Tests increment at specific index.
-	 */
+	/** Tests increment at specific index. */
 	@Test
 	public void testIncrementAtIndex () {
 		IntArray array = new IntArray();
@@ -285,9 +249,7 @@ public class IntArrayTest {
 		assertEquals(5, array.get(1));
 	}
 
-	/**
-	 * Tests increment all values.
-	 */
+	/** Tests increment all values. */
 	@Test
 	public void testIncrementAll () {
 		IntArray array = new IntArray();
@@ -302,9 +264,7 @@ public class IntArrayTest {
 		assertEquals(13, array.get(2));
 	}
 
-	/**
-	 * Tests multiply at specific index.
-	 */
+	/** Tests multiply at specific index. */
 	@Test
 	public void testMultiplyAtIndex () {
 		IntArray array = new IntArray();
@@ -318,9 +278,7 @@ public class IntArrayTest {
 		assertEquals(20, array.get(1));
 	}
 
-	/**
-	 * Tests multiply all values.
-	 */
+	/** Tests multiply all values. */
 	@Test
 	public void testMultiplyAll () {
 		IntArray array = new IntArray();
@@ -335,9 +293,7 @@ public class IntArrayTest {
 		assertEquals(40, array.get(2));
 	}
 
-	/**
-	 * Tests insert in ordered array maintains order.
-	 */
+	/** Tests insert in ordered array maintains order. */
 	@Test
 	public void testInsertOrdered () {
 		IntArray array = new IntArray(true, 4);
@@ -354,9 +310,7 @@ public class IntArrayTest {
 		assertEquals(4, array.get(3));
 	}
 
-	/**
-	 * Tests insert in unordered array.
-	 */
+	/** Tests insert in unordered array. */
 	@Test
 	public void testInsertUnordered () {
 		IntArray array = new IntArray(false, 4);
@@ -370,9 +324,7 @@ public class IntArrayTest {
 		assertEquals(99, array.get(1));
 	}
 
-	/**
-	 * Tests insertRange creates space for new elements.
-	 */
+	/** Tests insertRange creates space for new elements. */
 	@Test
 	public void testInsertRange () {
 		IntArray array = new IntArray();
@@ -389,9 +341,7 @@ public class IntArrayTest {
 		assertEquals(5, array.get(4));
 	}
 
-	/**
-	 * Tests swap exchanges two elements.
-	 */
+	/** Tests swap exchanges two elements. */
 	@Test
 	public void testSwap () {
 		IntArray array = new IntArray();
@@ -406,9 +356,7 @@ public class IntArrayTest {
 		assertEquals(10, array.get(2));
 	}
 
-	/**
-	 * Tests replaceFirst replaces first occurrence only.
-	 */
+	/** Tests replaceFirst replaces first occurrence only. */
 	@Test
 	public void testReplaceFirst () {
 		IntArray array = new IntArray();
@@ -425,9 +373,7 @@ public class IntArrayTest {
 		assertFalse(array.replaceFirst(100, 200)); // Not found
 	}
 
-	/**
-	 * Tests replaceAll replaces all occurrences.
-	 */
+	/** Tests replaceAll replaces all occurrences. */
 	@Test
 	public void testReplaceAll () {
 		IntArray array = new IntArray();
@@ -447,9 +393,7 @@ public class IntArrayTest {
 		assertEquals(0, array.replaceAll(100, 200)); // Not found
 	}
 
-	/**
-	 * Tests contains finds existing values.
-	 */
+	/** Tests contains finds existing values. */
 	@Test
 	public void testContains () {
 		IntArray array = new IntArray();
@@ -463,9 +407,7 @@ public class IntArrayTest {
 		assertFalse(array.contains(40));
 	}
 
-	/**
-	 * Tests indexOf returns first occurrence index.
-	 */
+	/** Tests indexOf returns first occurrence index. */
 	@Test
 	public void testIndexOf () {
 		IntArray array = new IntArray();
@@ -480,9 +422,7 @@ public class IntArrayTest {
 		assertEquals(-1, array.indexOf(99));
 	}
 
-	/**
-	 * Tests lastIndexOf returns last occurrence index.
-	 */
+	/** Tests lastIndexOf returns last occurrence index. */
 	@Test
 	public void testLastIndexOf () {
 		IntArray array = new IntArray();
@@ -497,9 +437,7 @@ public class IntArrayTest {
 		assertEquals(-1, array.lastIndexOf(99));
 	}
 
-	/**
-	 * Tests removeValue removes first occurrence.
-	 */
+	/** Tests removeValue removes first occurrence. */
 	@Test
 	public void testRemoveValue () {
 		IntArray array = new IntArray();
@@ -515,9 +453,7 @@ public class IntArrayTest {
 		assertFalse(array.removeValue(99));
 	}
 
-	/**
-	 * Tests removeIndex in ordered array maintains order.
-	 */
+	/** Tests removeIndex in ordered array maintains order. */
 	@Test
 	public void testRemoveIndexOrdered () {
 		IntArray array = new IntArray(true, 4);
@@ -535,9 +471,7 @@ public class IntArrayTest {
 		assertEquals(4, array.get(2));
 	}
 
-	/**
-	 * Tests removeIndex in unordered array may change order.
-	 */
+	/** Tests removeIndex in unordered array may change order. */
 	@Test
 	public void testRemoveIndexUnordered () {
 		IntArray array = new IntArray(false, 4);
@@ -554,9 +488,7 @@ public class IntArrayTest {
 		assertEquals(4, array.get(1));
 	}
 
-	/**
-	 * Tests removeRange removes inclusive range.
-	 */
+	/** Tests removeRange removes inclusive range. */
 	@Test
 	public void testRemoveRange () {
 		IntArray array = new IntArray();
@@ -573,9 +505,7 @@ public class IntArrayTest {
 		assertEquals(5, array.get(1));
 	}
 
-	/**
-	 * Tests removeAll removes first instance of each value.
-	 */
+	/** Tests removeAll removes first instance of each value. */
 	@Test
 	public void testRemoveAll () {
 		IntArray array = new IntArray();
@@ -597,9 +527,7 @@ public class IntArrayTest {
 		assertEquals(2, array.get(2)); // Second 2 remains
 	}
 
-	/**
-	 * Tests pop removes and returns last element.
-	 */
+	/** Tests pop removes and returns last element. */
 	@Test
 	public void testPop () {
 		IntArray array = new IntArray();
@@ -613,9 +541,7 @@ public class IntArrayTest {
 		assertEquals(1, array.size);
 	}
 
-	/**
-	 * Tests peek returns last element without removing.
-	 */
+	/** Tests peek returns last element without removing. */
 	@Test
 	public void testPeek () {
 		IntArray array = new IntArray();
@@ -626,9 +552,7 @@ public class IntArrayTest {
 		assertEquals(2, array.size); // Size unchanged
 	}
 
-	/**
-	 * Tests first returns first element or throws exception.
-	 */
+	/** Tests first returns first element or throws exception. */
 	@Test
 	public void testFirst () {
 		IntArray array = new IntArray();
@@ -638,9 +562,7 @@ public class IntArrayTest {
 		assertEquals(10, array.first());
 	}
 
-	/**
-	 * Tests isEmpty and notEmpty.
-	 */
+	/** Tests isEmpty and notEmpty. */
 	@Test
 	public void testIsEmptyAndNotEmpty () {
 		IntArray array = new IntArray();
@@ -656,9 +578,7 @@ public class IntArrayTest {
 		assertFalse(array.notEmpty());
 	}
 
-	/**
-	 * Tests clear removes all elements.
-	 */
+	/** Tests clear removes all elements. */
 	@Test
 	public void testClear () {
 		IntArray array = new IntArray();
@@ -672,9 +592,7 @@ public class IntArrayTest {
 		assertTrue(array.isEmpty());
 	}
 
-	/**
-	 * Tests shrink reduces backing array to exact size.
-	 */
+	/** Tests shrink reduces backing array to exact size. */
 	@Test
 	public void testShrink () {
 		IntArray array = new IntArray(100);
@@ -687,9 +605,7 @@ public class IntArrayTest {
 		assertEquals(2, array.items.length);
 	}
 
-	/**
-	 * Tests ensureCapacity allocates space for additional elements.
-	 */
+	/** Tests ensureCapacity allocates space for additional elements. */
 	@Test
 	public void testEnsureCapacity () {
 		IntArray array = new IntArray(4);
@@ -703,9 +619,7 @@ public class IntArrayTest {
 		assertEquals(2, array.size); // Size unchanged
 	}
 
-	/**
-	 * Tests setSize expands or contracts array.
-	 */
+	/** Tests setSize expands or contracts array. */
 	@Test
 	public void testSetSize () {
 		IntArray array = new IntArray();
@@ -720,9 +634,7 @@ public class IntArrayTest {
 		assertEquals(1, array.get(0));
 	}
 
-	/**
-	 * Tests sort arranges elements in ascending order.
-	 */
+	/** Tests sort arranges elements in ascending order. */
 	@Test
 	public void testSort () {
 		IntArray array = new IntArray();
@@ -739,9 +651,7 @@ public class IntArrayTest {
 		assertEquals(8, array.get(3));
 	}
 
-	/**
-	 * Tests reverse reverses element order.
-	 */
+	/** Tests reverse reverses element order. */
 	@Test
 	public void testReverse () {
 		IntArray array = new IntArray();
@@ -758,9 +668,7 @@ public class IntArrayTest {
 		assertEquals(1, array.get(3));
 	}
 
-	/**
-	 * Tests shuffle randomizes element order.
-	 */
+	/** Tests shuffle randomizes element order. */
 	@Test
 	public void testShuffle () {
 		IntArray array = new IntArray();
@@ -781,9 +689,7 @@ public class IntArrayTest {
 		// We won't assert this as shuffle is random
 	}
 
-	/**
-	 * Tests truncate reduces size to specified value.
-	 */
+	/** Tests truncate reduces size to specified value. */
 	@Test
 	public void testTruncate () {
 		IntArray array = new IntArray();
@@ -802,9 +708,7 @@ public class IntArrayTest {
 		assertEquals(2, array.size);
 	}
 
-	/**
-	 * Tests random returns value from array or zero if empty.
-	 */
+	/** Tests random returns value from array or zero if empty. */
 	@Test
 	public void testRandom () {
 		IntArray array = new IntArray();
@@ -818,9 +722,7 @@ public class IntArrayTest {
 		assertTrue(array.contains(value));
 	}
 
-	/**
-	 * Tests toArray creates new array with elements.
-	 */
+	/** Tests toArray creates new array with elements. */
 	@Test
 	public void testToArray () {
 		IntArray array = new IntArray();
@@ -840,9 +742,7 @@ public class IntArrayTest {
 		assertEquals(1, array.get(0));
 	}
 
-	/**
-	 * Tests hashCode for ordered arrays.
-	 */
+	/** Tests hashCode for ordered arrays. */
 	@Test
 	public void testHashCodeOrdered () {
 		IntArray array1 = new IntArray();
@@ -858,9 +758,7 @@ public class IntArrayTest {
 		assertEquals(array1.hashCode(), array2.hashCode());
 	}
 
-	/**
-	 * Tests equals for ordered arrays.
-	 */
+	/** Tests equals for ordered arrays. */
 	@Test
 	public void testEqualsOrdered () {
 		IntArray array1 = new IntArray();
@@ -881,9 +779,7 @@ public class IntArrayTest {
 		assertFalse(array1.equals("string"));
 	}
 
-	/**
-	 * Tests unordered arrays are not equal even with same values.
-	 */
+	/** Tests unordered arrays are not equal even with same values. */
 	@Test
 	public void testEqualsUnordered () {
 		IntArray array1 = new IntArray(false, 4);
@@ -897,9 +793,7 @@ public class IntArrayTest {
 		assertFalse(array1.equals(array2)); // Unordered arrays don't equal
 	}
 
-	/**
-	 * Tests toString with default format.
-	 */
+	/** Tests toString with default format. */
 	@Test
 	public void testToString () {
 		IntArray array = new IntArray();
@@ -913,9 +807,7 @@ public class IntArrayTest {
 		assertEquals("[1, 2, 3]", array.toString());
 	}
 
-	/**
-	 * Tests toString with custom separator.
-	 */
+	/** Tests toString with custom separator. */
 	@Test
 	public void testToStringWithSeparator () {
 		IntArray array = new IntArray();
@@ -932,9 +824,7 @@ public class IntArrayTest {
 
 	// ========== EXCEPTION TESTS ==========
 
-	/**
-	 * Tests get throws exception for index out of bounds.
-	 */
+	/** Tests get throws exception for index out of bounds. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetIndexOutOfBounds () {
 		IntArray array = new IntArray();
@@ -942,9 +832,7 @@ public class IntArrayTest {
 		array.get(5);
 	}
 
-	/**
-	 * Tests set throws exception for index out of bounds.
-	 */
+	/** Tests set throws exception for index out of bounds. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetIndexOutOfBounds () {
 		IntArray array = new IntArray();
@@ -952,9 +840,7 @@ public class IntArrayTest {
 		array.set(5, 99);
 	}
 
-	/**
-	 * Tests incr at index throws exception for index out of bounds.
-	 */
+	/** Tests incr at index throws exception for index out of bounds. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testIncrIndexOutOfBounds () {
 		IntArray array = new IntArray();
@@ -962,9 +848,7 @@ public class IntArrayTest {
 		array.incr(5, 10);
 	}
 
-	/**
-	 * Tests mul at index throws exception for index out of bounds.
-	 */
+	/** Tests mul at index throws exception for index out of bounds. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testMulIndexOutOfBounds () {
 		IntArray array = new IntArray();
@@ -972,9 +856,7 @@ public class IntArrayTest {
 		array.mul(5, 10);
 	}
 
-	/**
-	 * Tests insert throws exception when index exceeds size.
-	 */
+	/** Tests insert throws exception when index exceeds size. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testInsertIndexTooLarge () {
 		IntArray array = new IntArray();
@@ -982,9 +864,7 @@ public class IntArrayTest {
 		array.insert(5, 99);
 	}
 
-	/**
-	 * Tests insertRange throws exception when index exceeds size.
-	 */
+	/** Tests insertRange throws exception when index exceeds size. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testInsertRangeIndexTooLarge () {
 		IntArray array = new IntArray();
@@ -992,9 +872,7 @@ public class IntArrayTest {
 		array.insertRange(5, 2);
 	}
 
-	/**
-	 * Tests swap throws exception for first index out of bounds.
-	 */
+	/** Tests swap throws exception for first index out of bounds. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSwapFirstIndexOutOfBounds () {
 		IntArray array = new IntArray();
@@ -1003,9 +881,7 @@ public class IntArrayTest {
 		array.swap(5, 1);
 	}
 
-	/**
-	 * Tests swap throws exception for second index out of bounds.
-	 */
+	/** Tests swap throws exception for second index out of bounds. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSwapSecondIndexOutOfBounds () {
 		IntArray array = new IntArray();
@@ -1014,9 +890,7 @@ public class IntArrayTest {
 		array.swap(0, 5);
 	}
 
-	/**
-	 * Tests removeIndex throws exception for index out of bounds.
-	 */
+	/** Tests removeIndex throws exception for index out of bounds. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testRemoveIndexOutOfBounds () {
 		IntArray array = new IntArray();
@@ -1024,9 +898,7 @@ public class IntArrayTest {
 		array.removeIndex(5);
 	}
 
-	/**
-	 * Tests removeRange throws exception when end exceeds size.
-	 */
+	/** Tests removeRange throws exception when end exceeds size. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testRemoveRangeEndTooLarge () {
 		IntArray array = new IntArray();
@@ -1035,9 +907,7 @@ public class IntArrayTest {
 		array.removeRange(0, 5);
 	}
 
-	/**
-	 * Tests removeRange throws exception when start exceeds end.
-	 */
+	/** Tests removeRange throws exception when start exceeds end. */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testRemoveRangeStartGreaterThanEnd () {
 		IntArray array = new IntArray();
@@ -1047,45 +917,35 @@ public class IntArrayTest {
 		array.removeRange(2, 1);
 	}
 
-	/**
-	 * Tests first throws exception when array is empty.
-	 */
+	/** Tests first throws exception when array is empty. */
 	@Test(expected = IllegalStateException.class)
 	public void testFirstOnEmptyArray () {
 		IntArray array = new IntArray();
 		array.first();
 	}
 
-	/**
-	 * Tests ensureCapacity throws exception for negative capacity.
-	 */
+	/** Tests ensureCapacity throws exception for negative capacity. */
 	@Test(expected = IllegalArgumentException.class)
 	public void testEnsureCapacityNegative () {
 		IntArray array = new IntArray();
 		array.ensureCapacity(-1);
 	}
 
-	/**
-	 * Tests setSize throws exception for negative size.
-	 */
+	/** Tests setSize throws exception for negative size. */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetSizeNegative () {
 		IntArray array = new IntArray();
 		array.setSize(-1);
 	}
 
-	/**
-	 * Tests truncate throws exception for negative size.
-	 */
+	/** Tests truncate throws exception for negative size. */
 	@Test(expected = IllegalArgumentException.class)
 	public void testTruncateNegative () {
 		IntArray array = new IntArray();
 		array.truncate(-1);
 	}
 
-	/**
-	 * Tests addAll with offset and length throws exception when out of bounds.
-	 */
+	/** Tests addAll with offset and length throws exception when out of bounds. */
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddAllIntArrayOutOfBounds () {
 		IntArray array1 = new IntArray();
@@ -1098,9 +958,7 @@ public class IntArrayTest {
 
 	// ========== ADDITIONAL MUTATION-KILLING TESTS ==========
 
-	/**
-	 * Tests insert at exact size boundary (should work like addLast).
-	 */
+	/** Tests insert at exact size boundary (should work like addLast). */
 	@Test
 	public void testInsertAtSize () {
 		IntArray array = new IntArray();
@@ -1116,9 +974,7 @@ public class IntArrayTest {
 		assertEquals(3, array.get(2));
 	}
 
-	/**
-	 * Tests reverse on single element and empty arrays.
-	 */
+	/** Tests reverse on single element and empty arrays. */
 	@Test
 	public void testReverseSingleAndEmpty () {
 		// Empty array
@@ -1142,9 +998,7 @@ public class IntArrayTest {
 		assertEquals(1, two.get(1));
 	}
 
-	/**
-	 * Tests sort on empty and single element arrays.
-	 */
+	/** Tests sort on empty and single element arrays. */
 	@Test
 	public void testSortEmptyAndSingle () {
 		IntArray empty = new IntArray();
@@ -1158,9 +1012,7 @@ public class IntArrayTest {
 		assertEquals(42, single.get(0));
 	}
 
-	/**
-	 * Tests equals with arrays that differ at various positions.
-	 */
+	/** Tests equals with arrays that differ at various positions. */
 	@Test
 	public void testEqualsWithDifferentValues () {
 		IntArray array1 = new IntArray();
@@ -1190,9 +1042,7 @@ public class IntArrayTest {
 		assertFalse(array1.equals(array4));
 	}
 
-	/**
-	 * Tests shrink returns the items array.
-	 */
+	/** Tests shrink returns the items array. */
 	@Test
 	public void testShrinkReturnValue () {
 		IntArray array = new IntArray(100);
@@ -1205,9 +1055,7 @@ public class IntArrayTest {
 		assertEquals(2, result.length);
 	}
 
-	/**
-	 * Tests ensureCapacity returns the items array.
-	 */
+	/** Tests ensureCapacity returns the items array. */
 	@Test
 	public void testEnsureCapacityReturnValue () {
 		IntArray array = new IntArray(4);
@@ -1218,9 +1066,7 @@ public class IntArrayTest {
 		assertSame(array.items, result);
 	}
 
-	/**
-	 * Tests setSize returns the items array.
-	 */
+	/** Tests setSize returns the items array. */
 	@Test
 	public void testSetSizeReturnValue () {
 		IntArray array = new IntArray();
@@ -1231,9 +1077,7 @@ public class IntArrayTest {
 		assertSame(array.items, result);
 	}
 
-	/**
-	 * Tests removeAll when nothing is removed.
-	 */
+	/** Tests removeAll when nothing is removed. */
 	@Test
 	public void testRemoveAllNothingRemoved () {
 		IntArray array = new IntArray();
@@ -1249,9 +1093,7 @@ public class IntArrayTest {
 		assertEquals(3, array.size);
 	}
 
-	/**
-	 * Tests removeRange with single element range.
-	 */
+	/** Tests removeRange with single element range. */
 	@Test
 	public void testRemoveRangeSingleElement () {
 		IntArray array = new IntArray();
@@ -1268,9 +1110,7 @@ public class IntArrayTest {
 		assertEquals(4, array.get(2));
 	}
 
-	/**
-	 * Tests removeRange removing from end.
-	 */
+	/** Tests removeRange removing from end. */
 	@Test
 	public void testRemoveRangeAtEnd () {
 		IntArray array = new IntArray();
@@ -1288,9 +1128,7 @@ public class IntArrayTest {
 		assertEquals(3, array.get(2));
 	}
 
-	/**
-	 * Tests contains on empty array.
-	 */
+	/** Tests contains on empty array. */
 	@Test
 	public void testContainsEmpty () {
 		IntArray array = new IntArray();
@@ -1298,27 +1136,21 @@ public class IntArrayTest {
 		assertFalse(array.contains(0));
 	}
 
-	/**
-	 * Tests indexOf on empty array.
-	 */
+	/** Tests indexOf on empty array. */
 	@Test
 	public void testIndexOfEmpty () {
 		IntArray array = new IntArray();
 		assertEquals(-1, array.indexOf(1));
 	}
 
-	/**
-	 * Tests lastIndexOf on empty array.
-	 */
+	/** Tests lastIndexOf on empty array. */
 	@Test
 	public void testLastIndexOfEmpty () {
 		IntArray array = new IntArray();
 		assertEquals(-1, array.lastIndexOf(1));
 	}
 
-	/**
-	 * Tests hashCode for unordered arrays uses Object.hashCode().
-	 */
+	/** Tests hashCode for unordered arrays uses Object.hashCode(). */
 	@Test
 	public void testHashCodeUnordered () {
 		IntArray array1 = new IntArray(false, 4);
@@ -1328,9 +1160,7 @@ public class IntArrayTest {
 		assertNotEquals(array1.hashCode(), array2.hashCode());
 	}
 
-	/**
-	 * Tests truncate with exact size (no truncation).
-	 */
+	/** Tests truncate with exact size (no truncation). */
 	@Test
 	public void testTruncateExactSize () {
 		IntArray array = new IntArray();
