@@ -111,7 +111,7 @@ dependencies {
 
 test {
 	dependsOn("validateIOSHeader")
-	inputs.files(rootProject.tasks.named('fetchNatives').map { it.outputs.files })
+	mustRunAfter(rootProject.tasks.named('fetchNatives'))
 	testLogging {
 		events "passed", "skipped", "failed", "standardOut", "standardError"
 	}
