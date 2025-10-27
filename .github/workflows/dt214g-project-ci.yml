@@ -32,3 +32,9 @@ jobs:
 
       - name: Run mutation testing (PIT)
         run: ./gradlew :gdx:pitest
+
+      - name: Run SpotBugs static analysis
+        run: ./gradlew :gdx:spotbugsMain :gdx:spotbugsTest
+
+      - name: Run PMD static analysis
+        run: ./gradlew :gdx:pmdMain :gdx:pmdTest
