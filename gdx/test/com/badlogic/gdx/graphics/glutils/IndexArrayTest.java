@@ -1,5 +1,5 @@
 
-package com.badlogic.gdx.utils;
+package com.badlogic.gdx.graphics.glutils;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -15,9 +15,8 @@ import java.nio.ShortBuffer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.badlogic.gdx.graphics.glutils.IndexArray;
-
 public class IndexArrayTest {
+
 	@BeforeClass
 	public static void loadNatives () {
 		// Ensure libGDX native libraries are extracted and loaded for tests that call JNI methods
@@ -297,5 +296,4 @@ public class IndexArrayTest {
 		assertEquals("Allocated unsafe bytes should decrease after dispose", before,
 			com.badlogic.gdx.utils.BufferUtils.getAllocatedBytesUnsafe());
 	}
-
 }
