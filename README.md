@@ -3,7 +3,7 @@
 ## DT214G - Group 5 - libGDX Project
 [https://github.com/springfeld7/libgdx](https://github.com/springfeld7/libgdx)
 
-Final submission: [v1.0](https://github.com/springfeld7/libgdx/tree/v1.0)
+Final submission: [dt214g-v1.0](https://github.com/springfeld7/libgdx/tree/dt214g-v1.0)
 
 ### Release notes
 - Added test and static analysis tools, including configurations for JaCoCo, PIT, SpotBugs, and PMD
