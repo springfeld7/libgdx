@@ -1,6 +1,7 @@
 ![CI](https://github.com/springfeld7/libgdx/actions/workflows/dt214g-project-ci.yml/badge.svg)
 
 ## DT214G - Group 5 - libGDX Project
+[https://github.com/springfeld7/libgdx](https://github.com/springfeld7/libgdx)
 
 ### Release notes
 - Added test and static analysis tools, including configurations for JaCoCo, PIT, SpotBugs, and PMD
